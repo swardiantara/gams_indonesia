@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">{{{title}}} <a href="/product/add" class="btn btn-primary btn-xs">Add</a></h6>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each data}}
+                            <tr>
+                                <th><a href="/product/edit/{{_id}}">{{title}}</a></th>
+                                <td>{{price}}</td>
+                                <td>{{qty}}</td>
+                                <td><a href="/product/delete/{{_id}}" class="text-danger">Delete</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

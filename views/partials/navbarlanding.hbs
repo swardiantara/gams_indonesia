@@ -1,0 +1,43 @@
+<nav class="navbar absolute transparent inverse-text navbar-hover-opacity nav-uppercase navbar-expand-lg">
+    <div class="container flex-row justify-content-center">
+        <div class="navbar-brand"><a href="/"><img src="#"
+                    srcset="style/images/logo.png 1x, style/images/logo@2x.png 2x" class="logo-dark" alt=""
+                    style="max-height: 60px;"><img src="#"
+                    srcset="style/images/logo-light.png 1x, style/images/logo-light@2x.png 2x" class="logo-light" alt=""
+                    style="max-height: 60px;"></a></div>
+        <div class="navbar-other ml-auto order-lg-3">
+            <ul class="navbar-nav flex-row align-items-center" data-sm-skip="true">
+                <li class="nav-item">
+                    <div class="navbar-hamburger d-lg-none d-xl-none ml-auto"><button class="hamburger animate plain"
+                            data-toggle="offcanvas-nav"><span></span></button></div>
+                </li>
+                {{#if user.email}}
+                <li class="nav-item"><a href="/dashboard" style="font-size: 16px;">{{user.email}}</a></li>
+                {{else}}
+                <li class="nav-item"><a href="/auth/login" style="font-size: 16px;">Login</a></li>
+                {{/if}}
+            </ul>
+            <!-- /.navbar-nav -->
+        </div>
+        <!-- /.navbar-other -->
+        <div class="navbar-collapse offcanvas-nav">
+            <div class="offcanvas-header d-lg-none d-xl-none">
+                <a href="/"><img src="#" srcset="style/images/logo-light.png 1x, style/images/logo-light@2x.png 2x"
+                        alt=""></a>
+                <button class="plain offcanvas-close offcanvas-nav-close"><i class="jam jam-close"></i></button>
+            </div>
+            <ul class="navbar-nav mx-auto" data-smartmenus-id="16010445869764197">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/free">9 Free Video</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/signup">Join Member</a>
+                </li>
+            </ul>
+            <!-- /.navbar-nav -->
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>

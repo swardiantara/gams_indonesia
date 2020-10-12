@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">{{{title}}}</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Item</th>
+                                <th>Total</th>
+                                <th>Shipping</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each data}}
+
+                            <tr>
+                                <td>{{_id}}</td>
+                                <th>
+                                    <a href="/product/order-details/{{_id}}">
+                                        {{#each item}}
+                                        {{product.title}}
+                                        {{/each}}
+                                    </a>
+                                </th>
+                                <td>{{total}}</td>
+                                <td>{{shippingCost}}</td>
+                                <td>
+                                    {{#ifCond status "Belum Bayar"}}
+                                    <span class="badge badge-danger">Belum Bayar</span>
+                                    {{/ifCond}}
+                                    {{#ifCond status "Menunggu Konfirmasi"}}
+                                    <span class="badge badge-warning">Menunggu Konfirmasi</span>
+                                    {{/ifCond}}
+                                    {{#ifCond status "Sudah Bayar"}}
+                                    <span class="badge badge-success">Sudah Bayar</span>
+                                    {{/ifCond}}
+                                </td>
+                                <td>
+                                    <a href="/product/order-details/{{_id}}"><span class="badge badge-info">Detail
+                                            Order</span></a><br>
+                                    <a href='https://wa.me/6283877607433?text=Saya%20mau%20konfirmasi%20pembayaran'><span
+                                            class="badge badge-warning mt-2 ">Konfirmasi Pembayaran</a>
+                                </td>
+
+
+                            </tr>
+
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

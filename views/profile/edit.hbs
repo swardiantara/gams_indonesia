@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Profile</h6>
+                <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Foto Profile</label><br>
+                                <input type="file" name="fotoProfile">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/{{dataFotoProfile}}" alt="..." class="img-thumbnail">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama Lengkap</label>
+                                <input type="text" class="form-control" name="fullName" placeholder="Jhon Doe"
+                                    value="{{data.fullName}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>No KTP</label>
+                                <input type="text" class="form-control" name="noKtp" placeholder="000232232xxx"
+                                    value="{{data.noKtp}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>No Telp</label>
+                                <input type="text" class="form-control" name="phone" placeholder="082122323xxx"
+                                    value="{{data.phone}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kota</label>
+                                <input type="text" class="form-control" name="city" placeholder="Jakarta Selatan"
+                                    value="{{data.city}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Provinsi</label>
+                                <input type="text" class="form-control" name="province" placeholder="DKI Jakarta"
+                                    value="{{data.province}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kode Pos</label>
+                                <input type="text" class="form-control" name="postalCode" placeholder="1423x"
+                                    value="{{data.postalCode}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Alamat</label>
+                                <input type="text" class="form-control" name="address"
+                                    placeholder="Jl. Simpang tiga Rt 01 Rw 08" value="{{data.address}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Lisensi</label>
+                                <input type="text" class="form-control" name="license" placeholder="Basic"
+                                    value="{{data.license}}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kode Referral</label>
+                                <input type="text" class="form-control" name="referralCode" placeholder="3Sgs2c"
+                                    value="{{data.referralCode}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2 btn-block">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Data Rekening</h6>
+                <form class="forms-sample" method="POST" action="/profile/edit/bank">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Rekening Bank</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="bankAccount" placeholder="BCA"
+                                value="{{data.bankAccount}}" {{#if data.bankAccount}}readonly{{else}}{{/if}}>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Nama Pemilik Rekening</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="bankName" placeholder="Jhone Doe"
+                                value="{{data.bankName}}" {{#if data.bankName}}readonly{{else}}{{/if}}>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">No Rekening</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="bankNumber" placeholder="1434xxx"
+                                value="{{data.bankNumber}}" {{#if data.bankNumber}}readonly{{else}}{{/if}}>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2 btn-block"
+                        {{#if data.bankAccount}}disabled{{else}}{{/if}}>{{#if data.bankAccount}}Hubungi CS Untuk
+                        Perubahan
+                        Rekening{{else}}Edit Bank{{/if}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

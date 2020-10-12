@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="owl-carousel owl-theme owl-fadeout owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                        style="transform: translate3d(-1413px, 0px, 0px); transition: all 0.45s ease 0s; width: 3828px; padding-left: 30px; padding-right: 30px;">
+                        <div class="owl-item" style="width: 441px; margin-right: 30px;">
+                            {{#each data.gallery}}
+                            <div class="item">
+                                <img src="/{{this}}" style="max-height: 500px;" alt="item-image">
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-5">
+            <h2 class="pb-3 pt-3">{{data.title}}</h2>
+            <h5 class="pb-2">{{formatprice data.price}}</h5>
+            <p>{{{data.description}}}</p>
+
+
+            <form method="POST" action="">
+                <div class="pt-4">
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="text" class="form-control" name="qty" placeholder="1"></input>
+                    </div>
+                </div>
+
+                <p>Stok: {{data.qty}}</p>
+
+                <div class="pt-3">
+                    <button type="submit" class="btn btn-primary">Beli Sekarang</button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

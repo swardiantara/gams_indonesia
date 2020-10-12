@@ -1,0 +1,168 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <a href="/" class="sidebar-brand">
+      GAMS<span>Indonesia</span>
+    </a>
+    <div class="sidebar-toggler not-active">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+  <div class="sidebar-body">
+    <ul class="nav">
+      <li class="nav-item nav-category">{{#if user.fullName}}{{user.fullName}}{{else}}No Name{{/if}}</li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">{{user.email}}</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">BASIC</span>
+        </a>
+      </li>
+
+      {{#ifCond user.role 'Admin'}}
+      <li class="nav-item nav-category">Admin Menu</li>
+
+
+      <li class="nav-item">
+        <a href="/product" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Product Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/edit-dashboard" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Edit Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/tool" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Tools Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/lesson" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Lesson Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/membership" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Member Commission</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/memberlist" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Leads Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/product/order-status/panel" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Order Sales Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/membership/order/panel" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Order Membership</span>
+        </a>
+      </li>
+
+      {{else}}
+      <li class="nav-item nav-category">Member Menu</li>
+
+      <li class="nav-item">
+        <a href="membercommission" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Member Commission</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="pages/apps/calendar.html" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">News & Event</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/membership/order" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Membership</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/lead/my" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">My Leads</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/lesson/list" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Training Center</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#tools" role="button" aria-expanded="false"
+          aria-controls="tools">
+          <i class="link-icon" data-feather="mail"></i>
+          <span class="link-title">Tools</span>
+          <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+        <div class="collapse" id="tools">
+          <ul class="nav sub-menu">
+            <li class="nav-item">
+              <a href="/tool/a/photo" class="nav-link">Photo</a>
+            </li>
+            <li class="nav-item">
+              <a href="/tool/a/video" class="nav-link">Video</a>
+            </li>
+            <li class="nav-item">
+              <a href="/tool/a/copywriting" class="nav-link">Copywriting</a>
+            </li>
+            <li class="nav-item">
+              <a href="/tool/a/landing-page" class="nav-link">Landing Page</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {{/ifCond}}
+
+      <li class="nav-item nav-category">Shop & Orders</li>
+      <li class="nav-item">
+        <a href="/product/catalog" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Produk</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/product/order-status" class="nav-link">
+          <i class="link-icon" data-feather="calendar"></i>
+          <span class="link-title">Order Status</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>

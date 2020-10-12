@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        {{#data}}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/{{gallery}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text pb-2">{{formatprice price}}</p>
+                    <a href="/product/catalog/{{_id}}" class="btn btn-primary">Beli Sekarang</a>
+                </div>
+            </div>
+        </div>
+        {{/data}}
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">{{{title}}}</h6>
+                <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control" name="title" placeholder="Produk GAMS Terbaru"
+                                    value="{{data.title}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="text" class="form-control" name="price" placeholder="12000"
+                                    value="{{data.price}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" name="description" rows="10"
+                            id="editor">{{data.description}}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="text" class="form-control" name="qty" placeholder="7" value="{{data.qty}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label>Weight (gram)</label>
+                                <input type="text" class="form-control" name="weight" placeholder="1000"
+                                    value="{{data.weight}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Gallery</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="gallery" multiple>
+                                    <label class="custom-file-label">Choose file</label>
+                                </div>
+                            </div>
+
+                            {{#if data}}
+
+                            <div class="basic-slider">
+
+                                {{#each data.gallery}}
+                                <img src="/{{this}}" class="p-2" style="max-height: 180px;">
+                                {{/each}}
+
+                            </div>
+
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2 btn-block">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
