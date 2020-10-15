@@ -33,8 +33,8 @@
                                     {{#ifCond status "Belum Bayar"}}
                                     <span class="badge badge-danger">Belum Bayar</span>
                                     {{/ifCond}}
-                                    {{#ifCond status "Menunggu Konfirmasi"}}
-                                    <span class="badge badge-warning">Menunggu Konfirmasi</span>
+                                    {{#ifCond status "Menunggu Konfirmasi Pembayaran"}}
+                                    <span class="badge badge-warning">Menunggu Konfirmasi Pembayaran</span>
                                     {{/ifCond}}
                                     {{#ifCond status "Sudah Bayar"}}
                                     <span class="badge badge-success">Sudah Bayar</span>
@@ -46,10 +46,7 @@
                                     <a href='https://wa.me/6283877607433?text=Saya%20mau%20konfirmasi%20pembayaran'><span
                                             class="badge badge-warning mt-2 ">Konfirmasi Pembayaran</a>
                                 </td>
-
-
                             </tr>
-
                             {{/each}}
                         </tbody>
                     </table>

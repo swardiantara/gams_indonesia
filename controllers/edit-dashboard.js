@@ -12,7 +12,7 @@ exports.editDashboard = (req, res) => {
 
 exports.postDashboard = (req, res) => {
   const { titlePage, descriptionPage } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const newWelcome = new Welcomepage();
 
   newWelcome.titlePage = titlePage;

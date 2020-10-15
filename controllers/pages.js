@@ -1,15 +1,30 @@
 const User = require("../models/user");
+const Welcomepage = require("../models/welcome");
+
 
 exports.getIndex = (req, res) => {
-  return res.render("index", {
-    title: "Gams Indonesia",
-    user: req.user,
+  Welcomepage.find()
+  .then((data) => {
+    return res.render("index", {
+      title: "Gams Indonesia",
+      data: data,
+      user: req.user,
+    });
+    // return res.render("index", {
+    //   title: "Dashboard",
+    //   data: data,
+    //   user: req.user,
+    //   customjs: true,
+    // });
+  })
+  .catch((err) => {
+    console.log(err);
   });
 };
 
 exports.getHome = (req, res) => {
   return res.render("landing/index", {
-    title: "Gams Indonesia",
+    title: "Gerakan Anak Muda Sukses",
     layout: "layouts/landing",
     user: req.user,
   });

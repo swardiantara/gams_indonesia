@@ -72,7 +72,7 @@ exports.getOrderSalesPanel = (req, res) => {
   OrderDetails.find()
     .populate("user")
     .then((dataOrder) => {
-      console.log(dataOrder);
+      // console.log(dataOrder);
 
       return res.render("user/product/ordersalespanel", {
         title: "Order Sales Panel",
@@ -113,7 +113,7 @@ exports.getOrderDetails = (req, res) => {
 exports.postProduct = (req, res, next) => {
   const { title, description, price, weight, qty } = req.body;
   const gallery = req.files.map((file) => file.path);
-
+  // console.log(gallery);
   const newProduct = new Product();
 
   newProduct.title = title;
@@ -227,6 +227,11 @@ exports.getProvinces = (req, res) => {
       res.status(400).send({ message: "Error" });
     });
 };
+
+// exports.getCity = (req, res) => {
+//   let idProvince = req.params.province;
+//   RajaOngkir.getCity(req.query.province)
+// }
 
 exports.getShipping = (req, res) => {
   const cityId = req.query.cityId;

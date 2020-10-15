@@ -12,6 +12,7 @@
                                 <th>Shipping</th>
                                 <th>User</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,6 +29,17 @@
                                 <td>{{total}}</td>
                                 <td>{{shippingCost}}</td>
                                 <td>{{user.fullName}}</td>
+                                <td>
+                                    {{#ifCond status "Belum Bayar"}}
+                                    <span class="badge badge-danger">Belum Bayar</span>
+                                    {{/ifCond}}
+                                    {{#ifCond status "Menunggu Konfirmasi Pembayaran"}}
+                                    <span class="badge badge-warning">Menunggu Konfirmasi Pembayaran</span>
+                                    {{/ifCond}}
+                                    {{#ifCond status "Sudah Bayar"}}
+                                    <span class="badge badge-success">Sudah Bayar</span>
+                                    {{/ifCond}}
+                                </td>
                                 <td>{{status}}</td>
                             </tr>
 

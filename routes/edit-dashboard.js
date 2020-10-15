@@ -11,6 +11,7 @@ const router = Router();
 
 router.get("/", isAuthenticated, editDashboard);
 router.get("/dashboard", isAuthenticated, getDashboard);
+router.get("/dashboard-admin", isAuthenticated, getDashboard);
 router.post("/", isAuthenticated, postDashboard);
 
 module.exports = router;

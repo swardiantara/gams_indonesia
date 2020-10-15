@@ -6,6 +6,7 @@ exports.getEdit = (req, res) => {
   const userId = req.user._id;
   User.findById({ _id: userId })
     .then((userData) => {
+      console.log(userData)
       return res.render("profile/edit", {
         title: "Edit Profile",
         data: userData,
@@ -34,7 +35,6 @@ exports.postEdit = (req, res) => {
     address,
   } = req.body;
   const fotoProfile = req.file ? req.file.path : null;
-  console.log(fotoProfile);
 
   User.findById({ _id: userId }).then((userData, err) => {
     if (err) console.log(err);

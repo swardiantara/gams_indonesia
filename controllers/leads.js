@@ -6,7 +6,7 @@ exports.getMyLeads = (req, res) => {
   User.find({ _id: userId })
     .populate("leads")
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return res.render("leads/myleads", {
         title: "My Leads",
         data: data,

@@ -1,10 +1,20 @@
 function Cart() {
+  // Config Defaults Axios dengan Detail Akun Rajaongkir
+  const baseURL = "https://api.rajaongkir.com/starter";
+  // axios.defaults.headers.common["key"] = "0c1822d88fb4bda9b1a7f9cd3b17ead4";
+  const API_KEY = "0c1822d88fb4bda9b1a7f9cd3b17ead4";
+  // axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+  const CONTENT_TYPE = "application/x-www-form-urlencoded";
   const [state, setState] = React.useState([]);
 
-  const [zones, setZones] = React.useState({
+  const [province, setProvince] = React.useState({
     provinces: [],
+  });
+
+  const [cities, setCities] = React.useState({
     cities: [],
   });
+
   const [shipping, setShipping] = React.useState({
     provId: "",
     cityId: "",
@@ -34,7 +44,7 @@ function Cart() {
       .then((res) => {
         setZones({
           provinces: [res.data.provinces.rajaongkir],
-          cities: [res.data.cities.rajaongkir],
+          // cities: [res.data.cities.rajaongkir],
         });
       })
       .catch((err) => {
