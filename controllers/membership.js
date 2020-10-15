@@ -54,7 +54,10 @@ exports.getMemberOrderList = (req, res) => {
 };
 
 exports.getMemberCommission = (req, res) => {
-  res.render("membership/membercommission");
+  res.render("membership/membercommission", {
+    title: "Member Commission",
+    user: req.user,
+  });
 };
 
 /**
