@@ -62,10 +62,18 @@ exports.getUserProductDetails = (req, res) => {
 };
 
 exports.getUserCart = (req, res) => {
-  return res.render("user/cart", {
-    title: "Cart",
-    user: req.user,
-  });
+  let userId = req.user._id;
+  Cart.find({ user: userId })
+    .populate("product")
+    .then((data) => {
+      return res.render("user/cart", {
+        title: "Cart",
+        user: req.user,
+        data: data,
+        customjs: true,
+      });
+    })
+  
 };
 
 exports.getOrderSalesPanel = (req, res) => {
