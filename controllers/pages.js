@@ -38,6 +38,14 @@ exports.getFreeVideo = (req, res) => {
   });
 };
 
+exports.getBilling = (req, res) => {
+  return res.render("landing/billing", {
+    title: "Billing Form",
+    layout: "layouts/landing",
+    user: req.user
+  })
+}
+
 exports.getLogin = (req, res) => {
   return res.render("login", {
     title: "Login",

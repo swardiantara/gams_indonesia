@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 const { isAuthenticated } = require("../config/protected");
-const { getIndex, getHome, getFreeVideo } = require("../controllers/pages");
+const { getIndex, getHome, getFreeVideo, getBilling} = require("../controllers/pages");
 
 /**
  * GET Method
@@ -10,6 +10,7 @@ const { getIndex, getHome, getFreeVideo } = require("../controllers/pages");
 
 router.get("/", getHome);
 router.get("/free", getFreeVideo);
+router.get("billing", getBilling);
 router.get("/dashboard", isAuthenticated, getIndex);
 
 module.exports = router;
