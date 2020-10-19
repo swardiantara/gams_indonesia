@@ -1,0 +1,15 @@
+/* free-landing page */
+.jumbotron-h1{
+    font-weight: 700;
+    font-size : 35px;
+    color: #444444 !important;
+    text-align: center;
+}
+
+strong{
+    font-size:23px;
+    font-style: italic;
+    color: #000;
+    font-weight: 800;
+}
+/*  */
