@@ -10,7 +10,7 @@ const { getIndex, getHome, getFreeVideo, getBilling} = require("../controllers/p
 
 router.get("/", getHome);
 router.get("/free", getFreeVideo);
-router.get("billing", getBilling);
+router.get("/billing", getBilling);
 router.get("/dashboard", isAuthenticated, getIndex);
 
 module.exports = router;

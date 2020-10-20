@@ -6808,6 +6808,9 @@ strong{
 
 .card{
     border : none;
+    background-color: #f5f5f5;
+    max-width: 150rem;
+    max-height: 50rem;
 }
 
 .card-style{
@@ -6818,6 +6821,7 @@ strong{
 
 .card-text{
     text-align: justify !important;
+    font-weight: 500;
 
 }
 
@@ -6826,4 +6830,9 @@ strong{
     z-index: 1;
     left:90% !important;
     position: relative;
+}
+
+.card-img{
+    height: 250px;
+    max-width: 100%;
 }
