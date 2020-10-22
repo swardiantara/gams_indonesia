@@ -20,6 +20,7 @@
     "mongoose": "^5.9.20",
     "morgan": "~1.9.1",
     "multer": "^1.4.2",
+    "nodemailer": "^6.4.14",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "rajaongkir-nodejs": "^0.2.0",
@@ -27,6 +28,6 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.5"
   }
 }

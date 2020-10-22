@@ -22,7 +22,7 @@ router.get("/edit/:id", isAuthenticated, getEditTool);
 router.get("/delete/:delete", isAuthenticated, postEditTool);
 
 router.get("/a/:id", isAuthenticated, getToolsByCategory);
-router.get("/rincian/:id", getRincianTool);
+router.get("/rincian/:id", isAuthenticated, getRincianTool);
 
 /**
  * POST Method

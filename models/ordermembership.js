@@ -18,6 +18,10 @@ const orderMembershipSchema = new Schema(
       required: true,
       default: "Belum Bayar",
     },
+    receipt: {
+      type: String,
+      required: false
+    }
   },
   { timestamps: true }
 );

@@ -14,15 +14,22 @@ exports.getTools = (req, res) => {
 
 exports.getToolsByCategory = (req, res) => {
   const paramsId = req.params.id;
-  Tool.find({ category: paramsId })
-    .sort("-createdAt")
-    .then((dataTool) => {
-      return res.render("tool/list", {
-        title: "Tools",
-        data: dataTool,
-        user: req.user,
+  if (paramsId == 'landing-page') {
+    return res.render("tool/landingpage", {
+      title: "Tools",
+      user: req.user
+    })
+  } else {
+    Tool.find({ category: paramsId })
+      .sort("-createdAt")
+      .then((dataTool) => {
+        return res.render("tool/list", {
+          title: "Tools",
+          data: dataTool,
+          user: req.user,
+        });
       });
-    });
+  }
 };
 
 exports.getAddTool = (req, res) => {

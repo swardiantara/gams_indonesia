@@ -150,3 +150,23 @@ exports.postOrderMembership = (req, res) => {
     }
   });
 };
+
+exports.getUploadReceipt = (req, res) => {
+  res.render("membership/uploadreceipt", {
+    title: "Upload Bukti Bayar",
+    // customjs: true,
+    layout: 'layouts/landing'
+  });
+}
+
+exports.postUploadReceipt = async (req, res) => {
+  let order = await OrderMembership.findOne({ _id: req.params.id });
+  const buktiBayar = req.file ? req.file.path : null;
+  order.updateOne({
+    receipt: buktiBayar,
+    status: "Menunggu Konfirmasi Pembayaran"
+  })
+
+
+
+}
