@@ -1,4 +1,5 @@
 const Tool = require("../models/tool");
+require("dotenv").config();
 
 exports.getTools = (req, res) => {
   Tool.find()
@@ -17,7 +18,10 @@ exports.getToolsByCategory = (req, res) => {
   if (paramsId == 'landing-page') {
     return res.render("tool/landingpage", {
       title: "Tools",
-      user: req.user
+      user: req.user,
+      data: {
+        url: process.env.APP_URL
+      }
     })
   } else {
     Tool.find({ category: paramsId })
