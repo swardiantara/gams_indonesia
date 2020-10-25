@@ -7,6 +7,10 @@ var RajaOngkir = require("rajaongkir-nodejs").Starter(
 );
 
 exports.getProducts = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   Product.find()
     .sort("-createdAt")
     .then((dataProduct) => {
@@ -19,6 +23,10 @@ exports.getProducts = (req, res) => {
 };
 
 exports.getAddProduct = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   return res.render("product/add", {
     title: "Add Product",
     user: req.user,
@@ -27,6 +35,10 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.getEditProduct = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   const productId = req.params.id;
 
   Product.findById({ _id: productId }).then((dataProduct) => {
@@ -40,6 +52,10 @@ exports.getEditProduct = (req, res) => {
 };
 
 exports.getUserProduct = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   Product.find().then((data) => {
     return res.render("user/product", {
       title: "Katalog",
@@ -50,6 +66,10 @@ exports.getUserProduct = (req, res) => {
 };
 
 exports.getUserProductDetails = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   const prodId = req.params.id;
 
   Product.findById({ _id: prodId }).then((dataProduct) => {
@@ -62,6 +82,10 @@ exports.getUserProductDetails = (req, res) => {
 };
 
 exports.getUserCart = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   let userId = req.user._id;
   Cart.find({ user: userId })
     .populate("product")
@@ -73,10 +97,14 @@ exports.getUserCart = (req, res) => {
         customjs: true,
       });
     })
-  
+
 };
 
 exports.getOrderSalesPanel = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   OrderDetails.find()
     .populate("user")
     .then((dataOrder) => {
@@ -91,6 +119,10 @@ exports.getOrderSalesPanel = (req, res) => {
 };
 
 exports.getOrderStatus = (req, res) => {
+  return res.render('landing/maintenance', {
+    title: "Oops! Laman dalam perbaikan",
+    user: req.user
+  })
   const userId = req.user._id;
 
   OrderDetails.find({ user: userId }).then((dataOrder) => {
