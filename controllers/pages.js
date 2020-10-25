@@ -27,6 +27,15 @@ exports.getIndex = (req, res) => {
 };
 
 exports.getHome = (req, res) => {
+  let { source } = req.query || "";
+  if (source == 'free-video' || source == 'register') {
+    return res.render("landing/index", {
+      title: "Gerakan Anak Muda Sukses",
+      layout: "layouts/landing",
+      user: req.user,
+      message: "Berhasil mendaftar!"
+    });
+  }
   return res.render("landing/index", {
     title: "Gerakan Anak Muda Sukses",
     layout: "layouts/landing",
@@ -91,7 +100,7 @@ exports.postLeads = async (req, res) => {
             email: email,
             funnel: funnel, //free video atau billing form
             platform: 'GAMS',
-            createdAt: new Date()
+            createdAt: new Date().toLocaleString()
           }
         }
       });
@@ -100,9 +109,7 @@ exports.postLeads = async (req, res) => {
     //   //Buat akun user
 
     // }
-    res.redirect('/', {
-      message: req.flash("success", "Berhasil mendaftar")
-    });
+    res.redirect('/');
 
   } catch (error) {
     res.redirect('/', {
