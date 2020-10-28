@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+
+            {{#if first}}
+            <div class="alert alert-danger" role="alert">
+                {{first}}
+            </div>
+            {{/if}}
+            {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {{/if}}
+            {{#if success}}
+            <div class="alert alert-success" role="alert">
+                {{success}}
+            </div>
+            {{/if}}
+
+            <div class="card-body">
+                <h6 class="card-title">Ubah Kata Sandi</h6>
+                <form class="forms-sample" method="POST" action="/profile/edit/sandi">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Kata Sandi Lama</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" placeholder="Kata sandi lama">
+                            <small>Sebaiknya mengandung huruf besar, huruf kecil dan angka.</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Kata Sandi Baru</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="newPassword"
+                                placeholder="Kata sandi baru">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Konfirmasi Sandi Baru</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="confirmPassword"
+                                placeholder="Konfirmasi sandi baru">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2 btn-block">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

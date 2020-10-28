@@ -1,16 +1,22 @@
-<div class="wrapper">
-    <div class="container">
-        <h1>Upload a file</h1>
-        <div class="upload-container">
-            <div class="border-container">
-                <div class="icons fa-4x">
-                    <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
-                    <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
-                    <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
-                </div>
-                <!--<input type="file" id="file-upload">-->
-                <p>Drag and drop files here, or
-                    <a href="#" id="file-browser">browse</a> your computer.</p>
+<div class="row justify-content-center">
+    <div class="col-5">
+        <div class="card text-center">
+            <div class="card-header">
+                <h5 class="card-title">Unggah Bukti Pembayaran</h5>
+            </div>
+            <div class="card-body">
+                {{!-- <p class="card-text text-center">With supporting text below as a natural lead-in to additional content.
+                </p> --}}
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Bukti Pembayaran</label>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                </form>
+                <button type="submit" class="btn btn-primary">Unggah</button>
+            </div>
+            <div class="card-footer text-muted">
+                *Gambar tidak lebih dari 10MB
             </div>
         </div>
     </div>

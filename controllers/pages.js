@@ -151,7 +151,7 @@ exports.postBilling = async (req, res) => {
           leads: {
             fullName: fullName,
             email: email,
-            funnel: funnel, //free video atau billing form
+            funnel: funnel,
             platform: 'GAMS',
             createdAt: new Date().toLocaleString()
           }
@@ -189,12 +189,39 @@ exports.postBilling = async (req, res) => {
         to: savedUser.email,
         subject: "Pendaftaran Membership GAMS Indonesia",
         html: `<html><body>
-                Batas Pembayaran ${new Date(batasBayar).toLocaleString()} <br/>
-                Nominal bayar ${'Rp. 250.' + Math.random().toString().substr(2, 3)}<br/>
-                Klik link di bawah ini untuk konfirmasi pembayaran: <br/>
-                <p><a href='${process.env.APP_URL}/upload-receipt/${savedUser._id}'>Konfirmasi Pembayaran</a></p>
-                Terima kasih
-                <br/><br/>
+                <p>Hi, ${savedUser.fullName}</p>
+                <p>Terimakasih sudah melakukan Pendaftaran Member ${process.env.APP_URL}.</p>
+                <p>Anda telah melakukan order dengan detail berikut:</p>
+                <table>
+                  <tr>
+                    <td> Nama </td>
+                    <td> : </td>
+                    <td> ${savedUser.fullName} </td>
+                  </tr>
+                  <tr>
+                    <td> Email </td>
+                    <td> : </td>
+                    <td> ${savedUser.email} </td>
+                  </tr>
+                  <tr>
+                    <td> No. HP </td>
+                    <td> : </td>
+                    <td> ${savedUser.phone} </td>
+                  </tr>
+                </table>
+                <p> Total tagihan anda adalah : ${'Rp. 250.' + Math.random().toString().substr(2, 3)} </p>
+                <p> Silahkan lakukan pembayaran order anda sebelum ${new Date(batasBayar).toLocaleString()} agar Order anda tidak kami batalkan otomatis oleh sistem. </p>
+                <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
+                <ul>
+                  <li> GAMS : BCA a.n DENNIS GERALDI 8480216203 </li>
+                  <li> GAMS: MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
+                </ul>
+                <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
+                <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}"> Upload Bukti Pembayaran </a>
+                <p> Setelah mengunggah bukti pembayaran, pastikan anda melakukan konfirmasi pembayaran agar akses Anda ke Member Area bisa segera diproses melalui link berikut </p>
+                <a href="https://api.whatsapp.com/send?phone=6283877607433&text=Saya%20mau%20konfirmasi%20bukti%20bayar%20pendaftaran%20membership%20GAMS"> Konfirmasi Pembayaran </a>
+                <p> Salam Dahsyat, </p>
+                <p> Generasi Anak Muda Sukses </p>
                 </body></html>`,
       };
 
