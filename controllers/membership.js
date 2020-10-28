@@ -204,6 +204,7 @@ exports.postVerifikasi = async (req, res) => {
 
   //Enkrip password user
   let user = await User.findById(idUser);
+  user.license.push(orderMembership.paket._id)
 
   //Kirim email akun berhasil dibuat
   const mailOptions = {
