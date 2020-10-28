@@ -160,13 +160,14 @@ exports.getUploadReceipt = (req, res) => {
 }
 
 exports.postUploadReceipt = async (req, res) => {
-  let order = await OrderMembership.findOne({ _id: req.params.id });
-  const buktiBayar = req.file ? req.file.path : null;
-  order.updateOne({
-    receipt: buktiBayar,
-    status: "Menunggu Konfirmasi Pembayaran"
-  })
-
-
-
+  let idUser = req.params.id;
+  console.log(idUser);
+  let order = await OrderMembership.findOne({ user: req.params.id });
+  console.log(order);
+  let buktiBayar = req.file ? req.file.path : null;
+  order.receipt = buktiBayar;
+  order.status = "Menunggu Konfirmasi Pembayaran";
+  let result = await order.save();
+  console.log(result);
+  res.redirect('/?upload=success');
 }

@@ -19,6 +19,16 @@ exports.getEdit = (req, res) => {
     });
 };
 
+exports.getEditSandi = (req, res) => {
+  return res.render("profile/editSandi", {
+    title: "Ubah Kata Sandi",
+    // data: userData,
+    // dataFotoProfile: userData.fotoProfile,
+    user: req.user,
+    customjs: true
+  });
+}
+
 /**
  * POST Method
  */
@@ -80,3 +90,49 @@ exports.postEditBank = (req, res) => {
     }
   });
 };
+
+exports.postEditSandi = (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { password, newPassword, confirmPassword } = req.body;
+
+    User.findById({ _id: userId }).then((userData, err) => {
+      if (err) console.log(err);
+      if (!userData) {
+        req.flash('error', 'Terjadi kesalahan.')
+        return res.render("profile/editSandi", {
+          error: 'Terjadi kesalahan',
+          user: req.user
+        });
+      }
+
+      let cekPass = userData.validPassword(password);
+      console.log(cekPass)
+      if (!cekPass) {
+        req.flash('error', 'Password lama tidak cocok.')
+        return res.render('profile/editSandi', {
+          error: "Password lama salah.",
+          user: req.user
+        })
+      }
+      User.findOneAndUpdate({ _id: userId }, {
+        password: userData.generateHash(newPassword)
+      }
+        , {
+          useFindAndModify: false
+        }, (err, result) => {
+          if (err) console.log(err)
+          req.flash('success', 'Berhasil mengubah kata sandi.');
+          return res.render('profile/editSandi', {
+            success: 'Berhasil ubah kata sandi',
+            user: req.user
+          });
+        })
+    })
+  } catch (error) {
+    return res.render("profile/editSandi", {
+      error: 'Terjadi kesalahan',
+      user: req.user
+    });
+  }
+}

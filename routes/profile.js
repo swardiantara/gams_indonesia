@@ -5,9 +5,10 @@ const storage = require("../config/storage");
 const upload = multer({ storage: storage });
 
 const { isAuthenticated, isUnAuthenticated } = require('../config/protected');
-const { getEdit, postEdit, postEditBank } = require('../controllers/profile');
+const { getEdit, postEdit, postEditBank, getEditSandi, postEditSandi } = require('../controllers/profile');
 
 router.get('/edit', isAuthenticated, getEdit);
+router.get('/edit/sandi', isAuthenticated, getEditSandi);
 
 /**
  * POST
@@ -15,5 +16,6 @@ router.get('/edit', isAuthenticated, getEdit);
 
 router.post('/edit', isAuthenticated, upload.single('fotoProfile'), postEdit);
 router.post('/edit/bank', isAuthenticated, postEditBank);
+router.post('/edit/sandi', isAuthenticated, postEditSandi);
 
 module.exports = router;
