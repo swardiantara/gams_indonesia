@@ -139,10 +139,10 @@ exports.postLeads = async (req, res) => {
 exports.postBilling = async (req, res) => {
   try {
     let { fullName, email, city, phone } = req.body || "";
-    // console.log(fullName);
-    // console.log(email);
-    // console.log(city);
-    // console.log(phone);
+    console.log(fullName);
+    console.log(email);
+    console.log(city);
+    console.log(phone);
     let { referralCode, funnel } = req.query || "";
     let newLead = await User.updateOne(
       { referralCode: referralCode },
@@ -157,7 +157,7 @@ exports.postBilling = async (req, res) => {
           }
         }
       });
-    // console.log(newLead);
+    console.log(newLead);
 
     let newOrderMembership = new OrderMembership();
     let newUser = new User();
@@ -170,14 +170,14 @@ exports.postBilling = async (req, res) => {
     newUser.referralCode =
       fullName.substr(0, 3) + Math.random().toString().substr(2, 4);
     let savedUser = await newUser.save();
-    // console.log(savedUser)
+    console.log(savedUser)
     let membership = await Membership.findOne({ name: 'Basic' });
-    // console.log(membership)
+    console.log(membership)
     //Order Membership Basic
     newOrderMembership.paket = membership._id;
     newOrderMembership.user = savedUser._id;
     let hasilNewOrderMembership = await newOrderMembership.save();
-    // console.log(hasilNewOrderMembership);
+    console.log(hasilNewOrderMembership);
     // let sekarang = new Date().getTime() + 2 * 24 * 60 * 60;
     const now = new Date();
     let batasBayar = now.setDate(now.getDate() + 2);
@@ -185,7 +185,7 @@ exports.postBilling = async (req, res) => {
     if (hasilNewOrderMembership) {
       //Kirim email
       const mailOptions = {
-        from: process.env.MAIL_UNAME,
+        from: `"GAMS Indonesia" <${process.env.MAIL_UNAME}>`,
         to: savedUser.email,
         subject: "Pendaftaran Membership GAMS Indonesia",
         html: `<html><body>
@@ -214,7 +214,7 @@ exports.postBilling = async (req, res) => {
                 <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
                 <ul>
                   <li> GAMS : BCA a.n DENNIS GERALDI 8480216203 </li>
-                  <li> GAMS: MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
+                  <li> GAMS : MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
                 </ul>
                 <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
                 <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}"> Upload Bukti Pembayaran </a>
@@ -231,9 +231,7 @@ exports.postBilling = async (req, res) => {
       });
     }
 
-    return res.render('index', {
-      message: "Berhasil mendaftar membership"
-    });
+    return res.redirect('/?register=success');
 
   } catch (error) {
     console.log(error)
