@@ -9,7 +9,7 @@ const { getIndex, getHome, getFreeVideo, getBilling, postLeads, postBilling } = 
  */
 
 router.get("/", getHome);
-router.get("/freevideo", getFreeVideo);
+router.get("/free", getFreeVideo);
 router.get("/register", getBilling);
 router.get("/dashboard", isAuthenticated, getIndex);
 
