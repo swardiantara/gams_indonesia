@@ -176,6 +176,7 @@ exports.postBilling = async (req, res) => {
     //Order Membership Basic
     newOrderMembership.paket = membership._id;
     newOrderMembership.user = savedUser._id;
+    newOrderMembership.referralCode = referralCode;
     let hasilNewOrderMembership = await newOrderMembership.save();
     console.log(hasilNewOrderMembership);
     // let sekarang = new Date().getTime() + 2 * 24 * 60 * 60;

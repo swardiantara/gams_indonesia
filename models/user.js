@@ -94,23 +94,23 @@ const userSchema = new Schema(
       {
         email: {
           type: String,
-          required: true,
+          required: false,
         },
         fullName: {
           type: String,
-          required: true,
+          required: false,
         },
         funnel: {
           type: String,
-          required: true,
+          required: false,
         },
         platform: {
           type: String,
-          required: true,
+          required: false,
         },
         createdAt: {
           type: String,
-          required: true,
+          required: false,
         },
       },
     ],
@@ -119,6 +119,22 @@ const userSchema = new Schema(
       required: false,
       default: null,
     },
+    referralComission: [
+      {
+        type: {
+          type: String,
+          required: false,
+        },
+        jumlah: {
+          type: Number,
+          required: false
+        },
+        createdAt: {
+          type: String,
+          required: false,
+        },
+      }
+    ]
   },
   { timestamps: true }
 );

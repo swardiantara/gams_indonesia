@@ -60,5 +60,20 @@
 </script>
 
 <script>
-    //script for Cart + Checkout + Shipping
+    //Order Membership Script
+    $('#receipt').on('show.bs.modal', function (e) {
+        let tombol = $(e.relatedTarget);
+        let alamatGambar = tombol.data('src');
+        let modal = $(this);
+        let idVerif = tombol.data('id');
+        modal.find('.modal-body img').attr('src', '/' + alamatGambar);
+        modal.find('#tombolVerif').data('id', idVerif);
+        modal.find("#receiptLabel").text('Bukti bayar ' + tombol.data('name'));
+        modal.find('#formVerif').attr('action', `/verifikasi/${idVerif}`)
+        modal.find("#_id").text(idVerif);
+        console.log(modal.find('#formVerif').attr('action'));
+    });
+
+    $("#modalSuksesVerif").modal('show');
+
 </script>

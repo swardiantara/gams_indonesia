@@ -13,6 +13,11 @@ const orderMembershipSchema = new Schema(
       ref: "User",
       required: true,
     },
+    referralCode: {
+      type: String,
+      required: false,
+      default: null,
+    },
     status: {
       type: String,
       required: true,
