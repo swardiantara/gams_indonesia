@@ -232,14 +232,14 @@ exports.postBilling = async (req, res) => {
     }
 
     return res.render('index', {
-      message: req.flash("success", "Berhasil mendaftar")
+      message: "Berhasil mendaftar membership"
     });
 
   } catch (error) {
     console.log(error)
     return res.render('index', {
       error,
-      message: req.flash("errorMessage", "Terjadi kesalahan")
+      message: "Terjadi kesalahan"
     });
   }
 }
