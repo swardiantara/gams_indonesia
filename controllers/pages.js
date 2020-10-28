@@ -30,14 +30,14 @@ exports.getHome = (req, res) => {
   let { source } = req.query || "";
   if (source == 'free-video' || source == 'register') {
     return res.render("landing/index", {
-      title: "Gerakan Anak Muda Sukses",
+      title: "Generasi Anak Muda Sukses",
       layout: "layouts/landing",
       user: req.user,
       message: "Berhasil mendaftar!"
     });
   }
   return res.render("landing/index", {
-    title: "Gerakan Anak Muda Sukses",
+    title: "Generasi Anak Muda Sukses",
     layout: "layouts/landing",
     user: req.user,
   });
@@ -46,7 +46,7 @@ exports.getHome = (req, res) => {
 exports.getFreeVideo = (req, res) => {
   return res.render("landing/free", {
     title: "Free Video",
-    layout: "layouts/landing",
+    layout: "layouts/mylanding",
     user: req.user,
   });
 };
@@ -54,7 +54,7 @@ exports.getFreeVideo = (req, res) => {
 exports.getBilling = (req, res) => {
   return res.render("landing/billing", {
     title: "Billing Form",
-    layout: "layouts/landing",
+    layout: "layouts/mylanding",
     user: req.user
   })
 }

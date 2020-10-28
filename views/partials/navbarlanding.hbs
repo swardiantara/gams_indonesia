@@ -1,43 +1,25 @@
-<nav class="navbar absolute transparent inverse-text navbar-hover-opacity nav-uppercase navbar-expand-lg">
-    <div class="container flex-row justify-content-center">
-        <div class="navbar-brand"><a href="/"><img src="#"
-                    srcset="style/images/logo.png 1x, style/images/logo@2x.png 2x" class="logo-dark" alt=""
-                    style="max-height: 60px;"><img src="#"
-                    srcset="style/images/logo-light.png 1x, style/images/logo-light@2x.png 2x" class="logo-light" alt=""
-                    style="max-height: 60px;"></a></div>
-        <div class="navbar-other ml-auto order-lg-3">
-            <ul class="navbar-nav flex-row align-items-center" data-sm-skip="true">
-                <li class="nav-item">
-                    <div class="navbar-hamburger d-lg-none d-xl-none ml-auto"><button class="hamburger animate plain"
-                            data-toggle="offcanvas-nav"><span></span></button></div>
-                </li>
-                {{#if user.email}}
-                <li class="nav-item"><a href="/dashboard" style="font-size: 16px;">{{user.email}}</a></li>
-                {{else}}
-                <li class="nav-item"><a href="/auth/login" style="font-size: 16px;">Login</a></li>
-                {{/if}}
-            </ul>
-            <!-- /.navbar-nav -->
-        </div>
-        <!-- /.navbar-other -->
-        <div class="navbar-collapse offcanvas-nav">
-            <div class="offcanvas-header d-lg-none d-xl-none">
-                <a href="/"><img src="#" srcset="style/images/logo-light.png 1x, style/images/logo-light@2x.png 2x"
-                        alt=""></a>
-                <button class="plain offcanvas-close offcanvas-nav-close"><i class="jam jam-close"></i></button>
+      <!-- Navbar -->
+    <section>
+        <nav class="navbar fixed-top nav-back navbar-expand-lg navbar-light bg-light d-flex bd-highlight mb-3">
+            <div class="container nav-text-item">
+            <a class="navbar-brand" href="#">Generasi Anak Muda Sukses </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item p-5">
+                            <a class="nav-link" href="free.html">9 Free Video</a>
+                        </li>
+                        <li class="nav-item p-5">
+                            <a class="nav-link" href="#">Join Member</a>
+                        </li>
+                        <li class="nav-item p-5">
+                            <a class="nav-link" href="#" >Member Login</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <ul class="navbar-nav mx-auto" data-smartmenus-id="16010445869764197">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/free">9 Free Video</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/auth/signup">Join Member</a>
-                </li>
-            </ul>
-            <!-- /.navbar-nav -->
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
+          </nav>
+    </section>
+    {{!-- End --}}
