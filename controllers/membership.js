@@ -62,9 +62,20 @@ exports.getMemberOrderList = (req, res) => {
 };
 
 exports.getMemberCommission = (req, res) => {
+  let user = req.user;
+  console.log(user.referralComission);
+  let referralCommision = user.referralComission.reduce(function (prev, cur) {
+    return prev + cur.jumlah;
+  }, 0);
+  console.log(referralCommision);
+
   res.render("membership/membercommission", {
     title: "Member Commission",
     user: req.user,
+    commission: {
+      referral: referralCommision
+    },
+    customjs: true
   });
 };
 
