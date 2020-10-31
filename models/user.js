@@ -92,26 +92,9 @@ const userSchema = new Schema(
     },
     leads: [
       {
-        email: {
-          type: String,
-          required: false,
-        },
-        fullName: {
-          type: String,
-          required: false,
-        },
-        funnel: {
-          type: String,
-          required: false,
-        },
-        platform: {
-          type: String,
-          required: false,
-        },
-        createdAt: {
-          type: String,
-          required: false,
-        },
+        type: Schema.Types.Object,
+        ref: "Leads",
+        required: false,
       },
     ],
     fotoProfile: {

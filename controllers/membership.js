@@ -2,6 +2,7 @@ const Membership = require("../models/membership");
 const OrderMembership = require("../models/ordermembership");
 const User = require('../models/user');
 const transporter = require('../config/mailinfo');
+const { emailUsed } = require('../services/leads')
 require("dotenv").config();
 
 exports.getMembership = (req, res) => {
@@ -193,69 +194,89 @@ exports.postUploadReceipt = async (req, res) => {
 }
 
 exports.postVerifikasi = async (req, res) => {
-  let idUser = req.params.id || "";
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
 
-  console.log(idUser)
-  //Ubah Status menjadi Sudah Bayar
-  let orderMembership = await OrderMembership.findOne({ user: idUser }).populate("user")
-    .populate("paket");
-  console.log(orderMembership);
-  orderMembership.status = 'Sudah Bayar';
-  await orderMembership.save();
+    let idUser = req.params.id || "";
 
-  //Beri Komisi ke Upline
-  let upline = await User.findOne({ referralCode: orderMembership.referralCode });
-  // let komisi = orderMembership.paket.commission;
-  upline.referralComission.push({
-    type: orderMembership.paket.type,
-    jumlah: orderMembership.paket.commission,
-    createdAt: new Date().toLocaleString()
-  })
-  await upline.save()
+    console.log(idUser)
+    //Ubah Status menjadi Sudah Bayar
+    let orderMembership = await OrderMembership.findOne({ user: idUser }).populate("user")
+      .populate("paket");
+    console.log(orderMembership);
+    orderMembership.status = 'Sudah Bayar';
+    await orderMembership.save();
 
-  //Enkrip password user
-  let user = await User.findById(idUser);
-  user.license.push(orderMembership.paket._id)
+    //Beri Komisi ke Upline
+    let upline = await (await User.findOne({ referralCode: orderMembership.referralCode })).populated("license");
+    let isPremium = upline.license.some((license) => {
+      return license.name == 'Premium'
+    })
 
-  //Kirim email akun berhasil dibuat
-  const mailOptions = {
-    from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
-    to: user.email,
-    subject: `[Aktivasi Akun] - Akun ${process.env.APP_URL} anda telah aktif!`,
-    html: `<html><body>
-            <p>Hi, ${user.fullName}</p>
-            <p>Terimakasih sudah bergabung di ${process.env.APP_URL}.</p>
-            <p>Akun Member GAMS Anda:</p>
-            Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a>
-            <table>
-              <tr>
-                <td> Username  </td>
-                <td> : </td>
-                <td> ${user.email} </td>
-              </tr>
-              <tr>
-                <td> Password </td>
-                <td> : </td>
-                <td> ${user.password} </td>
-              </tr>
-            </table>
-            <p>*Segera ubah kata sandi setelah login
-            <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
+    console.log(isPremium)
+    // let komisi = orderMembership.paket.commission;
+    upline.referralComission.push({
+      type: orderMembership.paket.name,
+      jumlah: isPremium ? 100000 : 50000,
+      createdAt: new Date().toLocaleString()
+    })
+    await upline.save()
 
-            <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>
-            <p> Salam Dahsyat, </p>
-            <p> Generasi Anak Muda Sukses </p>
-            </body></html>`,
-  };
+    //Enkrip password user
+    let membership = await Membership.findOne({ name: 'Basic' })
+    let user = await User.findById(idUser);
+    user.license.push(membership._id)
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) console.log(error);
-    console.log("Email sent: " + info.response);
-  });
+    //Kirim email akun berhasil dibuat
+    const mailOptions = {
+      from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
+      to: user.email,
+      subject: `[Aktivasi Akun] - Akun ${process.env.APP_URL} anda telah aktif!`,
+      html: `<html><body>
+              <p>Hi, ${user.fullName}</p>
+              <p>Terimakasih sudah bergabung di ${process.env.APP_URL}.</p>
+              <p>Akun Member GAMS Anda:</p>
+              Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a>
+              <table>
+                <tr>
+                  <td> Username  </td>
+                  <td> : </td>
+                  <td> ${user.email} </td>
+                </tr>
+                <tr>
+                  <td> Password </td>
+                  <td> : </td>
+                  <td> ${user.password} </td>
+                </tr>
+              </table>
+              <p>*Segera ubah kata sandi setelah login
+              <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
+  
+              <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>
+              <p> Salam Dahsyat, </p>
+              <p> Generasi Anak Muda Sukses </p>
+              </body></html>`,
+    };
 
-  let encrypted = await user.generateHash(user.password);
-  user.password = encrypted;
-  await user.save();
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) console.log(error);
+      console.log("Email sent: " + info.response);
+    });
 
-  return res.redirect('/membership/order/panel?successVerif=true');
+    let encrypted = await user.generateHash(user.password);
+    user.password = encrypted;
+    await user.save();
+
+    //Commit Transaction
+    await session.commitTransaction();
+    //Send Response
+    req.flash('success', 'Berhasil verifikasi pembayaran')
+    return res.redirect('/membership/order/panel?successVerif=true');
+  } catch (error) {
+    await session.abortTransaction();
+    console.log(error);
+    req.flash('error', 'Terjadi Kesalahan')
+    return res.redirect('/membership/order/panel?successVerif=false');
+  }
 }

@@ -2,9 +2,13 @@ const User = require("../models/user");
 const Welcomepage = require("../models/welcome");
 const OrderMembership = require('../models/ordermembership')
 const Membership = require('../models/membership')
+const Leads = require('../models/leads')
 const crypto = require('crypto');
 const transporter = require('../config/mailer')
+const mongoose = require('mongoose');
+const { emailUsed } = require("../services/leads");
 require("dotenv").config();
+const moment = require('moment')
 
 exports.getIndex = (req, res) => {
   Welcomepage.find()
@@ -85,160 +89,205 @@ exports.getLogout = (req, res) => {
 };
 
 exports.postLeads = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     let { fullName, email } = req.body || "";
     let { referralCode, funnel } = req.query || "";
-    let newOrderMembership = new OrderMembership();
 
-    //Simpan data leads
-    let newLead = await User.updateOne(
-      { referralCode: referralCode },
-      {
-        $push: {
-          leads: {
-            fullName: fullName,
-            email: email,
-            funnel: funnel, //free video atau billing form
-            platform: 'GAMS',
-            createdAt: new Date().toLocaleString()
-          }
-        }
-      });
-    console.log(newLead);
-    // if (funnel == 'billing') { //Jika LP Billing Form
-    //   //Buat akun user
+    if (await emailUsed(email)) {
+      req.flash('error', 'Email sudah digunakan!')
+      return res.redirect('/freevideo')
+    }
+    // console.log(fullName)
+    // console.log(email)
+    // console.log(referralCode)
+    // console.log(funnel)
+    let upline;
+    if (referralCode) {
+      upline = await User.findOne({ referralCode });
+      // console.log(upline)
+      if (!upline) {
+        req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
+        return res.redirect('/freevideo')
+      }
+    }
 
-    // }
+    let newLeads = new Leads();
+    newLeads.referral = referralCode ? upline._id : "";
+    newLeads.email = email;
+    newLeads.fullName = fullName;
+    newLeads.funnel = funnel;
+    newLeads.platform = 'GAMS';
+    newLeads.createdAt = new Date().toLocaleString();
+    let createdLeads = await newLeads.save();
+    console.log(createdLeads)
+
+    if (!createdLeads) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/freevideo')
+    }
+
+
+    //Simpan data leads di Upline
+    upline.leads.push(createdLeads._id);
+    let updatedUpline = await upline.save();
+    if (updatedUpline instanceof Error) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/freevideo')
+    }
+    console.log(updatedUpline)
+
+    await session.commitTransaction();
+    req.flash('success', 'Berhasil submit form!')
     res.redirect('/');
 
   } catch (error) {
-    res.redirect('/', {
-      error,
-      message: req.flash("errorMessage", "Terjadi kesalahan")
-    });
+    await session.abortTransaction();
+    console.log(error);
+    req.flash('error', 'Terjadi kesalahan!')
+    return res.redirect('/freevideo')
   }
-  //Billing Form
-
-  // Query update leads
-  // Query order membership
-  // Kirim email invoice
-  // }
-  // newFreeVideo.nama = nama;
-  // newFreeVideo.email = email;
-
-  // newFreeVideo.save((err) => {
-  //   if(err) console.log(err);
-  // });
-
-  // //Sukses query
-  // // Kirim email ke pemohon
-
-  // return res.redirect('/');
 };
 
 exports.postBilling = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     let { fullName, email, city, phone } = req.body || "";
-    console.log(fullName);
-    console.log(email);
-    console.log(city);
-    console.log(phone);
     let { referralCode, funnel } = req.query || "";
-    let newLead = await User.updateOne(
-      { referralCode: referralCode },
-      {
-        $push: {
-          leads: {
-            fullName: fullName,
-            email: email,
-            funnel: funnel,
-            platform: 'GAMS',
-            createdAt: new Date().toLocaleString()
-          }
-        }
-      });
-    console.log(newLead);
 
-    let newOrderMembership = new OrderMembership();
+    let upline;
+    if (referralCode) {
+      upline = await User.findOne({ referralCode });
+      // console.log(upline)
+      if (!upline) {
+        req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
+        return res.redirect('/register')
+      }
+    }
+
+    //Simpan data ke Leads
+    let newLeads = new Leads();
+    newLeads.referral = referralCode ? upline._id : "";
+    newLeads.email = email;
+    newLeads.fullName = fullName;
+    newLeads.funnel = funnel;
+    newLeads.platform = 'GAMS';
+    newLeads.createdAt = new Date().toLocaleString();
+    let createdLeads = await newLeads.save();
+    console.log(createdLeads)
+
+    if (!createdLeads) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/register')
+    }
+
+    //Simpan data leads di Upline
+    upline.leads.push(createdLeads._id);
+    let updatedUpline = await upline.save();
+    if (updatedUpline instanceof Error) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/register')
+    }
+    console.log(updatedUpline)
+
+    //Buat Akun user baru membership basic
     let newUser = new User();
     newUser.email = email;
     newUser.city = city;
     newUser.phone = phone;
-    // newUser.password = newUser.generateHash(crypto.randomBytes(8).toString('hex'));
-    newUser.password = crypto.randomBytes(10).toString('hex');
+    newUser.password = crypto.randomBytes(5).toString('hex');
     newUser.fullName = fullName;
     newUser.referralCode =
       fullName.substr(0, 3) + Math.random().toString().substr(2, 4);
     let savedUser = await newUser.save();
     console.log(savedUser)
+
+    //Error handling
+    if (!savedUser) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/register')
+    }
+
     let membership = await Membership.findOne({ name: 'Basic' });
     console.log(membership)
     //Order Membership Basic
+    let newOrderMembership = new OrderMembership();
     newOrderMembership.paket = membership._id;
     newOrderMembership.user = savedUser._id;
     newOrderMembership.referralCode = referralCode;
     let hasilNewOrderMembership = await newOrderMembership.save();
     console.log(hasilNewOrderMembership);
-    // let sekarang = new Date().getTime() + 2 * 24 * 60 * 60;
-    const now = new Date();
-    let batasBayar = now.setDate(now.getDate() + 2);
-
-    if (hasilNewOrderMembership) {
-      //Kirim email
-      const mailOptions = {
-        from: `"GAMS Indonesia" <${process.env.MAIL_UNAME}>`,
-        to: savedUser.email,
-        subject: "Pendaftaran Membership GAMS Indonesia",
-        html: `<html><body>
-                <p>Hi, ${savedUser.fullName}</p>
-                <p>Terimakasih sudah melakukan Pendaftaran Member ${process.env.APP_URL}.</p>
-                <p>Anda telah melakukan order dengan detail berikut:</p>
-                <table>
-                  <tr>
-                    <td> Nama </td>
-                    <td> : </td>
-                    <td> ${savedUser.fullName} </td>
-                  </tr>
-                  <tr>
-                    <td> Email </td>
-                    <td> : </td>
-                    <td> ${savedUser.email} </td>
-                  </tr>
-                  <tr>
-                    <td> No. HP </td>
-                    <td> : </td>
-                    <td> ${savedUser.phone} </td>
-                  </tr>
-                </table>
-                <p> Total tagihan anda adalah : ${'Rp. 250.' + Math.random().toString().substr(2, 3)} </p>
-                <p> Silahkan lakukan pembayaran order anda sebelum ${new Date(batasBayar).toLocaleString()} agar Order anda tidak kami batalkan otomatis oleh sistem. </p>
-                <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
-                <ul>
-                  <li> GAMS : BCA a.n DENNIS GERALDI 8480216203 </li>
-                  <li> GAMS : MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
-                </ul>
-                <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
-                <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}"> Upload Bukti Pembayaran </a>
-                <p> Setelah mengunggah bukti pembayaran, pastikan anda melakukan konfirmasi pembayaran agar akses Anda ke Member Area bisa segera diproses melalui link berikut </p>
-                <a href="https://api.whatsapp.com/send?phone=6283877607433&text=Saya%20mau%20konfirmasi%20bukti%20bayar%20pendaftaran%20membership%20GAMS"> Konfirmasi Pembayaran </a>
-                <p> Salam Dahsyat, </p>
-                <p> Generasi Anak Muda Sukses </p>
-                </body></html>`,
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) console.log(error);
-        console.log("Email sent: " + info.response);
-      });
+    if (!hasilNewOrderMembership) {
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect('/register?error=true')
     }
 
+    //Format waktu batas bayar
+    // let sekarang = new Date().getTime() + 2 * 24 * 60 * 60;
+    moment.locale('ID');
+    const now = new Date();
+    let batasBayar = now.setDate(now.getDate() + 2);
+    let formatted = moment(batasBayar).format('LLLL');
+
+    //Kirim email
+    const mailOptions = {
+      from: `"GAMS Indonesia" <${process.env.MAIL_UNAME}>`,
+      to: savedUser.email,
+      subject: "Pendaftaran Membership GAMS Indonesia",
+      html: `<html><body>
+              <p>Hi, ${savedUser.fullName}</p>
+              <p>Terimakasih sudah melakukan Pendaftaran Member ${process.env.APP_URL}.</p>
+              <p>Anda telah melakukan order dengan detail berikut:</p>
+              <table>
+                <tr>
+                  <td> Nama </td>
+                  <td> : </td>
+                  <td> ${savedUser.fullName} </td>
+                </tr>
+                <tr>
+                  <td> Email </td>
+                  <td> : </td>
+                  <td> ${savedUser.email} </td>
+                </tr>
+                <tr>
+                  <td> No. HP </td>
+                  <td> : </td>
+                  <td> ${savedUser.phone} </td>
+                </tr>
+              </table>
+              <p> Total tagihan anda adalah : ${'Rp. 250.' + Math.random().toString().substr(2, 3)} </p>
+              <p> Silahkan lakukan pembayaran order anda sebelum ${formatted} agar Order anda tidak kami batalkan otomatis oleh sistem. </p>
+              <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
+              <ul>
+                <li> GAMS : BCA a.n DENNIS GERALDI 8480216203 </li>
+                <li> GAMS : MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
+              </ul>
+              <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
+              <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}"> Upload Bukti Pembayaran </a>
+              <p> Setelah mengunggah bukti pembayaran, pastikan anda melakukan konfirmasi pembayaran agar akses Anda ke Member Area bisa segera diproses melalui link berikut </p>
+              <a href="https://api.whatsapp.com/send?phone=6283877607433&text=Saya%20mau%20konfirmasi%20bukti%20bayar%20pendaftaran%20membership%20GAMS"> Konfirmasi Pembayaran </a>
+              <p> Salam Dahsyat, </p>
+              <p> Generasi Anak Muda Sukses </p>
+              </body></html>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) console.log(error);
+      console.log("Email sent: " + info.response);
+    });
+
+    //Commit Transaction
+    await session.commitTransaction();
+    //Send Response
+    req.flash('success', 'Berhasil melakukan pendaftaran!')
     return res.redirect('/?register=success');
 
   } catch (error) {
+    await session.abortTransaction();
     console.log(error)
-    return res.render('index', {
-      error,
-      message: "Terjadi kesalahan"
-    });
+    req.flash('error', 'Terjadi Kesalahan')
+    return res.redirect('/?error=true')
   }
 }

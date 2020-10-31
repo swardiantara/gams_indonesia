@@ -1,3 +1,1 @@
-// .ikon{
-//     fill="#4054b2";
-// }
+$("#errorModal").modal('show');
