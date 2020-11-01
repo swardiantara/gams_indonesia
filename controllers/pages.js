@@ -11,7 +11,7 @@ require("dotenv").config();
 const moment = require('moment')
 
 exports.getIndex = (req, res) => {
-  Welcomepage.find()
+  Welcomepage.findOne()
     .then((data) => {
       return res.render("index", {
         title: "Gams Indonesia",
@@ -91,13 +91,14 @@ exports.getLogout = (req, res) => {
 exports.postLeads = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-  try {
-    let { fullName, email } = req.body || "";
-    let { referralCode, funnel } = req.query || "";
+  let { fullName, email } = req.body || "";
+  let { referralCode, funnel } = req.query || "";
 
+  try {
     if (await emailUsed(email)) {
+      await session.abortTransaction();
       req.flash('error', 'Email sudah digunakan!')
-      return res.redirect('/freevideo')
+      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
     // console.log(fullName)
     // console.log(email)
@@ -108,8 +109,9 @@ exports.postLeads = async (req, res) => {
       upline = await User.findOne({ referralCode });
       // console.log(upline)
       if (!upline) {
+        await session.abortTransaction();
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
-        return res.redirect('/freevideo')
+        return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
       }
     }
 
@@ -124,8 +126,9 @@ exports.postLeads = async (req, res) => {
     console.log(createdLeads)
 
     if (!createdLeads) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/freevideo')
+      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
 
@@ -133,37 +136,38 @@ exports.postLeads = async (req, res) => {
     upline.leads.push(createdLeads._id);
     let updatedUpline = await upline.save();
     if (updatedUpline instanceof Error) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/freevideo')
+      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
     console.log(updatedUpline)
 
     await session.commitTransaction();
     req.flash('success', 'Berhasil submit form!')
-    res.redirect('/');
+    res.redirect(`/?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error);
     req.flash('error', 'Terjadi kesalahan!')
-    return res.redirect('/freevideo')
+    return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
   }
 };
 
 exports.postBilling = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  let { fullName, email, city, phone } = req.body || "";
+  let { referralCode, funnel } = req.query || "";
   try {
-    let { fullName, email, city, phone } = req.body || "";
-    let { referralCode, funnel } = req.query || "";
-
     let upline;
     if (referralCode) {
       upline = await User.findOne({ referralCode });
       // console.log(upline)
       if (!upline) {
+        await session.abortTransaction();
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
-        return res.redirect('/register')
+        return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
       }
     }
 
@@ -179,16 +183,18 @@ exports.postBilling = async (req, res) => {
     console.log(createdLeads)
 
     if (!createdLeads) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/register')
+      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
     }
 
     //Simpan data leads di Upline
     upline.leads.push(createdLeads._id);
     let updatedUpline = await upline.save();
     if (updatedUpline instanceof Error) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/register')
+      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
     }
     console.log(updatedUpline)
 
@@ -206,8 +212,9 @@ exports.postBilling = async (req, res) => {
 
     //Error handling
     if (!savedUser) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/register')
+      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
     }
 
     let membership = await Membership.findOne({ name: 'Basic' });
@@ -220,8 +227,9 @@ exports.postBilling = async (req, res) => {
     let hasilNewOrderMembership = await newOrderMembership.save();
     console.log(hasilNewOrderMembership);
     if (!hasilNewOrderMembership) {
+      await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect('/register?error=true')
+      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
     }
 
     //Format waktu batas bayar
@@ -282,12 +290,12 @@ exports.postBilling = async (req, res) => {
     await session.commitTransaction();
     //Send Response
     req.flash('success', 'Berhasil melakukan pendaftaran!')
-    return res.redirect('/?register=success');
+    return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error)
     req.flash('error', 'Terjadi Kesalahan')
-    return res.redirect('/?error=true')
+    return res.redirect(`/?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
   }
 }
