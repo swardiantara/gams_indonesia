@@ -182,9 +182,6 @@ strong{
     /* transition: background0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s; */
 }
 
-.card-bg:hover{
-
-}
 
 .dark-wrapper {
     background-color: #242930 !important;
@@ -201,3 +198,13 @@ strong{
 .gradient-wrapper {
     background-image: linear-gradient(135deg, rgba(149, 74, 166, 1) 0%, rgba(114, 90, 238, 1) 100%);
 } */
+
+.bill-overlay{
+    /* position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0; */
+    background: #000 !important;
+    opacity: .85;
+    /* z-index: 1; */
+}
