@@ -1,51 +1,16 @@
 {{#if user.fullName}}
 <h3 class="text-center pb-3">Selamat Datang {{user.fullName}}</h3>
 {{/if}}
-{{#each data}}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h4 class="pt-5">{{titlePage}}</h4>
+            <h4 class="pt-5">{{data.titlePage}}</h4>
         </div>
     </div>
 
-    {{!-- <div class="col-10">
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/kR7JMordRQI"></iframe>
-            </div>
-        </div> --}}
-
-
-
-
-
-    {{!-- <div class="col-6 pt-5">
-            <a href="" class="btn btn-primary btn-block">
-                Join Grup Telegram ABDi
-            </a>
-        </div>
-        <div class="col-6 pt-5">
-            <a href="" class="btn btn-primary btn-block">
-                Join Bank Data Telegram ABDi
-            </a>
-        </div>
-    </div> --}}
-
-    {{!-- <p class="pt-5">Video Mei: Ilmu dan fasilitas baru, produk & merch baru, reward baru!</p><br>
-        <p>Selain berbagai hal baru yang akan dijelaskan di video ini, saya juga akan menjelaskan lebih detail 2 TEKNIK
-            yang membuat para pemenang #Top15Challenge April BANYAK yang mencapai penjualan pribadi di atas 50 juta
-            rupiah dan mendapatkan hampir 100 reseller hanya dalam 1 bulan.</p><br>
-        <p>Silahkan tonton video nya, klik: youtube.be/kasjkjd</p><br>
-        <p>Jangan sampai ketinggalan yang lain yaa, Anda bisa curi start dari sekarang</p><br>
-        <p>Klik youtube.be/kjskd</p><br>
-        <p>Agar Anda dapat mendapatkan informasi tentang ABDi paling cepat, lengkap dan akurat silahkan masuk ke
-            telegram
-            ABDi dengan klik link ini : <a href="#">Masuk Telegram ABDi</a></p>\ --}}
     <div class="row">
         <div class="col-md-12">
-            <p class="pt-5">{{{this.descriptionPage}}}</p>
+            <p class="pt-5">{{{data.descriptionPage}}}</p>
         </div>
     </div>
-
 </div>
-{{/each}}
