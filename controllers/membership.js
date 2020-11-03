@@ -200,31 +200,35 @@ exports.postVerifikasi = async (req, res) => {
   try {
 
     let idUser = req.params.id || "";
-
-    console.log(idUser)
+    console.log(idUser) //1
     //Ubah Status menjadi Sudah Bayar
     let orderMembership = await OrderMembership.findOne({ user: idUser }).populate("user")
       .populate("paket");
-    console.log(orderMembership);
+    console.log(orderMembership); //2
     orderMembership.status = 'Sudah Bayar';
-    await orderMembership.save();
+    let ubahStatus = await orderMembership.save();
+    if (!ubahStatus) {
+      await session.abortTransaction();
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect(`/membership/order/panel?successVerif=false`)
+    }
 
     //Beri Komisi ke Upline
-    let upline = await (await User.findOne({ referralCode: orderMembership.referralCode })).populated("license");
+    let upline = await User.findOne({ referralCode: orderMembership.referralCode }).populate("license");
     let isPremium = upline.license.some((license) => {
       return license.name == 'Premium'
     })
 
-    console.log(isPremium)
+    console.log(isPremium) //3
     // let komisi = orderMembership.paket.commission;
     upline.referralComission.push({
       type: orderMembership.paket.name,
       jumlah: isPremium ? 100000 : 50000,
       createdAt: new Date().toLocaleString()
     })
-    await upline.save()
+    let komisi = await upline.save()
 
-    //Enkrip password user
+    //Tambahkan license ke User
     let membership = await Membership.findOne({ name: 'Basic' })
     let user = await User.findById(idUser);
     user.license.push(membership._id)

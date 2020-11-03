@@ -1,6 +1,29 @@
 const User = require("../models/user");
+const OrderMembership = require('../models/ordermembership');
 const moment = require('moment');
-exports.getMyLeads = (req, res) => {
+exports.getMyLeads = async (req, res) => {
+  try {
+    let idUser = req.user._id || "";
+    let data = User.find().populate('leads')
+    let user = await OrderMembership.distinct('user');
+
+    return res.render("leads/leadspanel", {
+      title: "Leads Panel",
+      data: data,
+      user: req.user,
+    });
+
+  } catch (error) {
+    return res.render("leads/leadspanel", {
+      title: "Leads Panel",
+      // data: data,
+      user: req.user,
+    });
+  }
+
+};
+
+exports.getLeadsPanel = (req, res) => {
   const userId = req.user._id;
   moment.locale('ID');
   // let date = [];
@@ -24,4 +47,4 @@ exports.getMyLeads = (req, res) => {
         user: req.user,
       });
     });
-};
+}

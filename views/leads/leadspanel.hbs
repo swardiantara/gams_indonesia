@@ -7,28 +7,24 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>Waktu Submit</th>
                                 <th>Nama</th>
                                 <th>Email</th>
-                                <th>No. HP</th>
-                                <th>Status</th>
-                                <th>Membership</th>
-                                <th>Action</th>
+                                <th>Funnel</th>
+                                <th>Platform</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each data}}
+                            {{#each leads}}
                             <tr>
-                                <th><a href="/membership/edit/{{_id}}">{{fullName}}</a></th>
+                                <th>{{tanggal}}</th>
+                                <th>{{fullName}}</th>
                                 <td>{{email}}</td>
-                                <td>{{phone}}</td>
-                                <td>{{role}}</td>
-                                <td>
-                                    {{#each license}}
-                                    {{this.name}}
-                                    {{/each}}
-                                </td>
-                                <td><a href="/membership/delete/{{_id}}" class="text-danger">Delete</td>
+                                <td>{{funnel}}</td>
+                                <td>{{platform}}</td>
                             </tr>
+                            {{/each}}
                             {{/each}}
                         </tbody>
                     </table>
