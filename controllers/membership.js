@@ -2,6 +2,7 @@ const Membership = require("../models/membership");
 const OrderMembership = require("../models/ordermembership");
 const User = require('../models/user');
 const transporter = require('../config/mailinfo');
+const mongoose = require('mongoose');
 const { emailUsed } = require('../services/leads')
 require("dotenv").config();
 
