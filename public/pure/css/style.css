@@ -12,9 +12,11 @@ h4{
 }
 
 .background-body{
-    background-image: url(./images/art/homepage.jpeg) !important;
+    background-image: url(./images/art/bg-up.jpg) !important;
     position: relative;
     z-index: 1;
+    height: 400px;
+    /* width: max-content; */
     
 }
 
@@ -176,6 +178,3 @@ strong{
     /* transition: background0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s; */
 }
 
-.card-bg:hover{
-
-}
