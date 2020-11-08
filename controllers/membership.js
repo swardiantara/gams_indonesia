@@ -37,10 +37,13 @@ exports.getEditMembership = (req, res) => {
   });
 };
 
-exports.getMemberOrder = (req, res) => {
+exports.getMemberOrder = async (req, res) => {
+  let membership = await Membership.find();
   return res.render("membership/order", {
     title: "My Membership",
     user: req.user,
+    data: membership,
+    customjs: true
   });
 };
 
@@ -181,17 +184,18 @@ exports.getUploadReceipt = (req, res) => {
 }
 
 exports.postUploadReceipt = async (req, res) => {
-  let idUser = req.params.id;
-  console.log(idUser);
+  // let idUser = req.params.id;
+  let { referralCode, funnel } = req.query || "";
+  // console.log(idUser);
   let order = await OrderMembership.findOne({ user: req.params.id });
-  console.log(order);
+  // console.log(order);
   let buktiBayar = req.file ? req.file.path : null;
   order.receipt = buktiBayar;
   order.status = "Menunggu Konfirmasi Pembayaran";
   let result = await order.save();
   console.log(result);
 
-  res.redirect('/?upload=success');
+  res.redirect(`/?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 }
 
 exports.postVerifikasi = async (req, res) => {
@@ -219,14 +223,25 @@ exports.postVerifikasi = async (req, res) => {
       return license.name == 'Premium'
     })
 
+    //daftarkan downline ke upline
+    upline.downline.push(idUser)
+
+
     console.log(isPremium) //3
     // let komisi = orderMembership.paket.commission;
-    upline.referralComission.push({
-      type: orderMembership.paket.name,
+    upline.commission.push({
+      type: 'referral',
       jumlah: isPremium ? 100000 : 50000,
+      status: 'not_paid',
       createdAt: new Date().toLocaleString()
     })
-    let komisi = await upline.save()
+    let komisi = await upline.save();
+
+    if (!komisi) {
+      await session.abortTransaction();
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect(`/membership/order/panel?successVerif=false`)
+    }
 
     //Tambahkan license ke User
     let membership = await Membership.findOne({ name: 'Basic' })
@@ -271,7 +286,13 @@ exports.postVerifikasi = async (req, res) => {
 
     let encrypted = await user.generateHash(user.password);
     user.password = encrypted;
-    await user.save();
+    let simpanUser = await user.save();
+
+    if (!simpanUser) {
+      await session.abortTransaction();
+      req.flash('error', 'Terjadi kesalahan!')
+      return res.redirect(`/membership/order/panel?successVerif=false`)
+    }
 
     //Commit Transaction
     await session.commitTransaction();

@@ -75,6 +75,13 @@ const userSchema = new Schema(
       required: false,
       default: null,
     },
+    downline: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+      },
+    ],
     bankAccount: {
       type: String,
       required: false,
@@ -102,8 +109,9 @@ const userSchema = new Schema(
       required: false,
       default: null,
     },
-    referralComission: [
+    commission: [
       {
+        //Tipe commision: referral, personal, team
         type: {
           type: String,
           required: false,
@@ -111,6 +119,11 @@ const userSchema = new Schema(
         jumlah: {
           type: Number,
           required: false
+        },
+        //not_paid, paid
+        status: {
+          type: String,
+          required: false,
         },
         createdAt: {
           type: String,

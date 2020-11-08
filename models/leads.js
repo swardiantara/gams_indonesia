@@ -16,6 +16,11 @@ const leadsSchema = new Schema(
 			type: String,
 			required: false,
 		},
+		phone: {
+			type: String,
+			required: false,
+			default: null,
+		},
 		funnel: {
 			type: String,
 			required: false,
