@@ -37,7 +37,8 @@ exports.getHome = (req, res) => {
       title: "Generasi Anak Muda Sukses",
       layout: "layouts/landing",
       user: req.user,
-      message: "Berhasil mendaftar!"
+      message: "Berhasil mendaftar!",
+      customjs: true,
     });
   }
   return res.render("landing/index", {
@@ -98,20 +99,15 @@ exports.postLeads = async (req, res) => {
     if (await emailUsed(email)) {
       await session.abortTransaction();
       req.flash('error', 'Email sudah digunakan!')
-      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+      return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
-    // console.log(fullName)
-    // console.log(email)
-    // console.log(referralCode)
-    // console.log(funnel)
     let upline;
     if (referralCode) {
       upline = await User.findOne({ referralCode });
-      // console.log(upline)
       if (!upline) {
         await session.abortTransaction();
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
-        return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+        return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
       }
     }
 
@@ -123,12 +119,11 @@ exports.postLeads = async (req, res) => {
     newLeads.platform = 'GAMS';
     newLeads.createdAt = new Date().toLocaleString();
     let createdLeads = await newLeads.save();
-    console.log(createdLeads)
 
     if (!createdLeads) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+      return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
 
@@ -138,19 +133,18 @@ exports.postLeads = async (req, res) => {
     if (updatedUpline instanceof Error) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+      return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
-    console.log(updatedUpline)
 
     await session.commitTransaction();
     req.flash('success', 'Berhasil submit form!')
-    res.redirect(`/?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+    res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error);
     req.flash('error', 'Terjadi kesalahan!')
-    return res.redirect(`/freevideo?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+    return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
   }
 };
 
@@ -163,11 +157,10 @@ exports.postBilling = async (req, res) => {
     let upline;
     if (referralCode) {
       upline = await User.findOne({ referralCode });
-      // console.log(upline)
       if (!upline) {
         await session.abortTransaction();
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
-        return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+        return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
       }
     }
 
@@ -176,16 +169,16 @@ exports.postBilling = async (req, res) => {
     newLeads.referral = referralCode ? upline._id : "";
     newLeads.email = email;
     newLeads.fullName = fullName;
+    newLeads.phone = phone;
     newLeads.funnel = funnel;
     newLeads.platform = 'GAMS';
     newLeads.createdAt = new Date().toLocaleString();
     let createdLeads = await newLeads.save();
-    console.log(createdLeads)
 
     if (!createdLeads) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+      return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
     //Simpan data leads di Upline
@@ -194,9 +187,8 @@ exports.postBilling = async (req, res) => {
     if (updatedUpline instanceof Error) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+      return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
-    console.log(updatedUpline)
 
     //Buat Akun user baru membership basic
     let newUser = new User();
@@ -208,28 +200,25 @@ exports.postBilling = async (req, res) => {
     newUser.referralCode =
       fullName.substr(0, 3) + Math.random().toString().substr(2, 4);
     let savedUser = await newUser.save();
-    console.log(savedUser)
 
     //Error handling
     if (!savedUser) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+      return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
     let membership = await Membership.findOne({ name: 'Basic' });
-    console.log(membership)
     //Order Membership Basic
     let newOrderMembership = new OrderMembership();
     newOrderMembership.paket = membership._id;
     newOrderMembership.user = savedUser._id;
     newOrderMembership.referralCode = referralCode;
     let hasilNewOrderMembership = await newOrderMembership.save();
-    console.log(hasilNewOrderMembership);
     if (!hasilNewOrderMembership) {
       await session.abortTransaction();
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+      return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
     //Format waktu batas bayar
@@ -273,7 +262,7 @@ exports.postBilling = async (req, res) => {
                 <li> GAMS : MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
               </ul>
               <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
-              <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}"> Upload Bukti Pembayaran </a>
+              <a href="${process.env.APP_URL}/upload-receipt/${savedUser._id}${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}"> Upload Bukti Pembayaran </a>
               <p> Setelah mengunggah bukti pembayaran, pastikan anda melakukan konfirmasi pembayaran agar akses Anda ke Member Area bisa segera diproses melalui link berikut </p>
               <a href="https://api.whatsapp.com/send?phone=6283877607433&text=Saya%20mau%20konfirmasi%20bukti%20bayar%20pendaftaran%20membership%20GAMS"> Konfirmasi Pembayaran </a>
               <p> Salam Dahsyat, </p>
@@ -290,12 +279,12 @@ exports.postBilling = async (req, res) => {
     await session.commitTransaction();
     //Send Response
     req.flash('success', 'Berhasil melakukan pendaftaran!')
-    return res.redirect(`/register?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`);
+    return res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error)
     req.flash('error', 'Terjadi Kesalahan')
-    return res.redirect(`/?referralCode=${referralCode ? referralCode : ""}&funnel=${funnel ? funnel : ""}`)
+    return res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
   }
 }

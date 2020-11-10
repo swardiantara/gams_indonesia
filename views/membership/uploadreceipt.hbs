@@ -1,23 +1,30 @@
-<div class="row justify-content-center">
-    <div class="col-5">
-        <div class="card text-center">
-            <div class="card-header">
-                <h5 class="card-title">Unggah Bukti Pembayaran</h5>
-            </div>
-            <div class="card-body">
-                {{!-- <p class="card-text text-center">With supporting text below as a natural lead-in to additional content.
-                </p> --}}
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="exampleFormControlFile1">Bukti Pembayaran</label>
-                        <input type="file" name="buktiBayar" class="form-control-file" id="exampleFormControlFile1"
-                            required>
+<div class="page-wrapper full-page">
+    <div class="page-content d-flex align-items-center justify-content-center">
+
+        <div class="row w-100 mx-0 auth-page">
+            <div class="col-md-8 col-xl-6 mx-auto">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <a href="/" class="noble-ui-logo d-block mb-2">GAMS<span>Indonesia</span></a>
+                        {{!-- <h5 class="card-title">Unggah Bukti Pembayaran</h5> --}}
                     </div>
-                    <button type="submit" class="btn btn-primary">Unggah</button>
-                </form>
-            </div>
-            <div class="card-footer text-muted">
-                *Gambar tidak lebih dari 10MB
+                    <div class="card-body">
+                        <form id="upload-receipt" action="" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="exampleFormControlFile1">Unggah Bukti Pembayaran</label>
+                                <input id="buktiBayar" type="file" name="buktiBayar" class="form-control-file"
+                                    id="exampleFormControlFile1" required>
+                            </div>
+                            <button id="submit-basic" type="submit" class="btn btn-primary">Unggah</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <span class="text-danger"><strong>*</strong></span> Gambar tidak lebih dari 1MB
+                        <br />
+                        <span class="text-danger"><strong>*</strong></span> File harus
+                        berupa gambar/PDF
+                    </div>
+                </div>
             </div>
         </div>
     </div>

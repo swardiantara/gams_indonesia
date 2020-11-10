@@ -3,15 +3,15 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="text-center pb-2">Total Pesonal Revenue</h5>
-                <h4 class="text-center pb-2">Rp. 0</h4>
+                <h4 class="text-center pb-2">{{formatprice commission.revenue}}</h4>
                 <h6 class="text-center pb-2">History Commission & Personal Sales</h6>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card text-white bg-secondary mb-3">
                             <div class="card-body text-right">
                                 <h5 class="card-title text-right text-white">Referral Commission (Basic)</h5>
-                                <h4 class="mt-2">Rp . {{commission.referral}}</h4>
-                                <h6 class="mt-2">Member Baru: </h6>
+                                <h4 class="mt-2">{{formatprice commission.referral}}</h4>
+                                <h6 class="mt-2">Member Baru: {{commission.newMember}} </h6>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <div class="card text-white bg-success mb-3">
                             <div class="card-body text-right">
                                 <h5 class="card-title text-right text-white">Total Commission</h5>
-                                <h4 class="mt-2">Rp . 0</h4>
+                                <h4 class="mt-2">{{formatprice commission.total}}</h4>
                                 <h6 class="mt-2">Omset: </h6>
                             </div>
                         </div>

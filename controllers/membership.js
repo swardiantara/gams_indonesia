@@ -2,7 +2,9 @@ const Membership = require("../models/membership");
 const OrderMembership = require("../models/ordermembership");
 const User = require('../models/user');
 const transporter = require('../config/mailinfo');
+const transporterBilling = require('../config/mailer');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const { emailUsed } = require('../services/leads')
 require("dotenv").config();
 
@@ -38,11 +40,23 @@ exports.getEditMembership = (req, res) => {
 };
 
 exports.getMemberOrder = async (req, res) => {
-  let membership = await Membership.find();
+  // let user = req.user;
+  let user = await User.findById(req.user._id).populate('license');
+  let premium = user.license.some((license, index) => {
+    return license.name == 'Premium';
+  })
+  console.log(premium)
+  let pendingPremium = "";
+  if (!premium) {
+    pendingPremium = await OrderMembership.findOne({ user: user._id, status: 'Menunggu Konfirmasi Pembayaran' });
+  }
+
   return res.render("membership/order", {
     title: "My Membership",
     user: req.user,
-    data: membership,
+    premium,
+    pending: pendingPremium ? true : false,
+    basic: premium || pending ? false : true,
     customjs: true
   });
 };
@@ -56,7 +70,6 @@ exports.getMemberOrderList = (req, res) => {
     .populate("user")
     .populate("paket")
     .then((data) => {
-      console.log(data);
       return res.render("membership/orderlist", {
         title: "Order Membership",
         data: data,
@@ -68,17 +81,36 @@ exports.getMemberOrderList = (req, res) => {
 
 exports.getMemberCommission = (req, res) => {
   let user = req.user;
-  console.log(user.referralComission);
-  let referralCommision = user.referralComission.reduce(function (prev, cur) {
+  let total = user.commission.reduce((prev, cur) => {
+    return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+  }, 0)
+  let revenue = user.commission.reduce((prev, cur) => {
     return prev + cur.jumlah;
+  }, 0)
+  let referralCommission = user.commission.reduce(function (prev, cur) {
+    return cur.type == 'referral' && cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
   }, 0);
-  console.log(referralCommision);
+  let personalCommission = user.commission.reduce(function (prev, cur) {
+    return cur.type == 'personal' && cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+  }, 0);
+  let teamCommission = user.commission.reduce(function (prev, cur) {
+    return cur.type == 'team' && cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+  }, 0);
+
+  let newMember = user.commission.filter((item, index) => {
+    return item.type == 'referral' && item.status == 'not_paid';
+  });
 
   res.render("membership/membercommission", {
     title: "Member Commission",
     user: req.user,
     commission: {
-      referral: referralCommision
+      referral: referralCommission,
+      personal: personalCommission,
+      team: teamCommission,
+      revenue,
+      total,
+      newMember: newMember.length,
     },
     customjs: true
   });
@@ -89,7 +121,15 @@ exports.getMemberCommission = (req, res) => {
  */
 
 exports.postAddMembership = (req, res) => {
+  let user = req.user;
   const { name, description, price, commission } = req.body;
+  let premium = user.license.some((license, index) => {
+    return license.name == 'Premium';
+  })
+
+  if (premium) {
+    res.send(400).send({ message: 'Anda sudah member Premium!' })
+  }
 
   const newMembership = new Membership();
   newMembership.name = name;
@@ -151,64 +191,167 @@ exports.getMembershipAPI = (req, res) => {
     });
 };
 
-exports.postOrderMembership = (req, res) => {
-  const userId = req.user._id;
-  const { paket } = req.body;
+exports.postOrderMembership = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
 
-  console.log(req.body);
-
-  const newOrder = new OrderMembership();
-
-  newOrder.user = userId;
-  newOrder.paket = paket;
-  newOrder.status = "Belum Bayar";
-
-  newOrder.save((err, done) => {
-    if (err) {
-      console.log(err);
-      res.status(400).send({ message: "Error" });
+    let userId = req.user._id;
+    let user = req.user;
+    let { paket } = req.body;
+    let sudah = user.license.some((license, index) => {
+      return license.type == 'Premium'
+    })
+    if (sudah) {
+      await session.abortTransaction();
+      res.status(404).send({ message: 'Anda sudah member premium!' })
     }
 
-    if (done) {
-      res.status(200).send(done);
+    let pendingPremium = await OrderMembership.findOne({ user: user._id, status: 'Menunggu Konfirmasi Pembayaran' });
+    if (pendingPremium) {
+      await session.abortTransaction();
+      res.status(404).send({ message: 'Membership premium anda sedang diproses!' })
     }
-  });
+
+    paket = await Membership.findOne({ name: paket });
+    if (!paket) {
+      await session.abortTransaction();
+      res.status(404).send({ message: 'Paket tidak ditemukan!' })
+    }
+
+    let newOrder = new OrderMembership();
+    newOrder.user = userId;
+    newOrder.paket = paket._id;
+    newOrder.status = "Belum Bayar";
+
+    let saveOrder = await newOrder.save();
+    if (!saveOrder) {
+      await session.abortTransaction();
+      res.status(400).send({ message: "Terjadi kesalahan, hubungi Admin!" })
+    }
+    //Berhasil membuat Order Membership, kirim email order
+    moment.locale('ID');
+    const now = new Date();
+    let batasBayar = now.setDate(now.getDate() + 2);
+    let formatted = moment(batasBayar).format('LLLL');
+
+    const mailOptions = {
+      from: `"GAMS Indonesia" <${process.env.MAIL_UNAME}>`,
+      to: user.email,
+      subject: "Upgrade Membership GAMS Indonesia",
+      html: `<html><body>
+              <p>Hi, ${user.fullName}</p>
+              <p>Terimakasih sudah melakukan Upgrade Membership ${process.env.APP_URL}.</p>
+              <p>Anda telah melakukan order dengan detail berikut:</p>
+              <table>
+                <tr>
+                  <td> Nama </td>
+                  <td> : </td>
+                  <td> ${user.fullName} </td>
+                </tr>
+                <tr>
+                  <td> Email </td>
+                  <td> : </td>
+                  <td> ${user.email} </td>
+                </tr>
+                <tr>
+                  <td> No. HP </td>
+                  <td> : </td>
+                  <td> ${user.phone} </td>
+                </tr>
+              </table>
+              <p> Total tagihan anda adalah : ${'Rp. 500.' + Math.random().toString().substr(2, 3)} </p>
+              <p> Silahkan lakukan pembayaran order anda sebelum ${formatted} agar Order anda tidak kami batalkan otomatis oleh sistem. </p>
+              <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
+              <ul>
+                <li> GAMS : BCA a.n DENNIS GERALDI 8480216203 </li>
+                <li> GAMS : MANDIRI a.n DENNIS GERALDI 132-00-2284551-6 </li>
+              </ul>
+              <p> Setelah melakukan pembayaran jangan lupa untuk mengunggah bukti pembayaran anda melalui tautan berikut </p>
+              <a href="${process.env.APP_URL}/upload-premium/${user._id}"> Upload Bukti Pembayaran </a>
+              <p> Setelah mengunggah bukti pembayaran, pastikan anda melakukan konfirmasi pembayaran agar akses Anda ke Member Area bisa segera diproses melalui link berikut </p>
+              <a href="https://api.whatsapp.com/send?phone=6283877607433&text=Saya%20mau%20konfirmasi%20bukti%20bayar%20upgrade%20membership%20GAMS"> Konfirmasi Pembayaran </a>
+              <p> Salam Dahsyat, </p>
+              <p> Generasi Anak Muda Sukses </p>
+              </body></html>`,
+    };
+
+    transporterBilling.sendMail(mailOptions, function (error, info) {
+      if (error) console.log(error);
+      console.log("Email sent: " + info.response);
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    res.status(400).send({ message: "Terjadi kesalahan, hubungi Admin!" })
+  }
+
+
 };
 
-exports.getUploadReceipt = (req, res) => {
+exports.getUploadReceipt = async (req, res) => {
+  let { referralCode, funnel } = req.query || "";
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
+
+  if (order) {
+    res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+  }
   res.render("membership/uploadreceipt", {
     title: "Upload Bukti Bayar",
-    // customjs: true,
-    layout: 'layouts/landing'
+    customjs: true,
+    layout: 'layouts/auth'
+  });
+}
+
+exports.getUploadPremium = async (req, res) => {
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
+  if (order) {
+    res.redirect(`/dashboard`);
+  }
+  res.render("membership/uploadpremium", {
+    title: "Upload Bukti Bayar",
+    customjs: true,
+    user: req.user
+    // layout: 'layouts/landing'
   });
 }
 
 exports.postUploadReceipt = async (req, res) => {
   // let idUser = req.params.id;
   let { referralCode, funnel } = req.query || "";
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Belum Bayar' });
+  let buktiBayar = req.file ? req.file.path : null;
+  order.receipt = buktiBayar;
+  order.status = "Menunggu Konfirmasi Pembayaran";
+  let result = await order.save();
+
+  res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+}
+
+exports.postUploadPremium = async (req, res) => {
+  // let idUser = req.params.id;
+  // let { referralCode, funnel } = req.query || "";
   // console.log(idUser);
-  let order = await OrderMembership.findOne({ user: req.params.id });
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Belum Bayar' });
   // console.log(order);
   let buktiBayar = req.file ? req.file.path : null;
   order.receipt = buktiBayar;
   order.status = "Menunggu Konfirmasi Pembayaran";
   let result = await order.save();
-  console.log(result);
+  // console.log(result);
 
-  res.redirect(`/?${referralCode ? "referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+  res.redirect(`/dashboard`);
 }
 
 exports.postVerifikasi = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-
     let idUser = req.params.id || "";
-    console.log(idUser) //1
+    // console.log(idUser) //1
     //Ubah Status menjadi Sudah Bayar
-    let orderMembership = await OrderMembership.findOne({ user: idUser }).populate("user")
+    let orderMembership = await OrderMembership.findOne({ user: idUser, status: 'Menunggu Konfirmasi Pembayaran' }).populate("user")
       .populate("paket");
-    console.log(orderMembership); //2
+    // console.log(orderMembership); //2
     orderMembership.status = 'Sudah Bayar';
     let ubahStatus = await orderMembership.save();
     if (!ubahStatus) {
@@ -217,81 +360,128 @@ exports.postVerifikasi = async (req, res) => {
       return res.redirect(`/membership/order/panel?successVerif=false`)
     }
 
-    //Beri Komisi ke Upline
-    let upline = await User.findOne({ referralCode: orderMembership.referralCode }).populate("license");
-    let isPremium = upline.license.some((license) => {
-      return license.name == 'Premium'
-    })
+    if (orderMembership.referralCode) {
+      //Beri Komisi ke Upline
+      let upline = await User.findOne({ referralCode: orderMembership.referralCode }).populate("license");
+      let isPremium = upline.license.some((license) => {
+        return license.name == 'Premium'
+      })
 
-    //daftarkan downline ke upline
-    upline.downline.push(idUser)
+      //daftarkan downline ke upline
+      upline.downline.push(idUser)
 
+      // console.log(isPremium) //3
+      // let komisi = orderMembership.paket.commission;
+      upline.commission.push({
+        type: 'referral',
+        jumlah: isPremium ? 100000 : 50000,
+        status: 'not_paid',
+        createdAt: new Date().toLocaleString()
+      })
+      let komisi = await upline.save();
 
-    console.log(isPremium) //3
-    // let komisi = orderMembership.paket.commission;
-    upline.commission.push({
-      type: 'referral',
-      jumlah: isPremium ? 100000 : 50000,
-      status: 'not_paid',
-      createdAt: new Date().toLocaleString()
-    })
-    let komisi = await upline.save();
-
-    if (!komisi) {
-      await session.abortTransaction();
-      req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/membership/order/panel?successVerif=false`)
+      if (!komisi) {
+        await session.abortTransaction();
+        req.flash('error', 'Terjadi kesalahan!')
+        return res.redirect(`/membership/order/panel?successVerif=false`)
+      }
     }
 
-    //Tambahkan license ke User
-    let membership = await Membership.findOne({ name: 'Basic' })
-    let user = await User.findById(idUser);
-    user.license.push(membership._id)
+    if (orderMembership.paket.name == 'Basic') {
+      //Tambahkan license ke User
+      let membership = await Membership.findOne({ name: 'Basic' })
+      let user = await User.findById(idUser);
+      user.license.push(membership._id)
+      //Kirim email akun berhasil dibuat
+      const mailOptions = {
+        from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
+        to: user.email,
+        subject: `[Aktivasi Akun] - Akun ${process.env.APP_URL} anda telah aktif!`,
+        html: `<html><body>
+                <p>Hi, ${user.fullName}</p>
+                <p>Terimakasih sudah bergabung di ${process.env.APP_URL}.</p>
+                <p>Akun Member GAMS Anda:</p>
+                <p>Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a></p>
+                <table>
+                  <tr>
+                    <td> Username  </td>
+                    <td> : </td>
+                    <td> ${user.email} </td>
+                  </tr>
+                  <tr>
+                    <td> Password </td>
+                    <td> : </td>
+                    <td> ${user.password} </td>
+                  </tr>
+                </table>
+                <p>*Segera ubah kata sandi setelah login
+                <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
+    
+                <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>
+                <p> Salam Dahsyat, </p>
+                <p> Generasi Anak Muda Sukses </p>
+                </body></html>`,
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        console.log("Email sent: " + info.response);
+      });
 
-    //Kirim email akun berhasil dibuat
-    const mailOptions = {
-      from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
-      to: user.email,
-      subject: `[Aktivasi Akun] - Akun ${process.env.APP_URL} anda telah aktif!`,
-      html: `<html><body>
-              <p>Hi, ${user.fullName}</p>
-              <p>Terimakasih sudah bergabung di ${process.env.APP_URL}.</p>
-              <p>Akun Member GAMS Anda:</p>
-              Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a>
-              <table>
-                <tr>
-                  <td> Username  </td>
-                  <td> : </td>
-                  <td> ${user.email} </td>
-                </tr>
-                <tr>
-                  <td> Password </td>
-                  <td> : </td>
-                  <td> ${user.password} </td>
-                </tr>
-              </table>
-              <p>*Segera ubah kata sandi setelah login
-              <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
-  
-              <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>
-              <p> Salam Dahsyat, </p>
-              <p> Generasi Anak Muda Sukses </p>
-              </body></html>`,
-    };
+      let encrypted = await user.generateHash(user.password);
+      user.password = encrypted;
+      let simpanUser = await user.save();
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) console.log(error);
-      console.log("Email sent: " + info.response);
-    });
+      if (!simpanUser) {
+        await session.abortTransaction();
+        req.flash('error', 'Terjadi kesalahan!')
+        return res.redirect(`/membership/order/panel?successVerif=false`)
+      }
+    } else {
+      //Tambahkan license ke User
+      let membership = await Membership.findOne({ name: 'Premium' })
+      let user = await User.findById(idUser);
+      user.license.push(membership._id)
+      const mailOptions = {
+        from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
+        to: user.email,
+        subject: `[Berhasil] - Upgrade Membership GAMS Indonesia!`,
+        html: `<html><body>
+                <p>Hi, ${user.fullName}</p>
+                <p>Terimakasih sudah melakukan Upgrade Membership GAMS Indonesia!</p>
+                <p>Akun Member GAMS Anda:</p>
+                <p>Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a></p>
+                <table>
+                  <tr>
+                    <td> Username  </td>
+                    <td> : </td>
+                    <td> ${user.email} </td>
+                  </tr>
+                  <tr>
+                    <td> Password </td>
+                    <td> : </td>
+                    <td> ${user.password} </td>
+                  </tr>
+                </table>
+                <p>*Segera ubah kata sandi setelah login
+                <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
+    
+                <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>
+                <p> Salam Dahsyat, </p>
+                <p> Generasi Anak Muda Sukses </p>
+                </body></html>`,
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        console.log("Email sent: " + info.response);
+      });
 
-    let encrypted = await user.generateHash(user.password);
-    user.password = encrypted;
-    let simpanUser = await user.save();
+      let simpanUser = await user.save();
 
-    if (!simpanUser) {
-      await session.abortTransaction();
-      req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/membership/order/panel?successVerif=false`)
+      if (!simpanUser) {
+        await session.abortTransaction();
+        req.flash('error', 'Terjadi kesalahan!')
+        return res.redirect(`/membership/order/panel?successVerif=false`)
+      }
     }
 
     //Commit Transaction

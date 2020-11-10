@@ -83,4 +83,68 @@
 
         return ribuan
     }
+    //Order membership Premium
+    $('#premiumButton').on('click', function (e) {
+        e.preventDefault();
+        const API = `/membership/api/order`;
+        axios({
+            method: "POST",
+            url: API,
+            data: {
+                paket: 'Premium',
+            },
+        })
+            .then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Berhasil!",
+                    text: 'Silahkan cek email untuk melihat detail order',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err,
+                    footer: "<a href>Silahkan coba kembali nanti</a>",
+                });
+            });
+    });
+
+    //Upload Bukti Bayar basic
+    //Validation
+    $('#buktiBayar').on('change', function (e) {
+        let fileType = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+        let file = this.files[0];
+        if (file.size > 1048576) {
+            Swal.fire({
+                icon: "warning",
+                title: "Oops...",
+                text: 'Ukuran gambar maksimal 1MB!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#submit-basic').attr('disabled', 'disabled');
+                }
+            });
+        } else {
+            $('#submit-basic').removeAttr('disabled');
+        }
+        if (!fileType.includes(file.type)) {
+            Swal.fire({
+                icon: "warning",
+                title: "Oops...",
+                text: 'File harus berupa gambar/PDF!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#submit-basic').attr('disabled', 'disabled');
+                }
+            });
+        } else {
+            $('#submit-basic').removeAttr('disabled');
+        }
+    })
 </script>

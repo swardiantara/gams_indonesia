@@ -18,7 +18,9 @@ const {
   getMemberCommission,
   getUploadReceipt,
   postUploadReceipt,
-  postVerifikasi
+  postVerifikasi,
+  getUploadPremium,
+  postUploadPremium
 } = require("../controllers/membership");
 
 router.get("/", isAuthenticated, getMembership);
@@ -27,12 +29,15 @@ router.get("/edit/:id", isAuthenticated, getEditMembership);
 router.get("/delete/:delete", isAuthenticated, postEditMembership);
 router.get("/membercommission", isAuthenticated, getMemberCommission);
 router.get('/upload-receipt/:id', getUploadReceipt);
+router.get('/upload-premium/:id', getUploadPremium);
 
 router.get("/order", getMemberOrder);
 router.get("/order/panel", getMemberOrderList);
 router.get("/api/list", getMembershipAPI);
 router.post('/upload-receipt/:id', upload.single('buktiBayar'), postUploadReceipt);
+router.post('/upload-premium/:id', upload.single('buktiBayar'), postUploadPremium);
 router.post('/verifikasi/:id', postVerifikasi);
+router.post('/verifikasi-premium/:id', postVerifikasi);
 
 
 /**

@@ -1,2 +1,104 @@
-<div id="memberOrder"></div>
-<script src="/react/memberorder.js" type="text/jsx"></script>
+{{!-- <div id="memberOrder"></div>
+<script src="/react/memberorder.js" type="text/jsx"></script> --}}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center mb-3 mt-4">Paket Membership</h4>
+                <p class="text-muted text-center mb-4 pb-2">
+                    Choose the features and functionality your team need today.
+                    Easily upgrade as your company grows.
+                </p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 stretch-card grid-margin grid-margin-md-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="text-center text-uppercase mt-3 mb-4">Basic</h5><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-award text-primary icon-xxl d-block mx-auto my-3">
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                                    </svg>
+                                    <h3 class="text-center font-weight-light">Rp. 250.000,-</h3>
+                                    <p class="text-muted text-center mb-4 font-weight-light">sekali bayar</p>
+                                    <h6 class="text-muted text-center mb-4 font-weight-normal">
+                                        <span>
+                                            Basic Membership
+                                        </span>
+                                    </h6>
+                                    <form>
+                                        <span class="d-inline-block d-flex justify-content-center" tabindex="0"
+                                            data-toggle="tooltip" title="Anda sudah memiliki membership basic!">
+                                            <button class="btn btn-primary" style="pointer-events: none;" type="button"
+                                                disabled>Order</button>
+                                        </span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 stretch-card grid-margin grid-margin-md-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="text-center text-uppercase mt-3 mb-4">Premium</h5><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-award text-primary icon-xxl d-block mx-auto my-3">
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                                    </svg>
+                                    <h3 class="text-center font-weight-light">Rp. 500.000,-</h3>
+                                    <p class="text-muted text-center mb-4 font-weight-light">sekali bayar</p>
+                                    <h6 class="text-muted text-center mb-4 font-weight-normal">
+                                        <span>
+                                            Premium Membership
+                                        </span>
+                                    </h6>
+                                    <form>
+                                        {{!-- <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Disabled tooltip">
+                                            <button class="btn btn-primary" style="pointer-events: none;" type="button"
+                                                disabled>Order</button>
+                                        </span>
+                                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                                            title="Disabled tooltip">
+                                            <button type="button" class="btn btn-primary d-block mx-auto mt-"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="Anda sudah memiliki membership basic!" disabled>Order</button>
+                                        </span> --}}
+                                        {{#if premium}}
+                                        <span class="d-inline-block d-flex justify-content-center" tabindex="0"
+                                            data-toggle="tooltip" title="Anda sudah memiliki membership premium!">
+                                            <button class="btn btn-primary" style="pointer-events: none;" type="button"
+                                                disabled>Order</button>
+                                        </span>
+                                        {{/if}}
+                                        {{#if pending}}
+                                        <span class="d-inline-block d-flex justify-content-center" tabindex="0"
+                                            data-toggle="tooltip" title="Membership premium anda sedang diproses!">
+                                            <button class="btn btn-primary" style="pointer-events: none;" type="button"
+                                                disabled>Order</button>
+                                        </span>
+                                        {{/if}}
+                                        {{#if basic}}
+                                        <button id="premiumButton" type="button"
+                                            class="btn btn-primary d-block mx-auto mt-4">Order</button>
+                                        {{/if}}
+
+                                        {{!-- <button type="button" class="btn btn-secondary" data-toggle="tooltip"
+                                            data-placement="top" title="Tooltip on top">
+                                            Tooltip on top
+                                        </button> --}}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
