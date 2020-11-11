@@ -8,26 +8,28 @@
                         <thead>
                             <tr>
                                 <th>Nama</th>
-                                <th>Email</th>
-                                <th>No. HP</th>
-                                <th>Status</th>
-                                <th>Membership</th>
-                                <th>Action</th>
+                                <th>License</th>
+                                <th>Team Member</th>
+                                <th>No. Rekening</th>
+                                <th>Commission</th>
+                                <th colspan="2" class="text-center">Activity</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each data}}
                             <tr>
                                 <th><a href="/membership/edit/{{_id}}">{{fullName}}</a></th>
-                                <td>{{email}}</td>
-                                <td>{{phone}}</td>
-                                <td>{{role}}</td>
+                                <td>{{license}}</td>
+                                <td>{{downline.length}}</td>
+                                <td>{{bankNumber}}</td>
+                                <td>{{komisi}}</td>
                                 <td>
                                     {{#each license}}
                                     {{this.name}}
                                     {{/each}}
                                 </td>
-                                <td><a href="/membership/delete/{{_id}}" class="text-danger">Delete</td>
+                                <td><a href="/membership/delete/{{_id}}" class="text-danger">View Team</td>
+                                <td><a href="/membership/delete/{{_id}}" class="text-danger">View Profile</td>
                             </tr>
                             {{/each}}
                         </tbody>
