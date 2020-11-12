@@ -9,7 +9,7 @@ module.exports = (hbs) => {
     return price.toLocaleString("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).replace('IDR', 'Rp');
+    }).replace('IDR', 'Rp.');
   });
   hbs.registerHelper("ifCond", (arg1, arg2, options) => {
     return arg1 === arg2 ? options.fn(this) : options.inverse(this);

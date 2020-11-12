@@ -116,6 +116,11 @@ const userSchema = new Schema(
           type: String,
           required: false,
         },
+        order: {
+          type: Schema.Types.ObjectId,
+          ref: "OrderDetail",
+          required: false,
+        },
         jumlah: {
           type: Number,
           required: false

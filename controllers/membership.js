@@ -484,3 +484,66 @@ exports.postVerifikasi = async (req, res) => {
     return res.redirect('/membership/order/panel?successVerif=false');
   }
 }
+
+exports.getCommisionDetail = async (req, res) => {
+  if (req.user.role != 'Admin') {
+    return res.redirect('/dashboard');
+  }
+  moment.locale('ID');
+  let userId = req.params.id || "";
+  let user = await User.findById(userId).populate('commission');
+  // console.log(user);
+  user.commission.map(commission => {
+    return commission.createdAt = moment(commission.createdAt).format('LLLL');
+  })
+  user.commission = user.commission.filter(commission => {
+    return commission.status == 'not_paid'
+  })
+  let total = user.commission.reduce((prev, cur) => {
+    return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+  }, 0)
+  console.log(total)
+  return res.render("membership/commissiondetail", {
+    title: "Commission List",
+    data: user,
+    user: req.user,
+    total,
+  });
+}
+
+exports.getDownlineDetail = async (req, res) => {
+  if (req.user.role != 'Admin') {
+    return res.redirect('/dashboard');
+  }
+
+  moment.locale('ID');
+  let userId = req.params.id || "";
+  let user = await User.findById(userId).populate({ path: 'downline', populate: 'license' });
+  user.downline = user.downline.filter((item, index) => {
+    return item.role == 'Member'
+  })
+  user.downline.map((item, index) => {
+    // item.license = item.populate('license');
+    // item.license.some(license => {
+    //   return license.name == 'Premium'
+    // })
+    // console.log(item.license)
+    return item.license = item.license.some(license => {
+      return license.name == 'Premium'
+    }) ? 'Premium' : 'Basic';
+  })
+  user.downline.map((item, index) => {
+    let total = item.commission.reduce((prev, cur) => {
+      return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+    }, 0)
+    return item.komisi = total;
+    // console.log(item.komisi);
+  })
+
+  return res.render("membership/downline", {
+    title: "Team Member",
+    data: user.downline,
+    user: req.user,
+    namaUpline: user.fullName
+  });
+}

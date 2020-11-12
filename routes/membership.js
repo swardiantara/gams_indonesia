@@ -20,7 +20,9 @@ const {
   postUploadReceipt,
   postVerifikasi,
   getUploadPremium,
-  postUploadPremium
+  postUploadPremium,
+  getCommisionDetail,
+  getDownlineDetail
 } = require("../controllers/membership");
 
 router.get("/", isAuthenticated, getMembership);
@@ -28,6 +30,8 @@ router.get("/add", isAuthenticated, getAddMembership);
 router.get("/edit/:id", isAuthenticated, getEditMembership);
 router.get("/delete/:delete", isAuthenticated, postEditMembership);
 router.get("/membercommission", isAuthenticated, getMemberCommission);
+router.get("/commission/:id", isAuthenticated, getCommisionDetail);
+router.get("/team-member/:id", isAuthenticated, getDownlineDetail);
 router.get('/upload-receipt/:id', getUploadReceipt);
 router.get('/upload-premium/:id', getUploadPremium);
 

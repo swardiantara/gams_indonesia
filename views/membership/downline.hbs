@@ -2,7 +2,7 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">{{{title}}}</h6>
+                <h6 class="card-title">{{{title}}} {{namaUpline}}</h6>
                 <div class="table-responsive">
                     <table class="table table-hover text-center">
                         <thead>
@@ -22,7 +22,7 @@
                                 <td>{{license}}</td>
                                 <td><a href="/team-member/{{_id}}"> {{downline.length}}</a></td>
                                 <td>{{bankNumber}}</td>
-                                <td><a href="/commission/{{_id}}">{{formatprice komisi}}</a></td>
+                                <td><a href="/commission/{{_id}}">{{komisi}}</a></td>
                                 <td>
                                     {{#each license}}
                                     {{this.name}}
