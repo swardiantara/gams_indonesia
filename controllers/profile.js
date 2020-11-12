@@ -4,9 +4,12 @@ const uploadFotoProfile = require("../config/storage");
 
 exports.getEdit = (req, res) => {
   const userId = req.user._id;
-  User.findById({ _id: userId })
+  User.findById({ _id: userId }).populate('license')
     .then((userData) => {
       console.log(userData)
+      userData.license = userData.license.some((item) => {
+        return item.name == 'Premium'
+      }) ? 'Premium' : 'Basic';
       return res.render("profile/edit", {
         title: "Edit Profile",
         data: userData,

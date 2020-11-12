@@ -447,22 +447,10 @@ exports.postVerifikasi = async (req, res) => {
         subject: `[Berhasil] - Upgrade Membership GAMS Indonesia!`,
         html: `<html><body>
                 <p>Hi, ${user.fullName}</p>
-                <p>Terimakasih sudah melakukan Upgrade Membership GAMS Indonesia!</p>
-                <p>Akun Member GAMS Anda:</p>
-                <p>Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a></p>
-                <table>
-                  <tr>
-                    <td> Username  </td>
-                    <td> : </td>
-                    <td> ${user.email} </td>
-                  </tr>
-                  <tr>
-                    <td> Password </td>
-                    <td> : </td>
-                    <td> ${user.password} </td>
-                  </tr>
-                </table>
-                <p>*Segera ubah kata sandi setelah login
+                <p>Terimakasih sudah melakukan upgrade membership akun anda di ${process.env.APP_URL}</p>
+                <p>Akun Membership Premium GAMS Anda telah aktif :</p>
+                <p>Login di >>> <a href="${process.env.APP_URL}/auth/login">${process.env.APP_URL}/auth/login</a></p>
+                
                 <p> Silahkan Follow official instagram GAMS untuk dapat info terbaru seputar gamsindonesia >>> <a href="https://www.instagram.com/gamsindonesia/"> klik disini </a> </p>
     
                 <p> Silahkan Subscribe Channel Youtube GAMS untuk dapat mengakses video-video training center kami >>> <a href="https://www.youtube.com/channel/UCgx1vGt-9jR--a0vjw8VTTg"> klik disini </a> </p>

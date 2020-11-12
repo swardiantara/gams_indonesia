@@ -27,7 +27,7 @@ exports.getMemberlist = async (req, res) => {
   //   return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
   // }, 0)
   return res.render("memberlist/index", {
-    title: "Leads Panel",
+    title: "Memberlist",
     data: user,
     user: req.user,
   });
