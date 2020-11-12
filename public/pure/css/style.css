@@ -40,7 +40,7 @@ h4{
 .navbar-brand{
     font-family: "Coming Soon", sans-serif;
     font-weight: 700;
-    font-size: x-large;
+    font-size:  2vw;
 }
 
 .nav-text-item{
@@ -76,7 +76,7 @@ h4{
 
 .jumbotron-h1{
     font-weight: 700;
-    font-size : 35px;
+    font-size : 5vs;
     /* font-family: "Roboto Condensed", "Sans-serif"; */
     color: #444444 !important;
     text-align: center;
@@ -178,3 +178,8 @@ strong{
     /* transition: background0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s; */
 }
 
+
+
+@media (min-width){
+    
+}
