@@ -60,7 +60,7 @@ exports.getMemberOrder = async (req, res) => {
     user: req.user,
     premium,
     pending: pendingPremium ? true : false,
-    basic: premium || pending ? false : true,
+    basic: premium || pendingPremium ? false : true,
     customjs: true
   });
 };
