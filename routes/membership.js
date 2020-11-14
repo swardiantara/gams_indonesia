@@ -22,7 +22,8 @@ const {
   getUploadPremium,
   postUploadPremium,
   getCommisionDetail,
-  getDownlineDetail
+  getDownlineDetail,
+  resetCommission
 } = require("../controllers/membership");
 
 router.get("/", isAuthenticated, getMembership);
@@ -42,6 +43,7 @@ router.post('/upload-receipt/:id', upload.single('buktiBayar'), postUploadReceip
 router.post('/upload-premium/:id', upload.single('buktiBayar'), postUploadPremium);
 router.post('/verifikasi/:id', postVerifikasi);
 router.post('/verifikasi-premium/:id', postVerifikasi);
+router.post("/commission/:id/reset", isAuthenticated, resetCommission);
 
 
 /**

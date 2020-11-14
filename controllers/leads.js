@@ -7,7 +7,12 @@ exports.getMyLeads = async (req, res) => {
   moment.locale('ID');
   // let date = [];
   User.findOne({ _id: userId })
-    .populate("leads")
+    .populate({
+      path: "leads",
+      options: {
+        sort: { createdAt: 'desc' }
+      }
+    })
     .then((data) => {
       data.leads.tanggal = [];
       for (let i = 0; i < data.leads.length; i++) {
@@ -34,7 +39,7 @@ exports.getMyLeads = async (req, res) => {
 
 exports.getLeadsPanel = async (req, res) => {
   moment.locale('ID');
-  let leads = await Leads.find().populate('referral');
+  let leads = await Leads.find().sort("-createdAt").populate('referral');
   leads.tanggal = [];
   for (let i = 0; i < leads.length; i++) {
     leads[i].tanggal = moment(leads[i].createdAt).format('LLLL');

@@ -11,6 +11,7 @@
   </div>
   <div class="sidebar-body">
     <ul class="nav">
+      {{#ifCond user.role 'Member'}}
       <li class="nav-item nav-category">{{#if user.fullName}}{{user.fullName}}{{else}}No Name{{/if}}</li>
       <li class="nav-item">
         <a href="#" class="nav-link" aria-disabled="true">
@@ -21,9 +22,10 @@
       <li class="nav-item">
         <a href="#" class="nav-link" aria-disabled="true">
           <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">BASIC</span>
+          <span class="link-title">{{user.license}}</span>
         </a>
       </li>
+      {{/ifCond}}
 
       {{#ifCond user.role 'Admin'}}
       <li class="nav-item nav-category">Admin Menu</li>
@@ -43,7 +45,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="/news-panel" class="nav-link">
+        <a href="/news-event" class="nav-link">
           <i class="link-icon" data-feather="calendar"></i>
           <span class="link-title">News & Events Panel</span>
         </a>

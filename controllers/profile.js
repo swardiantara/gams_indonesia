@@ -32,6 +32,19 @@ exports.getEditSandi = (req, res) => {
   });
 }
 
+exports.getUserProfile = async (req, res) => {
+  let idUser = req.params.id || "";
+  let user = await User.findById(idUser).populate('license');
+  user.license = user.license.some((license, index) => {
+    return license.type == 'Premium'
+  }) ? 'Premium' : 'Basic'
+  return res.render('profile/index', {
+    title: 'Profile Member',
+    user: req.user,
+    data: user
+  })
+}
+
 /**
  * POST Method
  */

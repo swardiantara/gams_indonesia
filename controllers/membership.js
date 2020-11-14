@@ -8,6 +8,10 @@ const moment = require('moment');
 const { emailUsed } = require('../services/leads')
 require("dotenv").config();
 
+/**
+ * GET Method
+ */
+
 exports.getMembership = (req, res) => {
   Membership.find().then((dataMembership) => {
     return res.render("membership/index", {
@@ -115,6 +119,106 @@ exports.getMemberCommission = (req, res) => {
     customjs: true
   });
 };
+
+exports.getUploadReceipt = async (req, res) => {
+  let { referralCode, funnel } = req.query || "";
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
+
+  if (order) {
+    res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
+  }
+  res.render("membership/uploadreceipt", {
+    title: "Upload Bukti Bayar",
+    customjs: true,
+    layout: 'layouts/auth'
+  });
+}
+
+exports.getUploadPremium = async (req, res) => {
+  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
+  if (order) {
+    res.redirect(`/dashboard`);
+  }
+  res.render("membership/uploadpremium", {
+    title: "Upload Bukti Bayar",
+    customjs: true,
+    user: req.user
+    // layout: 'layouts/landing'
+  });
+}
+
+
+exports.getCommisionDetail = async (req, res) => {
+  if (req.user.role != 'Admin') {
+    return res.redirect('/dashboard');
+  }
+  let loggedInUser = await User.findById(req.user._id).populate('license');
+  // user.license = user.license.some(license => {
+  //   return license.name == 'Premium'
+  // }) ? 'Premium' : 'Basic';
+  loggedInUser.license = loggedInUser.license.some(item => {
+    return item.name == 'Premium'
+  }) ? 'Premium' : 'Basic';
+  console.log(loggedInUser.license)
+  moment.locale('ID');
+  let userId = req.params.id || "";
+  let user = await User.findById(userId).populate('commission');
+  // console.log(user);
+  user.commission.map(commission => {
+    return commission.createdAt = moment(commission.createdAt).format('LLLL');
+  })
+  user.commission = user.commission.filter(commission => {
+    return commission.status == 'not_paid'
+  })
+  let total = user.commission.reduce((prev, cur) => {
+    return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+  }, 0)
+  console.log(total)
+  return res.render("membership/commissiondetail", {
+    title: "Commission List",
+    data: user,
+    user: loggedInUser,
+    total,
+    customjs: true
+  });
+}
+
+exports.getDownlineDetail = async (req, res) => {
+  if (req.user.role != 'Admin') {
+    return res.redirect('/dashboard');
+  }
+
+  moment.locale('ID');
+  let userId = req.params.id || "";
+  let user = await User.findById(userId).populate({ path: 'downline', populate: 'license' });
+  user.downline = user.downline.filter((item, index) => {
+    return item.role == 'Member'
+  })
+  user.downline.map((item, index) => {
+    // item.license = item.populate('license');
+    // item.license.some(license => {
+    //   return license.name == 'Premium'
+    // })
+    // console.log(item.license)
+    return item.license = item.license.some(license => {
+      return license.name == 'Premium'
+    }) ? 'Premium' : 'Basic';
+  })
+  user.downline.map((item, index) => {
+    let total = item.commission.reduce((prev, cur) => {
+      return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
+    }, 0)
+    return item.komisi = total;
+    // console.log(item.komisi);
+  })
+
+  return res.render("membership/downline", {
+    title: "Team Member",
+    data: user.downline,
+    user: req.user,
+    namaUpline: user.fullName
+  });
+}
 
 /**
  * POST Method
@@ -288,32 +392,7 @@ exports.postOrderMembership = async (req, res) => {
 
 };
 
-exports.getUploadReceipt = async (req, res) => {
-  let { referralCode, funnel } = req.query || "";
-  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
 
-  if (order) {
-    res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
-  }
-  res.render("membership/uploadreceipt", {
-    title: "Upload Bukti Bayar",
-    customjs: true,
-    layout: 'layouts/auth'
-  });
-}
-
-exports.getUploadPremium = async (req, res) => {
-  let order = await OrderMembership.findOne({ user: req.params.id, status: 'Menunggu Konfirmasi Pembayaran' });
-  if (order) {
-    res.redirect(`/dashboard`);
-  }
-  res.render("membership/uploadpremium", {
-    title: "Upload Bukti Bayar",
-    customjs: true,
-    user: req.user
-    // layout: 'layouts/landing'
-  });
-}
 
 exports.postUploadReceipt = async (req, res) => {
   // let idUser = req.params.id;
@@ -401,7 +480,7 @@ exports.postVerifikasi = async (req, res) => {
                 <p>Hi, ${user.fullName}</p>
                 <p>Terimakasih sudah bergabung di ${process.env.APP_URL}.</p>
                 <p>Akun Member GAMS Anda:</p>
-                <p>Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">ini</a></p>
+                <p>Silah login melalui tautan >>> <a href="${process.env.APP_URL}/auth/login/first">${process.env.APP_URL}/auth/login</a></p>
                 <table>
                   <tr>
                     <td> Username  </td>
@@ -485,65 +564,30 @@ exports.postVerifikasi = async (req, res) => {
   }
 }
 
-exports.getCommisionDetail = async (req, res) => {
-  if (req.user.role != 'Admin') {
-    return res.redirect('/dashboard');
+exports.resetCommission = async (req, res) => {
+  try {
+    let idUser = req.params.id || "";
+    let user = await User.findById(idUser).populate({
+      path: 'commission',
+      match: {
+        status: 'not_paid'
+      }
+    });
+    console.log(user.commission);
+    user.commission.map(item => {
+      return item.status = 'paid'
+    })
+
+    let saved = await user.save();
+    if (!saved) {
+      return res.status(400).send({ code: 400, message: 'Gagal mereset komisi!' })
+    }
+    return res.status(200).send({ code: 200, message: 'Berhasil mereset komisi' })
+  } catch (error) {
+    return res.status(500).send({
+      code: 500,
+      message: 'Internal server Error',
+      error
+    })
   }
-  moment.locale('ID');
-  let userId = req.params.id || "";
-  let user = await User.findById(userId).populate('commission');
-  // console.log(user);
-  user.commission.map(commission => {
-    return commission.createdAt = moment(commission.createdAt).format('LLLL');
-  })
-  user.commission = user.commission.filter(commission => {
-    return commission.status == 'not_paid'
-  })
-  let total = user.commission.reduce((prev, cur) => {
-    return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
-  }, 0)
-  console.log(total)
-  return res.render("membership/commissiondetail", {
-    title: "Commission List",
-    data: user,
-    user: req.user,
-    total,
-  });
-}
-
-exports.getDownlineDetail = async (req, res) => {
-  if (req.user.role != 'Admin') {
-    return res.redirect('/dashboard');
-  }
-
-  moment.locale('ID');
-  let userId = req.params.id || "";
-  let user = await User.findById(userId).populate({ path: 'downline', populate: 'license' });
-  user.downline = user.downline.filter((item, index) => {
-    return item.role == 'Member'
-  })
-  user.downline.map((item, index) => {
-    // item.license = item.populate('license');
-    // item.license.some(license => {
-    //   return license.name == 'Premium'
-    // })
-    // console.log(item.license)
-    return item.license = item.license.some(license => {
-      return license.name == 'Premium'
-    }) ? 'Premium' : 'Basic';
-  })
-  user.downline.map((item, index) => {
-    let total = item.commission.reduce((prev, cur) => {
-      return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
-    }, 0)
-    return item.komisi = total;
-    // console.log(item.komisi);
-  })
-
-  return res.render("membership/downline", {
-    title: "Team Member",
-    data: user.downline,
-    user: req.user,
-    namaUpline: user.fullName
-  });
 }

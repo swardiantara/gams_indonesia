@@ -10,13 +10,26 @@ const { emailUsed } = require("../services/leads");
 require("dotenv").config();
 const moment = require('moment')
 
-exports.getIndex = (req, res) => {
+exports.getIndex = async (req, res) => {
+  let user = await User.findById(req.user._id).populate('license');
+  user.license = user.license.some(license => {
+    return license.name == 'Premium'
+  }) ? 'Premium' : 'Basic';
+  // user.license.map((item, index) => {
+  //   // item.license.some(license => {
+  //   //   return license.name == 'Premium'
+  //   // })
+  //   // console.log(item.license)
+  //   item = item.some(license => {
+  //     return license.name == 'Premium'
+  //   }) ? 'Premium' : 'Basic';
+  // })
   Welcomepage.findOne()
     .then((data) => {
       return res.render("index", {
         title: "Gams Indonesia",
         data: data,
-        user: req.user,
+        user: user,
       });
       // return res.render("index", {
       //   title: "Dashboard",

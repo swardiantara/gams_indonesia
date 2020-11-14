@@ -147,4 +147,34 @@
             $('#submit-basic').removeAttr('disabled');
         }
     })
+
+    //Reset komisi
+    $('#resetKomisi').on('click', function (e) {
+        e.preventDefault();
+        let idUser = $(this).data('id');
+        const API = `/commission/${idUser}/reset`;
+        axios({
+            method: "POST",
+            url: API,
+        })
+            .then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Berhasil reset komisi",
+                    text: 'Rincian komisi berhasil dikirim!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err,
+                    footer: "<a href>Silahkan coba kembali nanti</a>",
+                });
+            });
+    })
 </script>

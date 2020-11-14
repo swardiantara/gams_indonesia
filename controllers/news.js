@@ -1,28 +1,28 @@
 const Tool = require("../models/tool");
 require("dotenv").config();
 
-exports.getTools = (req, res) => {
+// exports.getTools = (req, res) => {
+//   Tool.find()
+//     .sort("-createdAt")
+//     .then((dataTool) => {
+//       return res.render("tool/index", {
+//         title: "Tools",
+//         data: dataTool,
+//         user: req.user,
+//       });
+//     });
+// };
+
+exports.getNews = (req, res) => {
   Tool.find({
     category: {
-      $in: ['photo', 'video', 'copywriting', 'landing-page']
+      $in: ['news', 'event']
     }
   })
     .sort("-createdAt")
     .then((dataTool) => {
-      return res.render("tool/index", {
-        title: "Tools",
-        data: dataTool,
-        user: req.user,
-      });
-    });
-};
-
-exports.getNews = (req, res) => {
-  Tool.find()
-    .sort("-createdAt")
-    .then((dataTool) => {
-      return res.render("tool/index", {
-        title: "Tools",
+      return res.render("news/index", {
+        title: "News & Events",
         data: dataTool,
         user: req.user,
       });
