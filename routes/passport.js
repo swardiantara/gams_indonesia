@@ -12,7 +12,7 @@ module.exports = (passport) => {
    */
   router.get("/login", isUnAuthenticated, getLogin);
   router.get("/login/first", isUnAuthenticated, getLogin);
-  router.get("/signup", isUnAuthenticated, getSignup);
+  router.get("/s1gNuP4dM1n", isUnAuthenticated, getSignup);
   router.get("/logout", isAuthenticated, getLogout);
 
   /**
@@ -20,10 +20,10 @@ module.exports = (passport) => {
    */
 
   router.post(
-    "/signup",
+    "/s1gNuP4dM1n",
     passport.authenticate("local-signup", {
       successRedirect: "/",
-      failureRedirect: "/auth/signup",
+      failureRedirect: "/auth/s1gNuP4dM1n",
       failureFlash: true,
     })
   );

@@ -11,13 +11,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="free.html">9 Free Video</a>
+                            <a class="nav-link"
+                                href="/freevideo{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">9
+                                Free Video</a>
                         </li>
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="#">Join Member</a>
+                            <a class="nav-link"
+                                href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">Join
+                                Member</a>
                         </li>
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="#">Member Login</a>
+                            <a class="nav-link" href="/auth/login">Member Login</a>
                         </li>
                     </ul>
                 </div>
@@ -88,8 +92,10 @@
                         <h2 style="color:white;">Sudah 7.315 orang belajar bersama kami & merasakan manfaatnya.</h2>
                     </div>
                     <div class="col-6 col-md-3 align-self-center text-center">
-                        <button type="button" class="btn btn-info btn-block"
-                            style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button>
+                        <a style="text-decoration:none"
+                            href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
+                            <button type="button" class="btn btn-info btn-block"
+                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>
@@ -267,7 +273,7 @@
                     </div>
                     <div class="col-md-10 mb-3">
                         <h4 class="card-teks">Full Support 101%</h4>
-                        <p class="card-teks text-justify" >GAMS menyediakan Tim Support yang siap membantu Anda baik
+                        <p class="card-teks text-justify">GAMS menyediakan Tim Support yang siap membantu Anda baik
                             secara online (melalui Live Chat, Whatsapp, Webinar, dan lain-lain) maupun offline (melalui
                             event-event Kopdar, Training dan lain-lain) dimana Anda akan langsung dibantu oleh para
                             mentor.</p>
@@ -483,8 +489,10 @@
                         <h2 style="color:white;">Sudah 7.315 orang belajar bersama kami & merasakan manfaatnya.</h2>
                     </div>
                     <div class="col-6 col-md-3 align-self-center text-center">
-                        <button type="button" class="btn btn-info btn-block"
-                            style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button>
+                        <a style="text-decoration:none"
+                            href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
+                            <button type="button" class="btn btn-info btn-block"
+                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>

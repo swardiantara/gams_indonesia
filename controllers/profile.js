@@ -4,12 +4,8 @@ const uploadFotoProfile = require("../config/storage");
 
 exports.getEdit = (req, res) => {
   const userId = req.user._id;
-  User.findById({ _id: userId }).populate('license')
+  User.findById({ _id: userId })
     .then((userData) => {
-      console.log(userData)
-      userData.license = userData.license.some((item) => {
-        return item.name == 'Premium'
-      }) ? 'Premium' : 'Basic';
       return res.render("profile/edit", {
         title: "Edit Profile",
         data: userData,
@@ -34,10 +30,7 @@ exports.getEditSandi = (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   let idUser = req.params.id || "";
-  let user = await User.findById(idUser).populate('license');
-  user.license = user.license.some((license, index) => {
-    return license.type == 'Premium'
-  }) ? 'Premium' : 'Basic'
+  let user = await User.findById(idUser);
   return res.render('profile/index', {
     title: 'Profile Member',
     user: req.user,

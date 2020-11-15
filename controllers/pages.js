@@ -11,10 +11,10 @@ require("dotenv").config();
 const moment = require('moment')
 
 exports.getIndex = async (req, res) => {
-  let user = await User.findById(req.user._id).populate('license');
-  user.license = user.license.some(license => {
-    return license.name == 'Premium'
-  }) ? 'Premium' : 'Basic';
+  // let user = await User.findById(req.user._id);
+  // user.license = user.license.some(license => {
+  //   return license.name == 'Premium'
+  // }) ? 'Premium' : 'Basic';
   // user.license.map((item, index) => {
   //   // item.license.some(license => {
   //   //   return license.name == 'Premium'
@@ -25,11 +25,12 @@ exports.getIndex = async (req, res) => {
   //   }) ? 'Premium' : 'Basic';
   // })
   Welcomepage.findOne()
+    .sort('-createdAt')
     .then((data) => {
-      return res.render("index", {
+      return res.render("dashboard/index", {
         title: "Gams Indonesia",
         data: data,
-        user: user,
+        user: req.user,
       });
       // return res.render("index", {
       //   title: "Dashboard",
@@ -44,12 +45,17 @@ exports.getIndex = async (req, res) => {
 };
 
 exports.getHome = (req, res) => {
+  let { referralCode, funnel } = req.query || "";
+  console.log(referralCode)
+  console.log(funnel)
   let { source } = req.query || "";
   if (source == 'free-video' || source == 'register') {
     return res.render("landing/index", {
       title: "Generasi Anak Muda Sukses",
       layout: "layouts/landing",
       user: req.user,
+      referralCode,
+      funnel,
       message: "Berhasil mendaftar!",
       customjs: true,
     });
@@ -58,6 +64,8 @@ exports.getHome = (req, res) => {
     title: "Generasi Anak Muda Sukses",
     layout: "layouts/landing",
     user: req.user,
+    referralCode,
+    funnel,
   });
 };
 

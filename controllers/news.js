@@ -55,7 +55,7 @@ exports.getToolsByCategory = (req, res) => {
     Tool.find({ category: paramsId })
       .sort("-createdAt")
       .then((dataTool) => {
-        return res.render("tool/list", {
+        return res.render("news/list", {
           title: "Tools",
           data: dataTool,
           user: req.user,
@@ -65,7 +65,7 @@ exports.getToolsByCategory = (req, res) => {
 };
 
 exports.getAddTool = (req, res) => {
-  return res.render("tool/add", {
+  return res.render("news/add", {
     title: "Add Tool",
     user: req.user,
     customjs: true,
@@ -76,7 +76,7 @@ exports.getEditTool = (req, res) => {
   const toolId = req.params.id;
 
   Tool.findById({ _id: toolId }).then((dataTool) => {
-    return res.render("tool/add", {
+    return res.render("news/add", {
       title: "Add Tool",
       data: dataTool,
       user: req.user,
@@ -89,7 +89,7 @@ exports.getRincianTool = (req, res) => {
   const toolId = req.params.id;
 
   Tool.findById({ _id: toolId }).then((dataTool) => {
-    return res.render("tool/rincian", {
+    return res.render("news/rincian", {
       title: dataTool.title,
       data: dataTool,
       user: req.user,
@@ -115,7 +115,7 @@ exports.postAddTool = (req, res) => {
     if (err) console.log(err);
   });
 
-  return res.redirect("/tool");
+  return res.redirect("/news-event");
 };
 
 exports.postEditTool = (req, res) => {
@@ -139,14 +139,14 @@ exports.postEditTool = (req, res) => {
         if (err) console.log(err);
       });
 
-      return res.redirect("/tool");
+      return res.redirect("/news-event");
     });
   }
 
   if (deleteId) {
     Tool.findById({ _id: deleteId }).then((dataTool) => {
       dataTool.remove();
-      return res.redirect("/tool");
+      return res.redirect("/news-event");
     });
   }
 };

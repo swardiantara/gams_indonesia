@@ -45,13 +45,10 @@ exports.getEditMembership = (req, res) => {
 
 exports.getMemberOrder = async (req, res) => {
   // let user = req.user;
-  let user = await User.findById(req.user._id).populate('license');
-  let premium = user.license.some((license, index) => {
-    return license.name == 'Premium';
-  })
-  console.log(premium)
+  let user = await User.findById(req.user._id);
+  let premium = user.license == 'Premium' ? true : false;
   let pendingPremium = "";
-  if (!premium) {
+  if (user.license != 'Premium') {
     pendingPremium = await OrderMembership.findOne({ user: user._id, status: 'Menunggu Konfirmasi Pembayaran' });
   }
 
@@ -152,14 +149,14 @@ exports.getCommisionDetail = async (req, res) => {
   if (req.user.role != 'Admin') {
     return res.redirect('/dashboard');
   }
-  let loggedInUser = await User.findById(req.user._id).populate('license');
-  // user.license = user.license.some(license => {
-  //   return license.name == 'Premium'
+  // let loggedInUser = await User.findById(req.user._id).populate('license');
+  // // user.license = user.license.some(license => {
+  // //   return license.name == 'Premium'
+  // // }) ? 'Premium' : 'Basic';
+  // loggedInUser.license = loggedInUser.license.some(item => {
+  //   return item.name == 'Premium'
   // }) ? 'Premium' : 'Basic';
-  loggedInUser.license = loggedInUser.license.some(item => {
-    return item.name == 'Premium'
-  }) ? 'Premium' : 'Basic';
-  console.log(loggedInUser.license)
+  // console.log(loggedInUser.license)
   moment.locale('ID');
   let userId = req.params.id || "";
   let user = await User.findById(userId).populate('commission');
@@ -177,7 +174,7 @@ exports.getCommisionDetail = async (req, res) => {
   return res.render("membership/commissiondetail", {
     title: "Commission List",
     data: user,
-    user: loggedInUser,
+    user: req.user,
     total,
     customjs: true
   });
@@ -190,20 +187,20 @@ exports.getDownlineDetail = async (req, res) => {
 
   moment.locale('ID');
   let userId = req.params.id || "";
-  let user = await User.findById(userId).populate({ path: 'downline', populate: 'license' });
+  let user = await User.findById(userId).populate({ path: 'downline' });
   user.downline = user.downline.filter((item, index) => {
     return item.role == 'Member'
   })
-  user.downline.map((item, index) => {
-    // item.license = item.populate('license');
-    // item.license.some(license => {
-    //   return license.name == 'Premium'
-    // })
-    // console.log(item.license)
-    return item.license = item.license.some(license => {
-      return license.name == 'Premium'
-    }) ? 'Premium' : 'Basic';
-  })
+  // user.downline.map((item, index) => {
+  //   // item.license = item.populate('license');
+  //   // item.license.some(license => {
+  //   //   return license.name == 'Premium'
+  //   // })
+  //   // console.log(item.license)
+  //   return item.license = item.license.some(license => {
+  //     return license.name == 'Premium'
+  //   }) ? 'Premium' : 'Basic';
+  // })
   user.downline.map((item, index) => {
     let total = item.commission.reduce((prev, cur) => {
       return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;
@@ -227,9 +224,7 @@ exports.getDownlineDetail = async (req, res) => {
 exports.postAddMembership = (req, res) => {
   let user = req.user;
   const { name, description, price, commission } = req.body;
-  let premium = user.license.some((license, index) => {
-    return license.name == 'Premium';
-  })
+  let premium = user.license == 'Premium';
 
   if (premium) {
     res.send(400).send({ message: 'Anda sudah member Premium!' })
@@ -303,9 +298,8 @@ exports.postOrderMembership = async (req, res) => {
     let userId = req.user._id;
     let user = req.user;
     let { paket } = req.body;
-    let sudah = user.license.some((license, index) => {
-      return license.type == 'Premium'
-    })
+    let sudah = user.license == 'Premium' ? true : false;
+
     if (sudah) {
       await session.abortTransaction();
       res.status(404).send({ message: 'Anda sudah member premium!' })
@@ -441,10 +435,9 @@ exports.postVerifikasi = async (req, res) => {
 
     if (orderMembership.referralCode) {
       //Beri Komisi ke Upline
-      let upline = await User.findOne({ referralCode: orderMembership.referralCode }).populate("license");
-      let isPremium = upline.license.some((license) => {
-        return license.name == 'Premium'
-      })
+      let upline = await User.findOne({ referralCode: orderMembership.referralCode });
+      let isPremium = upline.license == 'Premium' ? true : false;
+
 
       //daftarkan downline ke upline
       upline.downline.push(idUser)
@@ -468,9 +461,8 @@ exports.postVerifikasi = async (req, res) => {
 
     if (orderMembership.paket.name == 'Basic') {
       //Tambahkan license ke User
-      let membership = await Membership.findOne({ name: 'Basic' })
       let user = await User.findById(idUser);
-      user.license.push(membership._id)
+      user.license = 'Basic';
       //Kirim email akun berhasil dibuat
       const mailOptions = {
         from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
@@ -517,9 +509,8 @@ exports.postVerifikasi = async (req, res) => {
       }
     } else {
       //Tambahkan license ke User
-      let membership = await Membership.findOne({ name: 'Premium' })
       let user = await User.findById(idUser);
-      user.license.push(membership._id)
+      user.license = 'Premium';
       const mailOptions = {
         from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
         to: user.email,

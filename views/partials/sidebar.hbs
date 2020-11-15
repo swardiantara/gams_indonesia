@@ -11,7 +11,6 @@
   </div>
   <div class="sidebar-body">
     <ul class="nav">
-      {{#ifCond user.role 'Member'}}
       <li class="nav-item nav-category">{{#if user.fullName}}{{user.fullName}}{{else}}No Name{{/if}}</li>
       <li class="nav-item">
         <a href="#" class="nav-link" aria-disabled="true">
@@ -25,7 +24,6 @@
           <span class="link-title">{{user.license}}</span>
         </a>
       </li>
-      {{/ifCond}}
 
       {{#ifCond user.role 'Admin'}}
       <li class="nav-item nav-category">Admin Menu</li>
@@ -153,10 +151,10 @@
         <div class="collapse" id="news">
           <ul class="nav sub-menu">
             <li class="nav-item">
-              <a href="/news" class="nav-link">News</a>
+              <a href="/news-event/a/news" class="nav-link">News</a>
             </li>
             <li class="nav-item">
-              <a href="/events" class="nav-link">Events</a>
+              <a href="/news-event/a/event" class="nav-link">Events</a>
             </li>
           </ul>
         </div>
