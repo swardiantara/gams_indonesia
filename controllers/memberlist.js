@@ -3,7 +3,7 @@ const moment = require('moment');
 
 exports.getMemberlist = async (req, res) => {
   moment.locale('ID');
-  let user = await User.find().populate('downline').populate('comission');
+  let user = await User.find().sort('-createdAt').populate('downline').populate('comission');
   user = user.filter((item, index) => {
     return item.role == 'Member'
   })

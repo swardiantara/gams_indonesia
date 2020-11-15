@@ -67,7 +67,7 @@ exports.getMemberOrderList = (req, res) => {
     status: {
       $in: ['Belum Bayar', 'Menunggu Konfirmasi Pembayaran']
     }
-  })
+  }).sort('-createdAt')
     .populate("user")
     .populate("paket")
     .then((data) => {

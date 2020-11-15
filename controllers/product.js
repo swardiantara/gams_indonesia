@@ -7,143 +7,173 @@ var RajaOngkir = require("rajaongkir-nodejs").Starter(
 );
 
 exports.getProducts = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  Product.find()
-    .sort("-createdAt")
-    .then((dataProduct) => {
-      return res.render("product/index", {
-        title: "All Products",
+  if (req.user.role == 'Admin') {
+    Product.find()
+      .sort("-createdAt")
+      .then((dataProduct) => {
+        return res.render("product/index", {
+          title: "All Products",
+          data: dataProduct,
+          user: req.user,
+        });
+      });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
+};
+
+exports.getAddProduct = (req, res) => {
+  if (req.user.role == 'Admin') {
+    return res.render("product/add", {
+      title: "Add Product",
+      user: req.user,
+      customjs: true,
+    });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
+};
+
+exports.getEditProduct = (req, res) => {
+  if (req.user.role == 'Admin') {
+    const productId = req.params.id;
+
+    Product.findById({ _id: productId }).then((dataProduct) => {
+      return res.render("product/add", {
+        title: "Edit Product",
+        data: dataProduct,
+        user: req.user,
+        customjs: true,
+      });
+    });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
+};
+
+exports.getUserProduct = (req, res) => {
+  if (req.user.role == 'Admin') {
+    Product.find().then((data) => {
+      return res.render("user/product", {
+        title: "Katalog",
+        data: data,
+        user: req.user,
+      });
+    });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
+};
+
+exports.getUserProductDetails = (req, res) => {
+  if (req.user.role == 'Admin') {
+    const prodId = req.params.id;
+
+    Product.findById({ _id: prodId }).then((dataProduct) => {
+      return res.render("user/product/details", {
+        title: dataProduct.title,
         data: dataProduct,
         user: req.user,
       });
     });
-};
-
-exports.getAddProduct = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  return res.render("product/add", {
-    title: "Add Product",
-    user: req.user,
-    customjs: true,
-  });
-};
-
-exports.getEditProduct = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  const productId = req.params.id;
-
-  Product.findById({ _id: productId }).then((dataProduct) => {
-    return res.render("product/add", {
-      title: "Edit Product",
-      data: dataProduct,
-      user: req.user,
-      customjs: true,
-    });
-  });
-};
-
-exports.getUserProduct = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  Product.find().then((data) => {
-    return res.render("user/product", {
-      title: "Katalog",
-      data: data,
-      user: req.user,
-    });
-  });
-};
-
-exports.getUserProductDetails = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  const prodId = req.params.id;
-
-  Product.findById({ _id: prodId }).then((dataProduct) => {
-    return res.render("user/product/details", {
-      title: dataProduct.title,
-      data: dataProduct,
-      user: req.user,
-    });
-  });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
 };
 
 exports.getUserCart = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  let userId = req.user._id;
-  Cart.find({ user: userId })
-    .populate("product")
-    .then((data) => {
-      return res.render("user/cart", {
-        title: "Cart",
-        user: req.user,
-        data: data,
-        customjs: true,
-      });
+  if (req.user.role == 'Admin') {
+    let userId = req.user._id;
+    Cart.find({ user: userId })
+      .populate("product")
+      .then((data) => {
+        return res.render("user/cart", {
+          title: "Cart",
+          user: req.user,
+          data: data,
+          customjs: true,
+        });
+      })
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
     })
-
+  }
 };
 
 exports.getOrderSalesPanel = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  OrderDetails.find()
-    .populate("user")
-    .then((dataOrder) => {
-      // console.log(dataOrder);
+  if (req.user.role == 'Admin') {
+    OrderDetails.find()
+      .populate("user")
+      .then((dataOrder) => {
+        // console.log(dataOrder);
 
-      return res.render("user/product/ordersalespanel", {
-        title: "Order Sales Panel",
+        return res.render("user/product/ordersalespanel", {
+          title: "Order Sales Panel",
+          data: dataOrder,
+          user: req.user,
+        });
+      });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
+};
+
+exports.getOrderStatus = (req, res) => {
+  if (req.user.role == 'Admin') {
+    const userId = req.user._id;
+
+    OrderDetails.find({ user: userId }).then((dataOrder) => {
+      return res.render("user/product/orderstatus", {
+        title: "Order Status",
         data: dataOrder,
         user: req.user,
       });
     });
-};
-
-exports.getOrderStatus = (req, res) => {
-  return res.render('landing/maintenance', {
-    title: "Oops! Laman dalam perbaikan",
-    user: req.user
-  })
-  const userId = req.user._id;
-
-  OrderDetails.find({ user: userId }).then((dataOrder) => {
-    return res.render("user/product/orderstatus", {
-      title: "Order Status",
-      data: dataOrder,
-      user: req.user,
-    });
-  });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
 };
 
 exports.getOrderDetails = (req, res) => {
-  const orderId = req.params.id;
+  if (req.user.role == 'Admin') {
+    const orderId = req.params.id;
 
-  OrderDetails.find({ _id: orderId }).then((dataOrder) => {
-    return res.render("user/product/orderdetails", {
-      title: "Order Details",
-      data: dataOrder,
-      user: req.user,
+    OrderDetails.find({ _id: orderId }).then((dataOrder) => {
+      return res.render("user/product/orderdetails", {
+        title: "Order Details",
+        data: dataOrder,
+        user: req.user,
+      });
     });
-  });
+  } else {
+    return res.render('landing/maintenance', {
+      title: "Oops! Laman dalam perbaikan",
+      user: req.user
+    })
+  }
 };
 
 /**
