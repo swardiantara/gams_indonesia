@@ -8,7 +8,7 @@ const { isAuthenticated, isUnAuthenticated } = require('../config/protected');
 const { getEdit, postEdit, postEditBank, getEditSandi, postEditSandi, getUserProfile } = require('../controllers/profile');
 
 router.get('/edit', isAuthenticated, getEdit);
-router.get('/:id', isAuthenticated, getUserProfile);
+router.get('/member/:id', isAuthenticated, getUserProfile);
 router.get('/edit/sandi', isAuthenticated, getEditSandi);
 
 /**
