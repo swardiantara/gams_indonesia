@@ -96,7 +96,25 @@
     }
 
     .bg-jumbo2 {
-        background-image: url(/pure/images/art/bg-video.jpg);
+        background:linear-gradient( rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)), url(/pure/images/art/bg-video.jpg);
+        background-size: cover;
+    }
+
+    .bg-jumbo-3{
+        background: linear-gradient( rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)), url(/pure/images/bg-jumbo-3.jpg);
+        background-size: cover;
+    }
+
+    .bg-jumbo-4{
+        background: linear-gradient( rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)), url(/pure/images/bg-jumbo-4.jpg);
+        background-size: cover;
+    }
+    .bg-jumbo-5{
+        background: linear-gradient( rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.7)), url(/pure/images/bg-jumbo-5.jpg);
         background-size: cover;
     }
 
@@ -257,7 +275,7 @@
     }
 
     .myaccordion .btn-link:hover,
-    .myaccordion .btn-link:focus {0
+    .myaccordion .btn-link:focus {
         text-decoration: none;
     }
 
