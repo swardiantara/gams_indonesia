@@ -63,13 +63,11 @@ const userSchema = new Schema(
       required: false,
       default: null,
     },
-    license: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Membership",
-        required: false,
-      },
-    ],
+    license: {
+      type: String,
+      required: false,
+      default: null,
+    },
     referralCode: {
       type: String,
       required: false,

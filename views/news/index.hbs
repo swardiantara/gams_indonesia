@@ -2,7 +2,8 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">{{{title}}} <a href="/tool/add" class="btn btn-primary btn-xs">Add</a></h6>
+                <h6 class="card-title">{{{title}}} <a href="/news-event/add" class="btn btn-primary btn-xs ml-1">Add</a>
+                </h6>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -16,10 +17,10 @@
                         <tbody>
                             {{#each data}}
                             <tr>
-                                <th><a href="/tool/edit/{{_id}}">{{title}}</a></th>
+                                <th><a href="/news-event/edit/{{_id}}">{{title}}</a></th>
                                 <td>{{formatdate createdAt}}</td>
-                                <td>{{ category}}</td>
-                                <td><a href="/tool/delete/{{_id}}" class="text-danger">Delete</td>
+                                <td>{{category}}</td>
+                                <td><a href="/news-event/delete/{{_id}}" class="text-danger">Delete</td>
                             </tr>
                             {{/each}}
                         </tbody>

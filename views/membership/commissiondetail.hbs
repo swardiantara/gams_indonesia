@@ -43,7 +43,17 @@
             </div>
             <div class="card-footer row justify-content-between mx-3">
                 <span>Total Komisi : {{formatprice total}}</span>
-                <button class="btn btn-success" data-id="{{data._id}}">Lunaskan</button></div>
+                {{#if data.commission}}
+                <button id="resetKomisi" class="btn btn-success" data-id="{{data._id}}">Lunaskan</button>
+                {{else}}
+                <span class="d-inline-block d-flex justify-content-center" tabindex="0" data-toggle="tooltip"
+                    title="Tidak ada komisi!">
+                    <button class="btn btn-primary" style="pointer-events: none;" type="button"
+                        disabled>Lunaskan</button>
+                </span>
+                {{!-- <button id="resetKomisi" class="btn btn-success" data-id="{{data._id}}" disabled>Lunaskan</button> --}}
+                {{/if}}
+            </div>
         </div>
     </div>
     {{!-- <div class="card">

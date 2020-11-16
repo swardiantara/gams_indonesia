@@ -11,6 +11,10 @@ const welcome = new Schema({
     type: String,
     required: true,
   },
+  thumbnail: {
+    type: String,
+    required: false,
+  },
   descriptionPage: {
     type: String,
     required: true,

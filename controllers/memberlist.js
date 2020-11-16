@@ -3,19 +3,19 @@ const moment = require('moment');
 
 exports.getMemberlist = async (req, res) => {
   moment.locale('ID');
-  let user = await User.find().populate('downline').populate('comission').populate('license');
+  let user = await User.find().sort('-createdAt').populate('downline').populate('comission');
   user = user.filter((item, index) => {
     return item.role == 'Member'
   })
-  user.map((item, index) => {
-    // item.license.some(license => {
-    //   return license.name == 'Premium'
-    // })
-    // console.log(item.license)
-    item.license = item.license.some(license => {
-      return license.name == 'Premium'
-    }) ? 'Premium' : 'Basic';
-  })
+  // user.map((item, index) => {
+  //   // item.license.some(license => {
+  //   //   return license.name == 'Premium'
+  //   // })
+  //   // console.log(item.license)
+  //   item.license = item.license.some(license => {
+  //     return license.name == 'Premium'
+  //   }) ? 'Premium' : 'Basic';
+  // })
   user.map((item, index) => {
     let total = item.commission.reduce((prev, cur) => {
       return cur.status == 'not_paid' ? prev + cur.jumlah : prev + 0;

@@ -15,6 +15,7 @@ const profileRouter = require("./routes/profile");
 const productRouter = require("./routes/product");
 const lessonRouter = require("./routes/lesson");
 const toolRouter = require("./routes/tool");
+const newsRouter = require("./routes/news");
 const leadsRouter = require("./routes/leads");
 const memberlistRouter = require("./routes/memberlist");
 const membershipRouter = require("./routes/membership");
@@ -86,6 +87,7 @@ app.use("/product", productRouter);
 app.use("/lesson", lessonRouter);
 app.use("/lead", leadsRouter);
 app.use("/tool", toolRouter);
+app.use("/news-event", newsRouter);
 app.use("/memberlist", memberlistRouter);
 app.use("/membership", membershipRouter);
 app.use(membershipRouter);
@@ -106,7 +108,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render("error", { baseURL: process.env.APP_URL, layout: 'layouts/auth' });
 });
 
 module.exports = app;

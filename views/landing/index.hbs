@@ -11,13 +11,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="free.html">9 Free Video</a>
+                            <a class="nav-link"
+                                href="/freevideo{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">9
+                                Free Video</a>
                         </li>
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="#">Join Member</a>
+                            <a class="nav-link"
+                                href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">Join
+                                Member</a>
                         </li>
                         <li class="nav-item px-3 py-1 ">
-                            <a class="nav-link" href="#">Member Login</a>
+                            <a class="nav-link" href="/auth/login">Member Login</a>
                         </li>
                     </ul>
                 </div>
@@ -91,8 +95,10 @@
                         <h2 style="color:white;">Sudah 7.315 orang belajar bersama kami & merasakan manfaatnya.</h2>
                     </div>
                     <div class="col-6 col-md-3 align-self-center text-center">
-                        <button type="button" class="btn btn-info btn-block"
-                            style="border-radius: 0%; height:3.6rem; ">Langkah Berikutnya </button>
+                        <a style="text-decoration:none"
+                            href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
+                            <button type="button" class="btn btn-info btn-block"
+                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>
@@ -264,13 +270,13 @@
             <!-- Satu card besar -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75 img-res" src="/pure/images/icons/st-line-chart.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class=" img-res" src="/pure/images/icons/st-line-chart.png">
                         <!-- disini taro icon -->
                     </div>
-                    <div class="col-md-10 mb-3">
-                        <h4 class="card-teks">Full Support 101%</h4>
-                        <p class="card-teks text-justify">GAMS menyediakan Tim Support yang siap membantu Anda baik
+                    <div class="col-md-10 mb-3 p-3">
+                        <h4 class="card-teks px-3">Full Support 101%</h4>
+                        <p class="card-teks text-justify px-3">GAMS menyediakan Tim Support yang siap membantu Anda baik
                             secara online (melalui Live Chat, Whatsapp, Webinar, dan lain-lain) maupun offline (melalui
                             event-event Kopdar, Training dan lain-lain) dimana Anda akan langsung dibantu oleh para
                             mentor.</p>
@@ -280,13 +286,13 @@
             <!-- Card kedua -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/of-document.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/of-document.png">
                         <!-- disini taro icon -->
                     </div>
                     <div class="col-md-10 mb-3">
-                        <h4 class="card-teks">Strategi Jualan</h4>
-                        <p class="card-teks text-justify">Salah satu hal yang WAJIB Anda miliki ketika berjualan adalah
+                        <h4 class="card-teks px-3">Strategi Jualan</h4>
+                        <p class="card-teks text-justify px-3">Salah satu hal yang WAJIB Anda miliki ketika berjualan adalah
                             ILMU DAN STRATEGI. Di luar sana, Anda perlu mengeluarkan biaya jutaan untuk belajar dan
                             mengikuti training, sementara disini justru dijadikan sebagai Fasilitas untuk membantu Anda.
                         </p>
@@ -296,13 +302,13 @@
             <!-- Card Ketiga -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/ec-shopping-list.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/ec-shopping-list.png">
                         <!-- disini taro icon -->
                     </div>
                     <div class="col-md-10 mb-3">
-                        <h4 class="card-teks">Dropship</h4>
-                        <p class="card-teks text-justify">Anda tidak perlu stok barang. Tidak perlu sibuk packing setiap
+                        <h4 class="card-teks px-3">Dropship</h4>
+                        <p class="card-teks text-justify px-3">Anda tidak perlu stok barang. Tidak perlu sibuk packing setiap
                             kali ada orderan. Hal yang merepotkan dalam berbisnis online adalah proses pengemasan dan
                             pengiriman. Menariknya, di GAMS kami yang akan mengurus semuanya.</p>
                     </div>
@@ -311,13 +317,13 @@
             <!-- Card Keempat -->
             <div class="col-12  col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/ui-bill.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/ui-bill.png">
                         <!-- disini taro icon -->
                     </div>
                     <div class="col-md-10 mb-3">
-                        <h4 class="card-teks">Penghasilan Besar</h4>
-                        <p class="card-teks text-justify">Selain belajar dan mendapatkan materi yang selalu diperbarui,
+                        <h4 class="card-teks px-3">Penghasilan Besar</h4>
+                        <p class="card-teks text-justify px-3">Selain belajar dan mendapatkan materi yang selalu diperbarui,
                             salah satu fasilitas “mahal” dan bernilai di GAMS adalah Anda juga mendapat kesempatan untuk
                             memiliki Pasif Income yang terus membesar dari Dunia Digital.</p>
                     </div>
@@ -337,13 +343,13 @@
             <!-- Satu card besar -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75 img-responsive" src="/pure/images/icons/ms-video-player.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/ms-video-player.png">
                         <!-- disini taro icon -->
                     </div>
-                    <div class="col-md-10 mb-3">
-                        <h4>Materi Iklan</h4>
-                        <p class="card-text text-justify">Salah satu penyebab banyaknya bisnis yang merugi adalah karena
+                    <div class="col-md-10 mb-3 px-3">
+                        <h4 class="px-3">Materi Iklan</h4>
+                        <p class="card-text text-justify px-3">Salah satu penyebab banyaknya bisnis yang merugi adalah karena
                             tidak memiliki konten berkualitas. Untuk mendapatkannya, Anda perlu mengeluarkan biaya
                             hingga belasan juta rupiah perbulan. Namun disini, Anda akan mendapatkan puluhan konten baru
                             GRATIS SETIAP MINGGUNYA yang dapat Anda gunakan sebagai materi beriklan</p>
@@ -353,13 +359,13 @@
             <!-- Card kedua -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/hs-support-5.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/hs-support-5.png">
                         <!-- disini taro icon -->
                     </div>
-                    <div class="col-md-10 mb-3">
-                        <h4>Training Online dan Offline</h4>
-                        <p class="card-text text-justify">Anda dapat belajar secara online (melalui website) maupun
+                    <div class="col-md-10 mb-3 px-3">
+                        <h4 class="px-3">Training Online dan Offline</h4>
+                        <p class="card-text text-justify px-3">Anda dapat belajar secara online (melalui website) maupun
                             offline (tatap muka). Bagi Anda yang terkendala dengan masalah jarak dan waktu, GAMS
                             menyiapkan pembelajaran online lengkap dengan sistem serta kurikulumnya. Anda hanya perlu
                             meluangkan waktu 1-2 jam per hari untuk mengikuti seluruh pembelajaran.</p>
@@ -369,13 +375,13 @@
             <!-- Card Ketiga -->
             <div class="col-12 col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/ui-user.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/ui-user.png">
                         <!-- disini taro icon -->
                     </div>
-                    <div class="col-md-10 mb-3">
-                        <h4>Komunitas dan Mentor</h4>
-                        <p class="card-text text-justify">Tidak perlu merasa sendiri, karena ada komunitas yang positif
+                    <div class="col-md-10 mb-3 px-3">
+                        <h4 class="px-3">Komunitas dan Mentor</h4>
+                        <p class="card-text text-justify px-3">Tidak perlu merasa sendiri, karena ada komunitas yang positif
                             dan supportif. 90% member kami merasa terbantu dengan komunitas Generasi Anak Muda Sukses
                             ini hingga bisa bertumbuh dan sukses bersama-sama.</p>
                     </div>
@@ -384,13 +390,13 @@
             <!-- Card Keempat -->
             <div class="col-12  col-md-6 col-sm-12 mb-3">
                 <div class="row">
-                    <div class="col-md-2 align-self-start">
-                        <img class="mw-75 mh-75 w-75 h-75" src="/pure/images/icons/ui-landing-page.png">
+                    <div class="col-lg-2 col-md-2 col-sm-3 align-self-start text-center p-3">
+                        <img class="img-res" src="/pure/images/icons/ui-landing-page.png">
                         <!-- disini taro icon -->
                     </div>
-                    <div class="col-md-10 mb-3">
-                        <h4>Website</h4>
-                        <p class="card-text text-justify">Di GAMS Anda sudah di-fasilitasi Website & Landing Page yang
+                    <div class="col-md-10 mb-3 px-3">
+                        <h4 class="px-3">Website</h4>
+                        <p class="card-text text-justify px-3">Di GAMS Anda sudah di-fasilitasi Website & Landing Page yang
                             telah dilengkapi Fitur Affiliate beserta License Program bagi membernya. Sehingga Anda tidak
                             hanya mendapatkan komisi dari personal sales namun juga bisa mendapat cipratan penghasilan
                             dari Team Reseller Anda.</p>
@@ -486,8 +492,10 @@
                         <h2 style="color:white;">Sudah 7.315 orang belajar bersama kami & merasakan manfaatnya.</h2>
                     </div>
                     <div class="col-6 col-md-3 align-self-center text-center">
-                        <button type="button" class="btn btn-info btn-block"
-                            style="border-radius: 0%;height:3.6rem; ">Langkah Berikutnya </button>
+                        <a style="text-decoration:none"
+                            href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
+                            <button type="button" class="btn btn-info btn-block"
+                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>

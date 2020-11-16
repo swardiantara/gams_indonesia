@@ -19,6 +19,12 @@ const toolSchema = new Schema(
       type: String,
       required: false,
     },
+    gallery: [
+      {
+        type: String,
+        required: false
+      }
+    ]
   },
   { timestamps: true }
 );
