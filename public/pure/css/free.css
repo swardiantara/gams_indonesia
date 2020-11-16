@@ -248,8 +248,8 @@
     }
 
     .myaccordion {
-        max-width: 500px;
-        margin: 50px auto;
+        /* max-width: 500px; */
+    
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
     }
 
@@ -296,6 +296,15 @@
         width: 75% !important;
         height: 75% !important;
     }
+
+    .myaccordion .btn {
+        width: 100%;
+        font-weight: bold;
+        color: #004987;
+        padding: 0;
+        /* font-size: 1vw; */
+    }
+    
 }
 
 @media (max-width: 767.98px) {
@@ -303,6 +312,14 @@
         width: 20% !important;
         height: 20% !important;
         justify-items: center;
+    }
+
+    .myaccordion .btn {
+        width: 100%;
+        font-weight: bold;
+        color: #004987;
+        padding: 0;
+   
     }
     
 }
@@ -312,4 +329,13 @@
         width: 25% !important;
         height: 25% !important;
     }
+
+    .myaccordion .btn {
+        width: 100%;
+        font-weight: bold;
+        color: #004987;
+        padding: 0;
+        /* font-size: 2vh; */
+    }
+    
 }
