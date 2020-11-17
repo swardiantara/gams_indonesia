@@ -564,7 +564,8 @@ exports.resetCommission = async (req, res) => {
         status: 'not_paid'
       }
     });
-    console.log(user.commission);
+    // console.log(user.commission);
+    // return res.status(400).send({ code: 400, message: 'Gagal mereset komisi!', data: user })
     user.commission.map(item => {
       return item.status = 'paid'
     })
