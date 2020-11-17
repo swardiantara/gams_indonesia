@@ -6,7 +6,7 @@ exports.getMyLeads = async (req, res) => {
   const userId = req.user._id;
   moment.locale('ID');
   // let date = [];
-  User.findOne({ _id: userId })
+  User.findById(userId)
     .populate({
       path: "leads",
       options: {
