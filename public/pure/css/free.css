@@ -270,7 +270,7 @@
     .myaccordion .btn {
         width: 100%;
         font-weight: bold;
-        color: #004987;
+        /* color: #004987; */
         padding: 0;
     }
 
