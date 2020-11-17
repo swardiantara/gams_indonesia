@@ -1,7 +1,7 @@
 {{!-- Overlay - 1 --}}
 <section style="color: #e5e5e5;">
     {{!-- <div class="overlay"> --}}
-    <div class="bill-overlay jumbotron jumbotron-fluid text-center ">
+    <div class="bg-jumbo-3 jumbotron jumbotron-fluid text-center ">
         <div class="container">
             <div style="font-weight: 700 !important;">
                 <div class="h6 pb-3" style="letter-spacing: 6px;">- Halaman Pendaftaran Member GAMS -</div>
@@ -31,7 +31,7 @@
 {{!-- Overlay - 2 --}}
 <section style="color: #e5e5e5;">
     {{!-- <div class="overlay"> --}}
-    <div class="bill-overlay jumbotron jumbotron-fluid text-center ">
+    <div class="bg-jumbo-4 jumbotron jumbotron-fluid text-center ">
         <div class="container">
             <div style="font-weight: 700 !important;">
                 <div class="h2 px-3 text-uppercase">Special untuk anda yang daftar sekarang!</div>
@@ -54,7 +54,7 @@
 </section>
 
 <section style="color:white;">
-    <div class="jumbotron text-center bill-overlay">
+    <div class="bg-jumbo-5 jumbotron text-center bill-overlay">
         <div class="h2">Segera Anda selesaikan proses Membership Anda sekarang, agar bisa lebih cepat merasakan HASIL
             dari dunia digital.</div>
     </div>
@@ -62,7 +62,7 @@
 
 {{!-- Billig Form --}}
 <section>
-    <div class="container shadow-lg rounded p-3 mb-5" style="width: 50%;">
+    <div class="container col-sm-6 shadow-lg rounded p-3 mb-5" style="width:">
         <h3 class="mt-3">Billing Form GAMS</h3>
         <form action="" method="POST" enctype="application/x-www-form-urlencoded">
             <div class="form-group">
@@ -85,84 +85,160 @@
             <button type="submit" class="btn btn-primary">
                 Kirim
             </button>
-        </form>
+        </form> 
     </div>
 </section>
 
 {{!-- FAQ --}}
 <section class="faq">
-    <div class="container-fluid row justify-content-center">
-        <div class="col-8 ">
-            <h1 class="h1 text-center py-5 text-white">Frequently Asked Questions</h1>
-            <div class="row">
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid text-white px-3 faq shadow">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+    <div class=" d-flex justify-content-center">
+        <div class="col-12 col-sm-12 col-md-6 ">
+            <h1 class="h1 text-center pt-4 text-white">Frequently Asked Questions</h1>
+            <div class="mb-5">
+                <div id="accordion" class="myaccordion col-12 col-sm-12 col-md-12">
+                    <div class="card shadow" style="border-radius: 0%; ">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA?
+                                    <span class="fa-stack fa-sm justify-content-end">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body text-justify pr-5" style="color:#004987 !important;">
+                                Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah merasa berumur
+                                namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak muda. Karena
+                                semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS
+                                <br><br><b>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</b>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid text-white faq shadow ">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+                    <div class="card shadow" style="border-radius: 0%;">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                                    aria-controls="collapseTwo">
+                                    BAGAIMANA CARA BERGABUNG?
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body text-justify pr-5">
+                                Sebelumnya apakah Kak sudah menonton video Fasilitas GAMS? Untuk hal pertama yaitu
+                                tonton video Fasilitas GAMS sampai selesai, Lalu ketika video nya sudah selesai di
+                                tonton, di bawah video Kakak tekan LANGKAH BERIKUTNYA
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid text-white faq shadow ">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+                    <div class="card shadow" style="border-radius: 0%;">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+                                    aria-controls="collapseThree">
+                                    APAKAH SETELAH JOIN AKAN DIBIMBING?
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#accordion">
+                            <div class="card-body text-justify pr-5">
+                                Iya, Anda akan mendapatkan Full Support 101% . Anda akan dibimbing sampai bisa
+                                menghasilkan 5-10 juta/bulan dari Dunia Digital selambat-lambatnya di bulan ke-5. Ada
+                                Tim Support yang siap membantu Anda baik secara online (melalui Live Chat, Whatsapp,
+                                Webinar, dan lain-lain) maupun offline (melalui event-event Kopdar, Training dan
+                                lain-lain) dimana Anda akan langsung dibantu oleh para mentor.
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid text-white faq shadow ">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+                    <div class="card shadow" style="border-radius: 0%;">
+                        <div class="card-header" id="headingFour">
+                            <h2 class="mb-0">
+                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                                    aria-controls="collapseFour">
+                                    BAGAIMANA CARA KERJANYA?
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                            <div class="card-body text-justify pr-5">
+                                Member sudah di-fasilitasi Website & Landing Page yang telah dilengkapi Fitur Affiliate.
+                                Sehingga tugas Anda cukup menyebarkan link Affiliate Anda dengan Ilmu Digital Marketing
+                                yang kami ajarkan. Ketika orang melakukan transaksi lewat link Affiliate Anda, Anda
+                                berhak mendapatkan komisi. Proses pengiriman barang dan tanya jawab customer, semua kami
+                                yang urus.
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid text-white faq shadow ">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+                    <div class="card shadow" style="border-radius: 0%;">
+                        <div class="card-header" id="headingFive">
+                            <h2 class="mb-0">
+                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                                    aria-controls="collapseFive">
+                                    APAKAH ADA KEUNTUNGAN BAGI MEMBER?
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                            <div class="card-body text-justify pr-5">
+                                Tidak ada. Jadi ketika Kakak bergabung menjadi member GAMS hanya akan ada 1 kali
+                                pembayaran saja di awal untuk menjadi member 1x seumur hidup, dan Kakak akan mendapatkan
+                                semua Fasilitas & Tools dari GAMS
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="jumbotron jumbotron-fluid faq text-white shadow ">
-                        <div class="container pl-3 text-justify">
-                            <h5 class="pb-3">APAKAH GAMS HANYA UNTUK ANAK MUDA SAJA</h5>
-                            <p class="pb-3">Tidak. GAMS diperuntukkan untuk anak-anak muda dan bagi Anda yang sudah
-                                merasa berumur namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak
-                                muda. Karena semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS >></p>
-                            <h5>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</h5>
+                    <div class="card shadow" style="border-radius: 0%;">
+                        <div class="card-header" id="headingSix">
+                            <h2 class="mb-0">
+                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                    data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
+                                    aria-controls="collapseSix">
+                                    APAKAH GAMS INDONESIA BISNIS MLM?
+                                    <span class="fa-stack fa-sm">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                            <div class="card-body text-justify pr-5" style="color:#">
+                                Model bisnis kami bukan MLM, karena kami tidak ada sistem Binary seperti MLM kak. Model
+                                bisnis kami menggunakan Affiliate Marketing. Sehingga member bisa mendapatkan komisi
+                                baik dari personal sales maupun team sales.
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 {{!-- End --}}
