@@ -41,26 +41,84 @@
     <!-- End -->
 
     <!-- Section 2 -->
-    <section style="background-color:#f5f5f5;">
-        <div class="container p-3">
+    <section>
+        <div class="container col-md-6 col-12 col-sm-12 p-3">
             <h3>Generasi Anak Muda Sukses</h3>
             <h5 class="mt-4">Tunggu dulu, apa kendala TERBERAT untuk memulai bisnis online?</h5>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                    value="option1">
-                <label class="form-check-label" for="inlineRadio1">1</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                    value="option2">
-                <label class="form-check-label" for="inlineRadio2">2</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"
-                    disabled>
-                <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
-            </div>
-            <button type="button" class="btn btn-primary btn-lg">Temukan Solusinya!</button>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                            value="option1">
+                        <label class="form-check-label" for="inlineRadio1">Bingung mulai dari mana</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                            value="option2">
+                        <label class="form-check-label" for="inlineRadio2">Belum mengerti dunia online sama sekali</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                            value="option3">
+                        <label class="form-check-label" for="inlineRadio3">Takut gagal</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4"
+                            value="option4">
+                        <label class="form-check-label" for="inlineRadio4">Belum ada modal</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5"
+                            value="option5">
+                        <label class="form-check-label" for="inlineRadio5">Belum ada produk</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio6"
+                            value="option6">
+                        <label class="form-check-label" for="inlineRadio6">Merasa Gaptek</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio7"
+                            value="option7">
+                        <label class="form-check-label" for="inlineRadio7">Belum punya Mentor</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio8"
+                            value="option8">
+                        <label class="form-check-label" for="inlineRadio8">Training Bisnis Online mahal</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio9"
+                            value="option9">
+                        <label class="form-check-label" for="inlineRadio9">Belum punya Komunitas</label>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio10"
+                            value="option10">
+                        <label class="form-check-label" for="inlineRadio10">Belum ada modal</label>
+                    </div>
+                </li>
+            </ul>
+            <button type="button" class="btn btn-secondary btn-lg ml-3 mt-3" style="border-radius: 0%;">Temukan
+                Solusinya!</button>
         </div>
     </section>
     <!-- End -->
@@ -97,8 +155,8 @@
                     <div class="col-6 col-md-3 align-self-center text-center">
                         <a style="text-decoration:none"
                             href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
-                            <button type="button" class="btn btn-info btn-block"
-                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
+                            <button type="button" class="btn btn-lg btn-info btn-block"
+                                style="border-radius: 0%; ">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>
@@ -500,8 +558,8 @@
                     <div class="col-6 col-md-3 align-self-center text-center">
                         <a style="text-decoration:none"
                             href="/register{{#if referralCode}}?referralCode={{referralCode}}{{/if}}{{#if funnel}}&funnel={{funnel}}{{/if}}">
-                            <button type="button" class="btn btn-info btn-block"
-                                style="border-radius: 0%; width:16rem; height:3.6rem; ">Langkah Berikutnya </button></a>
+                            <button type="button" class="btn btn-info btn-lg btn-block"
+                                style="border-radius: 0%;">Langkah Berikutnya </button></a>
                     </div>
                 </div>
             </div>
@@ -538,7 +596,7 @@
                                     namun memiliki semangat seperti anak muda. Jangan minder dengan anak-anak muda.
                                     Karena
                                     semakin tua seseorang, semakin berpengalaman. Hanya bersama GAMS
-                                <p class="pt-4 "><b>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</b></p>
+                                    <p class="pt-4 "><b>SEMUA ORANG DAPAT PENGHASILAN DARI ONLINE</b></p>
                                 </div>
                             </div>
                         </div>
