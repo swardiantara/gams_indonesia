@@ -7,20 +7,9 @@
         font-size: 21px;
     }
 
-    .icon-footer {
-        background-color: #deecea;
-        border-radius: 50%;
+    .facebook-hover:hover{
+        background-color: #3b5998;
     }
-
-    /* 
-    .background-body{
-        background-image: url(/public/pure/) !important;
-        position: static;
-        z-index: 1;
-        height: 600px;
-        width: 100%;
-        
-    } */
 
     /* index */
     .overlay {
@@ -270,8 +259,9 @@
     .myaccordion .btn {
         width: 100%;
         font-weight: bold;
-        /* color: #004987; */
+        color: #004987;
         padding: 0;
+        font-size: 12px;
     }
 
     .myaccordion .btn-link:hover,
@@ -302,7 +292,7 @@
         font-weight: bold;
         color: #004987;
         padding: 0;
-        /* font-size: 1vw; */
+        font-size: 20px;
     }
     
 }
@@ -336,6 +326,7 @@
         color: #004987;
         padding: 0;
         /* font-size: 2vh; */
+        
     }
     
 }
