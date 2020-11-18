@@ -11,6 +11,15 @@
         background-color: #3b5998;
     }
 
+    .background-body {
+        background-image: url(./images/art/bg-up.jpg) !important;
+        position: relative;
+        z-index: 1;
+        height: 400px;
+        /* width: max-content; */
+    }
+    
+
     /* index */
     .overlay {
         background-color: transparent !important;
