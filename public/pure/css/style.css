@@ -1,53 +1,53 @@
-h4{
+h4 {
     color: #4c4c4c;
     margin-bottom: 20px;
     font-weight: 400;
     font-size: 21px;
 }
 
-.icon-footer{
+.icon-footer {
     background-color: #deecea;
     border-radius: 50%;
-    
 }
 
-.background-body{
+.background-body {
     background-image: url(./images/art/bg-up.jpg) !important;
     position: relative;
-    z-index: 1;
+    /* z-index: 1; */
     height: 400px;
     /* width: max-content; */
-    
 }
 
 /* index */
-.overlay{
+.overlay {
     background-color: transparent !important;
-    background-image: linear-gradient(180deg, #000000 0%, #084852 100%) !important;
-    
+    background-image: linear-gradient(180deg,
+            #000000 0%,
+            #084852 100%) !important;
 }
 
-.video-text{
+.video-text {
     color: #084852 !important;
 }
 
-
-.nav-back{
+.nav-back {
     background-color: transparent !important;
-    background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%) !important;
+    background-image: linear-gradient(180deg,
+            #ffffff 0%,
+            #f5f5f5 100%) !important;
 }
 
-.navbar-brand{
+.navbar-brand {
     font-family: "Coming Soon", sans-serif;
     font-weight: 700;
-    font-size:  2vw;
+    font-size: x-large;
 }
 
-.nav-text-item{
-    font-family:sans-serif;
+.nav-text-item {
+    font-family: sans-serif;
 }
 
-.nav-link{
+.nav-link {
     font-size: 16px;
     font-weight: 600;
     line-height: 16px;
@@ -55,12 +55,12 @@ h4{
     transition: 0.2s;
 }
 
-.nav-link:hover{
+.nav-link:hover {
     transform: scale(1.1);
     color: rgb(3, 255, 206) !important;
 }
 
-.jumbotron-landing{
+.jumbotron-landing {
     font-family: "Coming Soon", sans-serif;
     margin-top: -16px;
     background-color: transparent;
@@ -69,73 +69,70 @@ h4{
 /*  */
 
 /* free-landing page */
-.jumbotron-footer{
-  background-color: #ffff;
+.jumbotron-footer {
+    background-color: #ffff;
 }
 
-
-.jumbotron-h1{
+.jumbotron-h1 {
     font-weight: 700;
-    font-size : 5vs;
+    font-size: 5vs;
     /* font-family: "Roboto Condensed", "Sans-serif"; */
     color: #444444 !important;
     text-align: center;
 }
 
-strong{
-    font-size:23px;
+strong {
+    font-size: 23px;
     font-style: italic;
     color: #000;
     font-weight: 800;
 }
+
 /*  */
 
-.card-atas{
-    border : none;
+.card-atas {
+    border: none;
     /* background-color: #f5f5f5 !important; */
     max-width: 150rem;
     max-height: 80rem;
 }
 
-.card-bawah{
+.card-bawah {
     border: none;
     background-color: #f5f5f5;
 }
 
-
-.judul-card{
+.judul-card {
     font-family: "Playfair Display", sans-serif;
 }
 
-
-.card-title{
+.card-title {
     font-size: 28px;
     color: #474545;
-
 }
 
-.card-style{
-    height : 240px;
-    padding : 1rem 1rem 1rem 1rem;
+.card-style {
+    height: 240px;
+    padding: 1rem 1rem 1rem 1rem;
     /* width : 300px; */
 }
 
-.card-text{
+.card-text {
     /* text-align: justify !important; */
     font-weight: 500;
-    color : #898181
-
+    color: #898181;
 }
 
 /* .border-ikon{
     
 } */
 
-.ikon{
+.ikon {
     /* z-index: 1;
     right:25% !important;
     position: relative; */
-    height: 5em; width: 5em;
+    height: 5em;
+    width: 5em;
     /* top: 6em; */
     fill: #4054b2;
     border: solid 3px;
@@ -151,35 +148,29 @@ strong{
     border-color: #4054b2;
 } */
 
-.card-img{
+.card-img {
     height: 250px;
     max-width: 100%;
 }
 
-.icon-card{
+.icon-card {
     color: red;
     font-size: 0.5rem;
     margin-bottom: 10px;
-    margin-top : -10px;
+    margin-top: -10px;
 }
 
 /* Section di Landing untuk items */
-.card-bg{
+.card-bg {
     background-color: transparent;
-    background-image: linear-gradient(180deg, #222633 0%, #1E1C26FA 100%);
+    background-image: linear-gradient(180deg, #222633 0%, #1e1c26fa 100%);
 }
 
-.items-title{
-    color: #03FFCE;
+.items-title {
+    color: #03ffce;
     font-family: "Playfair Display", sans-serif;
     font-size: 36px;
     font-weight: normal;
     position: relative;
     /* transition: background0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s; */
-}
-
-
-
-@media (min-width){
-    
 }
