@@ -27,6 +27,11 @@
         font-size: large;
     }
 
+    .fa-youtube :hover{
+        color : red;
+    }
+    
+
     /* index */
     .overlay {
         background-color: transparent !important;
