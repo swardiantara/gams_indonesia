@@ -14,11 +14,18 @@
     .background-body {
         background-image: url(./images/art/bg-up.jpg) !important;
         position: relative;
-        z-index: 1;
+        /* z-index: 1; */
         height: 400px;
         /* width: max-content; */
     }
     
+    .pad-check{
+        padding-top: 4px;
+        padding-bottom: 4px;
+        border:none;
+        padding-left: 4px;
+        font-size: large;
+    }
 
     /* index */
     .overlay {
