@@ -152,6 +152,7 @@
     $('#resetKomisi').on('click', function (e) {
         e.preventDefault();
         let idUser = $(this).data('id');
+        console.log(idUser)
         const API = `/commission/${idUser}/reset`;
         axios({
             method: "POST",
@@ -169,10 +170,11 @@
                 });
             })
             .catch((err) => {
+                console.log(err)
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: err,
+                    text: err.message,
                     footer: "<a href>Silahkan coba kembali nanti</a>",
                 });
             });

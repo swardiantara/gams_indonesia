@@ -74,15 +74,88 @@ $('#formRegister').on('submit', function (e) {
     type: 'POST',
     url: `/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`,
     data: data.serialize(),
-    success: function (response) {
-      console.log(response)
-      alert('Success')
-    }
+    // success: function (response) {
+    //   console.log(response)
+    //   alert('Success')
+    // }
   }).done((response) => {
+    // response = response.responseJSON;
     console.log(response)
-    alert('Success')
+    Swal.fire({
+      icon: "success",
+      title: "Pendaftaran Berhasil!",
+      text: 'Silahkan cek email untuk melihat detail order!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `${response.baseURL}${response.routeQuery.referralCode ? "?referralCode=" + response.routeQuery.referralCode : ""}${response.routeQuery.funnel ? "&funnel=" + response.routeQuery.funnel : ""}`
+      }
+    });
+    // console.log(response)
+    // alert('Success')
   }).fail((error) => {
-    console.log(error)
-    alert('Fail')
+    console.log(error.responseJSON)
+    Swal.fire({
+      icon: "error",
+      title: "Gagal!",
+      text: `${error.responseJSON.message}`,
+    })
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     window.location.href = `${response.baseURL}${response.routeQuery.referralCode ? "?referralCode=" + response.routeQuery.referralCode : ""}${response.routeQuery.funnel ? "&funnel=" + response.routeQuery.funnel : ""}`
+    //   }
+    // });
+    // alert('Fail')
+  })
+})
+
+$('#formVideo').on('submit', function (e) {
+  e.preventDefault();
+  let currentUrl = getUrlVars();
+  console.log(currentUrl)
+  let referralCode = getUrlVars()['referralCode'] || "";
+  let funnel = getUrlVars()['funnel'] || "";
+  console.log(referralCode);
+  console.log(funnel)
+  let data = $(this)
+  console.log(data.serialize());
+  $.ajax({
+    type: 'POST',
+    url: `/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`,
+    data: data.serialize(),
+    // success: function (response) {
+    //   console.log(response)
+    //   alert('Success')
+    // }
+  }).done((response) => {
+    // response = response.responseJSON;
+    console.log(response)
+    Swal.fire({
+      icon: "success",
+      title: "Pendaftaran Berhasil!",
+      html: `<p>Terima kasih, 10 Video tersebut akan kami kirimkan mulai besok.</p>
+      <p>Sebelum itu, Anda bisa langsung menonton video GAMS yang membahas detail tentang: </p>
+      <p>"Langkah Pertama Membangun Bisnis & Menghasilkan Income Dari Internet Mulai Dari Bulan Pertama."</p>
+      <p><span class="text-danger"><strong>*</strong></span>kami sangat menyarankan Anda segera menonton video tersebut sampai habis, agar Anda lebih bisa memahami 10 video yang akan kami kirim ke depannya.</p>`,
+      confirmButtonText: 'Tonton Video'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `${response.baseURL}${response.routeQuery.referralCode ? "?referralCode=" + response.routeQuery.referralCode : ""}${response.routeQuery.funnel ? "&funnel=" + response.routeQuery.funnel : ""}#videoAwal`
+      }
+    });
+    // console.log(response)
+    // alert('Success')
+  }).fail((error) => {
+    console.log(error.responseJSON)
+    Swal.fire({
+      icon: "error",
+      title: "Gagal!",
+      text: `${error.responseJSON.message}`,
+    })
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     window.location.href = `${response.baseURL}${response.routeQuery.referralCode ? "?referralCode=" + response.routeQuery.referralCode : ""}${response.routeQuery.funnel ? "&funnel=" + response.routeQuery.funnel : ""}`
+    //   }
+    // });
+    // alert('Fail')
   })
 })

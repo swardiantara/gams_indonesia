@@ -46,8 +46,7 @@ exports.getIndex = async (req, res) => {
 
 exports.getHome = (req, res) => {
   let { referralCode, funnel } = req.query || "";
-  console.log(referralCode)
-  console.log(funnel)
+  if (funnel) funnel = funnel.charAt(funnel.length - 1);
   let { source } = req.query || "";
   if (source == 'free-video' || source == 'register') {
     return res.render("landing/index", {
@@ -116,9 +115,24 @@ exports.postLeads = async (req, res) => {
   let { fullName, email } = req.body || "";
   let { referralCode, funnel } = req.query || "";
 
+  //Cek apakah funnel = freevideo
+  let checkFunnel = funnel.includes('freevideo');
+  if (!checkFunnel) {
+    funnel = 'freevideo' + funnel.charAt(funnel.length - 1);
+  }
+
   try {
-    if (await emailUsed(email)) {
+    if (await emailUsed(email, 'freevideo')) {
       await session.abortTransaction();
+      return res.status(409).send({
+        code: 409,
+        message: 'Email sudah pernah digunakan!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      });
       req.flash('error', 'Email sudah digunakan!')
       return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
@@ -127,6 +141,15 @@ exports.postLeads = async (req, res) => {
       upline = await User.findOne({ referralCode });
       if (!upline) {
         await session.abortTransaction();
+        return res.status(400).send({
+          code: 400,
+          message: 'Kode referral yang anda gunakan tidak valid!',
+          baseURL: process.env.APP_URL,
+          routeQuery: {
+            referralCode: referralCode ? referralCode : "",
+            funnel: funnel ? funnel : ""
+          }
+        })
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
         return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
       }
@@ -143,6 +166,15 @@ exports.postLeads = async (req, res) => {
 
     if (!createdLeads) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
       return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
@@ -153,17 +185,44 @@ exports.postLeads = async (req, res) => {
     let updatedUpline = await upline.save();
     if (updatedUpline instanceof Error) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
       return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
 
     await session.commitTransaction();
+    return res.status(200).send({
+      code: 200,
+      message: 'Berhasil submit form!',
+      baseURL: process.env.APP_URL,
+      routeQuery: {
+        referralCode: referralCode ? referralCode : "",
+        funnel: funnel ? funnel : ""
+      }
+    })
     req.flash('success', 'Berhasil submit form!')
     res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error);
+    return res.status(500).send({
+      code: 500,
+      message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+      baseURL: process.env.APP_URL,
+      routeQuery: {
+        referralCode: referralCode ? referralCode : "",
+        funnel: funnel ? funnel : ""
+      }
+    })
     req.flash('error', 'Terjadi kesalahan!')
     return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
   }
@@ -174,16 +233,55 @@ exports.postBilling = async (req, res) => {
   session.startTransaction();
   let { fullName, email, city, phone } = req.body || "";
   let { referralCode, funnel } = req.query || "";
+
   try {
+    //Cek apakah funnel = register
+    let checkFunnel = funnel.includes('register');
+    if (!checkFunnel) {
+      funnel = 'register' + funnel.charAt(funnel.length - 1);
+    }
+
+    if (await emailUsed(email, 'register')) {
+      await session.abortTransaction();
+      return res.status(409).send({
+        code: 409,
+        message: 'Email sudah pernah digunakan!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      });
+      req.flash('error', 'Email sudah digunakan!')
+      return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+    }
     let upline;
     if (referralCode) {
       upline = await User.findOne({ referralCode });
       if (!upline) {
         await session.abortTransaction();
+        return res.status(400).send({
+          code: 400,
+          message: 'Kode referral yang anda gunakan tidak valid!',
+          baseURL: process.env.APP_URL,
+          routeQuery: {
+            referralCode: referralCode ? referralCode : "",
+            funnel: funnel ? funnel : ""
+          }
+        })
         req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
-        return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+        return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
       }
     }
+    // let upline;
+    // if (referralCode) {
+    //   upline = await User.findOne({ referralCode });
+    //   if (!upline) {
+    //     await session.abortTransaction();
+    //     req.flash('error', 'Kode referral yang anda gunakan tidak valid!')
+    //     return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+    //   }
+    // }
 
     //Simpan data ke Leads
     let newLeads = new Leads();
@@ -198,15 +296,38 @@ exports.postBilling = async (req, res) => {
 
     if (!createdLeads) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
-      return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+      return res.redirect(`/freevideo${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
+    // if (!createdLeads) {
+    //   await session.abortTransaction();
+    //   req.flash('error', 'Terjadi kesalahan!')
+    //   return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
+    // }
 
     //Simpan data leads di Upline
     upline.leads.push(createdLeads._id);
     let updatedUpline = await upline.save();
     if (updatedUpline instanceof Error) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
       return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
@@ -225,6 +346,15 @@ exports.postBilling = async (req, res) => {
     //Error handling
     if (!savedUser) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
       return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
@@ -232,12 +362,23 @@ exports.postBilling = async (req, res) => {
     let membership = await Membership.findOne({ name: 'Basic' });
     //Order Membership Basic
     let newOrderMembership = new OrderMembership();
+    let kodeBayar = Math.random().toString().substr(2, 3);
     newOrderMembership.paket = membership._id;
     newOrderMembership.user = savedUser._id;
     newOrderMembership.referralCode = referralCode;
+    newOrderMembership.kodeBayar = kodeBayar;
     let hasilNewOrderMembership = await newOrderMembership.save();
     if (!hasilNewOrderMembership) {
       await session.abortTransaction();
+      return res.status(500).send({
+        code: 500,
+        message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+        baseURL: process.env.APP_URL,
+        routeQuery: {
+          referralCode: referralCode ? referralCode : "",
+          funnel: funnel ? funnel : ""
+        }
+      })
       req.flash('error', 'Terjadi kesalahan!')
       return res.redirect(`/register${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
     }
@@ -275,7 +416,7 @@ exports.postBilling = async (req, res) => {
                   <td> ${savedUser.phone} </td>
                 </tr>
               </table>
-              <p> Total tagihan anda adalah : ${'Rp. 250.' + Math.random().toString().substr(2, 3)} </p>
+              <p> Total tagihan anda adalah : ${'Rp. 250.' + kodeBayar} </p>
               <p> Silahkan lakukan pembayaran order anda sebelum ${formatted} agar Order anda tidak kami batalkan otomatis oleh sistem. </p>
               <p> Silahkan transfer pembayaran total tagihan anda ke rekening berikut : </p>
               <ul>
@@ -299,12 +440,30 @@ exports.postBilling = async (req, res) => {
     //Commit Transaction
     await session.commitTransaction();
     //Send Response
+    return res.status(200).send({
+      code: 200,
+      message: 'Berhasil submit form!',
+      baseURL: process.env.APP_URL,
+      routeQuery: {
+        referralCode: referralCode ? referralCode : "",
+        funnel: funnel ? funnel : ""
+      }
+    })
     req.flash('success', 'Berhasil melakukan pendaftaran!')
     return res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`);
 
   } catch (error) {
     await session.abortTransaction();
     console.log(error)
+    return res.status(500).send({
+      code: 500,
+      message: 'Terjadi kesalahan, silahkan hubungi Admin!',
+      baseURL: process.env.APP_URL,
+      routeQuery: {
+        referralCode: referralCode ? referralCode : "",
+        funnel: funnel ? funnel : ""
+      }
+    })
     req.flash('error', 'Terjadi Kesalahan')
     return res.redirect(`/${referralCode ? "?referralCode=" + referralCode : ""}${funnel ? "&funnel=" + funnel : ""}`)
   }

@@ -26,7 +26,11 @@ const orderMembershipSchema = new Schema(
     receipt: {
       type: String,
       required: false
-    }
+    },
+    kodeBayar: {
+      type: String,
+      required: false
+    },
   },
   { timestamps: true }
 );
