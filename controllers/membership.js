@@ -380,7 +380,7 @@ exports.postOrderMembership = async (req, res) => {
     });
   } catch (error) {
     await session.abortTransaction();
-    res.status(400).send({ message: "Terjadi kesalahan, hubungi Admin!" })
+    res.status(500).send({ message: "Terjadi kesalahan, hubungi Admin!" })
   }
 
 
@@ -511,7 +511,6 @@ exports.postVerifikasi = async (req, res) => {
     } else {
       //Tambahkan license ke User
       let user = await User.findById(idUser);
-      user.role = 'Member';
       user.license = 'Premium';
       const mailOptions = {
         from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
