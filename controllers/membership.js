@@ -462,6 +462,7 @@ exports.postVerifikasi = async (req, res) => {
     if (orderMembership.paket.name == 'Basic') {
       //Tambahkan license ke User
       let user = await User.findById(idUser);
+      user.role = 'Member';
       user.license = 'Basic';
       //Kirim email akun berhasil dibuat
       const mailOptions = {
@@ -510,6 +511,7 @@ exports.postVerifikasi = async (req, res) => {
     } else {
       //Tambahkan license ke User
       let user = await User.findById(idUser);
+      user.role = 'Member';
       user.license = 'Premium';
       const mailOptions = {
         from: `"GAMS Indonesia" <${process.env.MAIL_INFO_UNAME}>`,
