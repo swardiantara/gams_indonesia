@@ -51,7 +51,7 @@ exports.getHome = (req, res) => {
   if (source == 'free-video' || source == 'register') {
     return res.render("landing/index", {
       title: "Generasi Anak Muda Sukses",
-      layout: "layouts/landing",
+      layout: "layouts/mylanding",
       user: req.user,
       referralCode,
       funnel,
@@ -61,7 +61,7 @@ exports.getHome = (req, res) => {
   }
   return res.render("landing/index", {
     title: "Generasi Anak Muda Sukses",
-    layout: "layouts/landing",
+    layout: "layouts/mylanding",
     user: req.user,
     referralCode,
     funnel,
