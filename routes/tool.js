@@ -9,6 +9,7 @@ const { isAuthenticated, isUnAuthenticated } = require("../config/protected");
 const {
   getTools,
   getAddTool,
+  getAddToolPhoto,
   getEditTool,
   postEditTool,
   postAddTool,
@@ -18,6 +19,7 @@ const {
 
 router.get("/", isAuthenticated, getTools);
 router.get("/add", isAuthenticated, getAddTool);
+router.get("/photo/add", isAuthenticated, getAddToolPhoto);
 router.get("/edit/:id", isAuthenticated, getEditTool);
 router.get("/delete/:delete", isAuthenticated, postEditTool);
 
@@ -29,10 +31,17 @@ router.get("/rincian/:id", isAuthenticated, getRincianTool);
  */
 
 router.post("/add", isAuthenticated, upload.single("thumbnail"), postAddTool);
+router.post("/photo/add", isAuthenticated, upload.array('gallery'), postAddTool);
 router.post(
   "/edit/:id",
   isAuthenticated,
   upload.single("thumbnail"),
+  postEditTool
+);
+router.post(
+  "/photo/edit/:id",
+  isAuthenticated,
+  upload.array("gallery"),
   postEditTool
 );
 

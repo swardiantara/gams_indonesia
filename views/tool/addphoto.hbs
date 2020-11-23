@@ -16,10 +16,10 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div id="nonPhoto" class="form-group">
-                                <label>Thumbnail</label>
+                            <div id="photo" class="form-group">
+                                <label>Gallery</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="thumbnail">
+                                    <input type="file" class="custom-file-input" name="gallery" multiple="multiple">
                                     <label class="custom-file-label">Choose file</label>
                                 </div>
                             </div>
@@ -41,9 +41,9 @@
                                     {{#if data}}
                                     <option value="{{data.category}}">{{data.category}}</option>
                                     {{/if}}
+                                    <option value="photo">Photo</option>
                                     <option value="video">Video</option>
                                     <option value="copywriting">Copywriting</option>
-                                    <option value="photo">Photo</option>
                                     {{!-- <option value="landing-page">Landing Page</option> --}}
                                 </select>
                             </div>

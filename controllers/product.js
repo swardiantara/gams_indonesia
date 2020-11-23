@@ -182,7 +182,9 @@ exports.getOrderDetails = (req, res) => {
 
 exports.postProduct = (req, res, next) => {
   const { title, description, price, weight, qty } = req.body;
-  const gallery = req.files.map((file) => file.path);
+  if (req.files) {
+    var gallery = req.files.map((file) => file.path);
+  }
   // console.log(gallery);
   const newProduct = new Product();
 
