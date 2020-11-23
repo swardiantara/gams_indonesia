@@ -21,7 +21,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       required: true,
-      default: "Member",
+      default: "Calon Member",
     },
     fullName: {
       type: String,
