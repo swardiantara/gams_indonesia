@@ -49,6 +49,7 @@
 <section>
     <div class="jumbotron text-center bg-light">
         <div class="h3">Lakukan pendaftaran sebelum promo berakhir!</div>
+        <span class="display-4" id="countdown"></span>
         {{!-- Disini ditaro countdown --}}
     </div>
 </section>
@@ -62,9 +63,10 @@
 
 {{!-- Billig Form --}}
 <section>
-    <div class="container col-sm-6 shadow-lg rounded p-3 mb-5" style="width:">
+    <div class="container col-sm-6 shadow-lg rounded p-3 mb-5">
         <h3 class="mt-3">Billing Form GAMS</h3>
-        <form action="" method="POST" enctype="application/x-www-form-urlencoded">
+        {{!-- <form id="formRegister" action="" method="POST" enctype="application/x-www-form-urlencoded"> --}}
+        <form id="formRegister" class="p-3">
             <div class="form-group">
                 <label for="formGroupExampleInput">Nama Anda</label>
                 <input type="text" name="fullName" class="form-control" placeholder="Nama Anda" required>
@@ -85,7 +87,7 @@
             <button type="submit" class="btn btn-primary">
                 Kirim
             </button>
-        </form> 
+        </form>
     </div>
 </section>
 
@@ -123,7 +125,8 @@
                     <div class="card shadow" style="border-radius: 0%;">
                         <div class="card-header" id="headingTwo">
                             <h2 class="mb-0">
-                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
                                     data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                                     aria-controls="collapseTwo">
                                     BAGAIMANA CARA BERGABUNG?
@@ -145,7 +148,8 @@
                     <div class="card shadow" style="border-radius: 0%;">
                         <div class="card-header" id="headingThree">
                             <h2 class="mb-0">
-                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
                                     data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
                                     aria-controls="collapseThree">
                                     APAKAH SETELAH JOIN AKAN DIBIMBING?
@@ -170,7 +174,8 @@
                     <div class="card shadow" style="border-radius: 0%;">
                         <div class="card-header" id="headingFour">
                             <h2 class="mb-0">
-                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
                                     data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
                                     aria-controls="collapseFour">
                                     BAGAIMANA CARA KERJANYA?
@@ -194,7 +199,8 @@
                     <div class="card shadow" style="border-radius: 0%;">
                         <div class="card-header" id="headingFive">
                             <h2 class="mb-0">
-                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
                                     data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
                                     aria-controls="collapseFive">
                                     APAKAH ADA BIAYA PERBULAN BAGI MEMBER?
@@ -216,7 +222,8 @@
                     <div class="card shadow" style="border-radius: 0%;">
                         <div class="card-header" id="headingSix">
                             <h2 class="mb-0">
-                                <button class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
+                                <button
+                                    class="d-flex align-items-center justify-content-between btn btn-link collapsed text-left"
                                     data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
                                     aria-controls="collapseSix">
                                     APAKAH GAMS INDONESIA BISNIS MLM?
@@ -238,7 +245,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </section>
 {{!-- End --}}
