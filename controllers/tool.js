@@ -152,7 +152,7 @@ exports.postAddTool = (req, res, next) => {
   newTool.thumbnail = thumbnail;
   if (req.files) {
     newTool.gallery = gallery;
-    next();
+    // next();
   }
 
   newTool.save((err) => {
