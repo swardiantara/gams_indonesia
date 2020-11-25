@@ -216,11 +216,12 @@
     .items-title {
         color: #03ffce;
         font-family: "Playfair Display", sans-serif;
-        font-size: 36px;
+        font-size: xx-large;
         font-weight: normal;
         position: relative;
         /* transition: background0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s; */
     }
+    
 
     .dark-wrapper {
         background-color: #242930 !important;
