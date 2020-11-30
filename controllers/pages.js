@@ -158,7 +158,7 @@ exports.postLeads = async (req, res) => {
     }
 
     let newLeads = new Leads();
-    if (referralCode) newLeads.referral = referralCode;
+    newLeads.referral = referralCode ? upline._id : null;
     newLeads.email = email;
     newLeads.fullName = fullName;
     newLeads.funnel = funnel;
@@ -291,7 +291,7 @@ exports.postBilling = async (req, res) => {
 
     //Simpan data ke Leads
     let newLeads = new Leads();
-    newLeads.referral = referralCode ? upline._id : "";
+    newLeads.referral = referralCode ? upline._id : null;
     newLeads.email = email;
     newLeads.fullName = fullName;
     newLeads.phone = phone;
