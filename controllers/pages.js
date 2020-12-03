@@ -193,8 +193,8 @@ exports.postLeads = async (req, res) => {
           message: 'Terjadi kesalahan, silahkan hubungi Admin!',
           baseURL: process.env.APP_URL,
           routeQuery: {
-            referralCode: referralCode ? referralCode : "",
-            funnel: funnel ? funnel : ""
+            referralCode: referralCode ? referralCode : null,
+            funnel: funnel ? funnel : null
           }
         })
         req.flash('error', 'Terjadi kesalahan!')

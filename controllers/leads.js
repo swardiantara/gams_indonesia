@@ -46,11 +46,11 @@ exports.getLeadsPanel = async (req, res) => {
   }
 
   freevideo = leads.filter((item, index) => {
-    return item.funnel.includes('freevideo');
+    return item.funnel ? item.funnel.includes('freevideo');
   });
 
   register = leads.filter((item, index) => {
-    return item.funnel.includes('register');
+    return item.funnel ? item.funnel.includes('register');
   });
 
   return res.render("leads/leadspanel", {
