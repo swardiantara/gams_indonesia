@@ -23,7 +23,8 @@ const {
   postUploadPremium,
   getCommisionDetail,
   getDownlineDetail,
-  resetCommission
+  resetCommission,
+  deleteOrderMembership
 } = require("../controllers/membership");
 
 router.get("/", isAuthenticated, getMembership);
@@ -44,6 +45,7 @@ router.post('/upload-premium/:id', upload.single('buktiBayar'), postUploadPremiu
 router.post('/verifikasi/:id', postVerifikasi);
 router.post('/verifikasi-premium/:id', postVerifikasi);
 router.post("/commission/:id/reset", isAuthenticated, resetCommission);
+router.delete("/order-membership/:id", isAuthenticated, deleteOrderMembership);
 
 
 /**

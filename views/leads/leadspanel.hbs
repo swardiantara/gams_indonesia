@@ -82,4 +82,46 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-success text-left collapsed w-100" type="button" data-toggle="collapse"
+                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Tanpa Funnel
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Waktu Submit</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>No. HP</th>
+                                {{!-- <th>Leads From</th>
+                                <th>Funnel</th> --}}
+                                <th>Platform</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each tanpaFunnel}}
+                            <tr>
+                                <th>{{this.tanggal}}</th>
+                                <th>{{this.fullName}}</th>
+                                <td>{{this.email}}</td>
+                                <td>{{this.phone}}</td>
+                                {{!-- <td>{{this.referral.fullName ? this.referral.fullName : '-'}}</td>
+                                <td>{{this.funnel ? this.funnel : '-'}}</td> --}}
+                                <td>{{this.platform}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

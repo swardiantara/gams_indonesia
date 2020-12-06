@@ -49,7 +49,7 @@ exports.getMemberOrder = async (req, res) => {
   let premium = user.license == 'Premium' ? true : false;
   let pendingPremium = "";
   if (user.license != 'Premium') {
-    pendingPremium = await OrderMembership.findOne({ user: user._id, status: 'Menunggu Konfirmasi Pembayaran' });
+    pendingPremium = await OrderMembership.findOne({ user: user._id, status: { $in: ['Menunggu Konfirmasi Pembayaran', 'Belum Bayar'] } });
   }
 
   return res.render("membership/order", {
@@ -71,6 +71,14 @@ exports.getMemberOrderList = (req, res) => {
     .populate("user")
     .populate("paket")
     .then((data) => {
+      data.map((item) => {
+        if (Math.floor(Math.abs(new Date() - new Date(item.createdAt)) / (1000 * 60 * 60 * 24)) > 2) {
+          // console.log(true)
+          return item.kadaluarsa = true;
+        }
+      })
+      // await data.save();
+      // console.log(data)
       return res.render("membership/orderlist", {
         title: "Order Membership",
         data: data,
@@ -305,6 +313,12 @@ exports.postOrderMembership = async (req, res) => {
       res.status(404).send({ message: 'Anda sudah member premium!' })
     }
 
+    let belumBayar = await OrderMembership.findOne({ user: user._id, status: 'Belum Bayar' });
+    if (belumBayar) {
+      await session.abortTransaction();
+      res.status(404).send({ message: 'Silahkan lakukan pembayaran terlebih dahulu!' })
+    }
+
     let pendingPremium = await OrderMembership.findOne({ user: user._id, status: 'Menunggu Konfirmasi Pembayaran' });
     if (pendingPremium) {
       await session.abortTransaction();
@@ -378,12 +392,13 @@ exports.postOrderMembership = async (req, res) => {
       if (error) console.log(error);
       console.log("Email sent: " + info.response);
     });
+
+    res.status(200).send({ message: 'success' });
+
   } catch (error) {
     await session.abortTransaction();
     res.status(500).send({ message: "Terjadi kesalahan, hubungi Admin!" })
   }
-
-
 };
 
 
@@ -568,7 +583,7 @@ exports.resetCommission = async (req, res) => {
     // console.log(user.commission);
     // return res.status(400).send({ code: 400, message: 'Gagal mereset komisi!', data: user })
     user.commission.map(item => {
-      return item.status = 'paid'
+      if (item.status = 'not_paid') return item.status = 'paid'
     })
 
     let saved = await user.save();
@@ -582,5 +597,19 @@ exports.resetCommission = async (req, res) => {
       message: 'Internal server Error',
       error
     })
+  }
+}
+
+exports.deleteOrderMembership = async (req, res) => {
+  try {
+    let idOrder = req.params.id || null;
+    OrderMembership.findById({ _id: idOrder }).then((dataOrder) => {
+      dataOrder.remove();
+      return res.status(200).send({ message: 'success' })
+    }).catch(err => {
+      res.send(err)
+    });
+  } catch (error) {
+    res.send(error)
   }
 }

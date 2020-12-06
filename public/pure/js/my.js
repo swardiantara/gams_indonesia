@@ -1,6 +1,8 @@
 // const { response } = require("../../../routes/edit-dashboard");
 
-$("#errorModal").modal('show');
+// const { Cookie } = require("express-session");
+
+// $("#errorModal").modal('show');
 
 
 //Accordion FAQ
@@ -21,9 +23,17 @@ $("#accordion").on("shown.bs.collapse", e => {
     400
   );
 });
-
-const sekarang = new Date();
-let countDownDate = sekarang.setDate(sekarang.getDate() + 2);
+let countDownDate = Cookies.get('countDownDate');
+if (!countDownDate) {
+  const sekarang = new Date();
+  countDownDate = sekarang.setDate(sekarang.getDate() + 2);
+  Cookies.set('countDownDate', countDownDate)
+} else {
+  countDownDate = Cookies.get('countDownDate');
+}
+// console.log(countDownDate);
+// const sekarang = new Date();
+// let countDownDate = sekarang.setDate(sekarang.getDate() + 2);
 var x = setInterval(function () {
 
   // Untuk mendapatkan tanggal dan waktu hari ini
@@ -107,15 +117,24 @@ $('#formRegister').on('submit', function (e) {
     // alert('Fail')
   })
 })
+let currentUrl = getUrlVars();
+let referralCode = Cookies.get('referralCode') || null;
+let funnel = Cookies.get('funnel') || null;
+if (!referralCode) {
+  referralCode = getUrlVars()['referralCode'] || null;
+  Cookies.set('referralCode', referralCode);
+} else {
+  referralCode = Cookies.get('referralCode');
+}
+if (!funnel) {
+  funnel = getUrlVars()['funnel'] || null;
+  Cookies.set('funnel', funnel);
+} else {
+  funnel = Cookies.get('funnel');
+}
 
 $('#formVideo').on('submit', function (e) {
   e.preventDefault();
-  let currentUrl = getUrlVars();
-  console.log(currentUrl)
-  let referralCode = getUrlVars()['referralCode'] || "";
-  let funnel = getUrlVars()['funnel'] || "";
-  console.log(referralCode);
-  console.log(funnel)
   let data = $(this)
   console.log(data.serialize());
   $.ajax({

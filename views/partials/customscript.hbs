@@ -78,6 +78,7 @@
 
     //Order membership Premium
     $('#premiumButton').on('click', function (e) {
+        $(this).attr('disabled', 'disabled');
         e.preventDefault();
         const API = `/membership/api/order`;
         axios({

@@ -27,10 +27,15 @@ exports.getMyLeads = async (req, res) => {
         return item.funnel.includes('register');
       });
 
+      let tanpaFunnel = data.leads.filter((item) => {
+        return item.funnel = undefined;
+      })
+
       return res.render("leads/myleads", {
         title: "My Leads",
         freevideo,
         register,
+        tanpaFunnel,
         user: req.user,
         customjs: true
       });
@@ -45,23 +50,28 @@ exports.getLeadsPanel = async (req, res) => {
     leads[i].tanggal = moment(leads[i].createdAt).format('LLLL');
   }
 
-  freevideo = leads.filter((item, index) => {
+  let freevideo = leads.filter((item, index) => {
     // console.log(item);
     if (item.funnel) {
       return item.funnel.includes('freevideo');
     }
   });
 
-  register = leads.filter((item, index) => {
+  let register = leads.filter((item, index) => {
     if (item.funnel) {
       return item.funnel.includes('register');
     }
   });
 
+  let tanpaFunnel = leads.filter((item) => {
+    return item.funnel = undefined;
+  })
+
   return res.render("leads/leadspanel", {
     title: "Leads Panel",
     freevideo,
     register,
+    tanpaFunnel,
     user: req.user,
   });
 }
