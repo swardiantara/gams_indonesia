@@ -63,6 +63,7 @@ exports.getMemberOrder = async (req, res) => {
 };
 
 exports.getMemberOrderList = (req, res) => {
+  moment.locale('ID');
   OrderMembership.find({
     status: {
       $in: ['Belum Bayar', 'Menunggu Konfirmasi Pembayaran']
@@ -76,6 +77,9 @@ exports.getMemberOrderList = (req, res) => {
           // console.log(true)
           return item.kadaluarsa = true;
         }
+      })
+      data.map((item) => {
+        return item.tanggal = moment(item.createdAt).format('LLLL');
       })
       // await data.save();
       // console.log(data)

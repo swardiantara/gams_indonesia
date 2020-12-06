@@ -3,9 +3,10 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">{{{title}}}</h6>
-                <table id="tableOrderMembership" class="table table-hover text-center">
+                <table id="tableOrderMembership" class="table table-hover text-center table-responsive">
                     <thead>
                         <tr>
+                            <th>Waktu</th>
                             <th>User</th>
                             <th>Email</th>
                             <th>No. HP</th>
@@ -18,6 +19,7 @@
                     <tbody>
                         {{#each data}}
                         <tr>
+                            <td>{{this.tanggal}}</td>
                             <th><a href="#">{{user.fullName}}</a></th>
                             <td>{{user.email}}</td>
                             <td>{{user.phone}}</td>
@@ -39,7 +41,7 @@
                             </td>
                             <td>
                                 {{#if this.kadaluarsa}}
-                                <button class="btn btn-danger" data-src="{{receipt}}" data-name="{{user.fullName}}"
+                                <button class="btn btn-danger" onclick="hapusOrder({{user._id}})"
                                     data-id="{{user._id}}">Hapus
                                 </button>
                                 {{else}}
