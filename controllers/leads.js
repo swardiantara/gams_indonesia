@@ -19,17 +19,19 @@ exports.getMyLeads = async (req, res) => {
         data.leads[i].tanggal = moment(data.leads[i].createdAt).format('LLLL');
       }
 
-      freevideo = data.leads.filter((item, index) => {
-        return item.funnel.includes('freevideo');
+      let freevideo = data.leads.filter((item, index) => {
+        // console.log(item.funnel)
+        if (item.funnel) return item.funnel.includes('freevideo');
       });
 
-      register = data.leads.filter((item, index) => {
-        return item.funnel.includes('register');
+      let register = data.leads.filter((item, index) => {
+        if (item.funnel) return item.funnel.includes('register');
       });
 
       let tanpaFunnel = data.leads.filter((item) => {
         return item.funnel = undefined;
       })
+      // console.log(freevideo)  
 
       return res.render("leads/myleads", {
         title: "My Leads",
