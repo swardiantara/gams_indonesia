@@ -29,7 +29,7 @@ exports.getMyLeads = async (req, res) => {
       });
 
       let tanpaFunnel = data.leads.filter((item) => {
-        return item.funnel = undefined;
+        return item.funnel == undefined;
       })
       // console.log(freevideo)  
 
